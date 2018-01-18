@@ -7,7 +7,7 @@ Kyle R. Wodzicki
 —————
 About
 —————
-This version of the TAMU LaTeX template was designed to reduce the amount of end-user formatting required. The template uses the tamu_thesis class.
+This version of the TAMU LaTeX template was designed to reduce the amount of end-user formatting required. The template uses the tamu_thesis class. All of the example code in the template is taken from the OGAPS template.
 
 —————
 Using the template.
