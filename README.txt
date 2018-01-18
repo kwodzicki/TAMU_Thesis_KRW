@@ -17,6 +17,9 @@ Using the template.
 ———————
 Changes
 ——————-
+V0.17.9
+  Update spacing to match the OGAPS Spring 2018 template. Also add the option to have Reference sections at the end of each chapter.
+
 V0.17.6
   Changed the spacing in the title page and the table of contents to better match that of the Jun2017 OGAPS template
 
