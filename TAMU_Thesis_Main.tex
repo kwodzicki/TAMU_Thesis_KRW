@@ -24,7 +24,7 @@
 \usepackage{multirow}			% Multirow package for tables
 \usepackage{footnote}			% Package for the savenotes command
 \usepackage{amsthm}				% AMS package for theorems
-\usepackage{natbib,url}			% Load the natbib and ulr packages
+%\usepackage{natbib,url}			% Load the natbib and ulr packages
 \usepackage[
 	urlcolor=blue,				% URL links to blue
 	filecolor=black,			% File links to black
@@ -74,8 +74,9 @@
 \include{./Data/dedication}			% Include the dedication file
 \include{./Data/acknowledgements}	% Include the acknowledgements file
 \include{./Data/contributors}		% Include the contributors file
-\makenomenclature					% Generate nomenclature if using the nomenclature package
+\makeNomenclature					% Generate nomenclature if using the nomenclature package
 
+\makeToC							% Generate the Table of Contents. REQUIRED!!!
 \include{./Data/Section1}			% Include the Section1.tex file
 \include{./Data/Section2}			% Include the Section2.tex file
 \include{./Data/Section3}			% Include the Section3.tex file

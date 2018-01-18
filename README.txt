@@ -1,11 +1,25 @@
-TAMU LaTeX Thesis Template version 0.16.12.
+TAMU LaTeX Thesis Template version v0.16.12a
 
 Kyle R. Wodzicki
 
 07 Dec. 2016
+
+—————
+About
+—————
+This version of the TAMU LaTeX template was designed to reduce the amount of end-user formatting required. The template uses the tamu_thesis class.
+
+—————
+Using the template.
+—————
+
+
 ———————
 Changes
 ——————-
+V0.16.12a
+  Change in how the formatting from the abstract, dedication, etc, ToC section to the main text of the thesis occurs. Changed the custom ‘Chapter’ command to only contain \chapter{\uppercase{}}
+
 V0.16.12
  Changed the construction of the committee from a tabular set up to minipages.
  Changed user input fields such as \Title and \FullName from commands to tokens. Not sure exactly how they work, but they make if statements much easier to work with and allows for changing of spacings much easier. This makes the code for and auto-spacing of the title page much cleaner.
@@ -16,27 +30,3 @@ V0.16.10
   Tested to ensure that appendixes work - they do.
   Fixed some spacing issues on the title page
   Added the Contributors and Funding section
-  
-
-—————
-About
-—————
-This is the first version of the TAMU LaTeX Thesis template created by Kyle R. Wodzicki to use the tamu_thesis document class. The tamu_thesis class was created from a modified version of the TAMU LaTeX Template version 1.7 available at http://howdy.me.
-
-For questions/issues with this template, please email Kyle Wodzicki: wodzicki@tamu.edu. I hope to get the bugs worked out of this template and eventually submit it to the TAMU LaTeX Users’ group
-
-This new version of the template attempts to shift away from using a style file and a large amount of formatting inside the TeX documents to a document class based system that `hides’ formatting from the end user for a more user friendly experience. 
-
-
-Some of the changes that have been made are:
-
-    -Defining information for the title page has been streamlined, with the committee list auto-filling based on the number of members; There can be up to one (1) chair, one (1) co-chair, and four (4) committee members. If more space is required, a rework of the class file will be required. Must have \maketitle command to generate title
-
-    -Sections such as the abstract, dedication, etc., have been given their own environments.
-
-    -Table of contents generation has been moved from a TeX file into the tamu_thesis class and is generated before the first chapter of the document automatically
-
-    -Extra formatting for chapters has been removed and a \Chapter{} command should be used. This will auto-identify the Introduction chapter, which, per the TAMU Thesis manual MUST be the title of the first chapter
-
-EXTRAS:
-  Two bibliography style files for Atmospheric Sciences have been include; the AGU and AMS styles. Many other styles can be used, these are just included as examples

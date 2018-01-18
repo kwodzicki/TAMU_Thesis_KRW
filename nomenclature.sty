@@ -10,8 +10,9 @@
 %   `Nomenclature' section. If the `list = ' option is NOT used, the
 %   value in `long = ' will be displayed in the `Nomenclauture' section.
 %   
-%   If page numbers appear in the `Nomenclature' section, add the `nopage' option
-%   to the package call. This was added because ShareLaTeX did not like page-style.
+%   If page numbers appear in the `Nomenclature' section, add the `nopage'
+%   option to the package call. This was added because ShareLaTeX did not like
+%   page-style.
 % Dependencies:
 %   acro - http://mirror.hmc.edu/ctan/macros/latex/contrib/acro/acro_en.pdf
 % Author and History:
@@ -23,19 +24,18 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{nomenclature}
 	[2016/11/02 v1.0 LaTeX package for acronyms used in TAMU Thesis]
-\RequirePackage{acro}[2016/01/01]					% Load acro package
-\RequirePackage{longtable,tabu}						% Load table packages
-\newif\if@all\@allfalse								% Set up new if variable for all
-\DeclareOption{all}{\@alltrue}						% Declare option for `all', set true if used
-\ProcessOptions\relax								% Terminate option processing
-\DeclareAcroListStyle{acros}{table}{				% Set up the style of the table
-  table = longtabu,									% Set table type to longtabu
-  before = \singlespacing\vskip-\baselineskip		% Set to single space within acronym and double between
-  \renewcommand\arraystretch{2},
-  table-spec = @{}>{}lX@{},							% Set the table specifications
+\RequirePackage{acro}[2016/01/01]                                               % Load acro package
+\RequirePackage{longtable,tabu}                                                 % Load table packages
+\newif\if@all\@allfalse                                                         % Set up new if variable for all
+\DeclareOption{all}{\@alltrue}                                                  % Declare option for `all', set true if used
+\ProcessOptions\relax                                                           % Terminate option processing
+\DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
+  table = longtabu,                                                             % Set table type to longtabu
+  before = \singlespacing\vskip-\baselineskip\renewcommand\arraystretch{2},     % Set to single space within acronym and double between
+  table-spec = @{}>{}lX@{},                                                     % Set the table specifications
 }
-\acsetup{list-style=acros,list-heading=none}		% Set the acronym `list-style', and `list-heading'
-\if@all\acsetup{only-used=false}\fi					% Set the acronym `only-used' option to false
+\acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'
+\if@all\acsetup{only-used=false}\fi                                             % Set the acronym `only-used' option to false
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%      Begin Acronym Definitions     Begin Acronym Definitions      %%%
