@@ -69,6 +69,9 @@
 %     'Chapter' command responsible for setting up page numbering in main
 %     text of thesis.
 %     Changed \makenomencalture command to \makeNomenclature
+%
+%   Modified 14 Dec. 2016 by Kyle R. Wodzicki
+%     Replaced \baselineskip commands with the \singleSpace command
 %-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{tamu_thesis}[2016/03/30 TAMU Thesis Class]
@@ -173,8 +176,11 @@
 % The first command takes off 40 percent of a single space width if
 % the CoChair token is used. The second takes off another 40 percent
 % if the MemberFour token is used.
-\if\relax\the\CoChair\relax\addtolength{\titleSpacing}{-0.4\singleSpace}\fi
-\if\relax\the\MemberFour\relax\addtolength{\titleSpacing}{-0.4\singleSpace}\fi
+%\showthe\titleSpacing
+\if\relax\the\CoChair\relax\addtolength{\titleSpacing}{-0.6\singleSpace}\fi
+%\showthe\titleSpacing
+\if\relax\the\MemberFour\relax\addtolength{\titleSpacing}{-0.6\singleSpace}\fi
+%\showthe\titleSpacing
 
 \renewcommand{\maketitle}{
   \thispagestyle{empty}
@@ -190,7 +196,7 @@
     \end{singlespace}                                                           % End single spacing
     \MakeUppercase{\the\Degree{}}                                               % Degree in all upper case
   \end{center}                                                                  % End center
-  \vspace{2\singleSpace}                                                        % 2 single spaces
+  \vspace{3\singleSpace}                                                        % 2 single spaces
   \begin{singlespace}\makeCommittee\end{singlespace}                            % Create the committee using routine and single space
   \vspace{\titleSpacing}                                                        % Add 'titleSpacing' vertical space
   \begin{center}                                                                % Begin center
@@ -314,7 +320,7 @@
 \newcommand{\makeNomenclature}{
   \chapter*{NOMENCLATURE}                                                       % Generate chapter title for Nomenclature
   \addcontentsline{toc}{chapter}{NOMENCLATURE}                                  % Add to table of contents
-  \vskip-\baselineskip                                                          % Move start of nomenclature up
+  \vspace{-\singleSpace}                                                        % Move start of nomenclature up
   \printacronyms                                                                % Print the nomenclature/acronyms
 }
 
@@ -344,7 +350,7 @@
     {\centering\normalsize\uppercase}                                           % Set title to be centered and normal size
     {\appendixname{} \thechapter}                                               % Set the new title name to APPENDIX `chap'
     {0em}                                                                       % Set marign before the title
-    {\vskip0.5\baselineskip\centering}                                          % Set margin after the title
+    {\vskip\singleSpace\centering}                                              % Set margin after the title
 }{
   \endmyappendices                                                              % End the appendix
 }
@@ -371,33 +377,33 @@
 %%% Spacing for the chapters/sections/parts
 \renewcommand{\cftaftertoctitleskip}{0pt}                                       % Set spacing after TOC Title
 \renewcommand{\cftaftertoctitle}{                                               % Adds Page above the page number in TOC
-  \vskip-\baselineskip\hfill{\normalfont{Page}}}                                % The negative baselineskip moves `Page' up to match old templates
-\renewcommand{\cftbeforepartskip}{\baselineskip}                                % Set spacing before parts in TOC
-\renewcommand{\cftbeforechapskip}{\baselineskip}                                % Set spacing before chapters in TOC
+  \vskip-\singleSpace\hfill{\normalfont{Page}}}                                 % The negative singleSpace moves `Page' up to match old templates
+\renewcommand{\cftbeforepartskip}{\singleSpace}                                 % Set spacing before parts in TOC
+\renewcommand{\cftbeforechapskip}{\singleSpace}                                 % Set spacing before chapters in TOC
 \preto\section{                                                                 % Double space between chapter and first section
   \ifnum\value{section}=0
-    \addtocontents{toc}{\vskip\baselineskip}
+    \addtocontents{toc}{\vskip\singleSpace}
   \fi
 }
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchapleader}
         {\protect\cftdotfill{\cftsecdotsep}}}                                   % puts leader dots on chapters.
         
 %%% Formatting for List of Figures
-\renewcommand{\cftbeforeloftitleskip}{-\baselineskip}                           % Position LOF title to match chapter titles
-\renewcommand{\cftafterloftitleskip}{\baselineskip}                             % Set after title skip
+\renewcommand{\cftbeforeloftitleskip}{-\singleSpace}                            % Position LOF title to match chapter titles
+\renewcommand{\cftafterloftitleskip}{\singleSpace}                              % Set after title skip
 \renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of figures title
 \renewcommand{\cftafterloftitle}{
-  \hfill\mbox{}\vskip3\baselineskip FIGURE\hfill{\normalfont Page}}             % Add FIGURE Page after LoF Title
+  \hfill\mbox{}\vskip3\singleSpace FIGURE\hfill{\normalfont Page}}              % Add FIGURE Page after LoF Title
 \renewcommand{\cftfigafterpnum}{\vskip\f@size pt}                               % Set vertical skip after page numbers to font size
 \renewcommand{\cftbeforefigskip}{0pt}                                           % Set vertical skip before entries to 0pt
 
 %%% Spacing for List of Tables
-\renewcommand{\cftbeforelottitleskip}{-\baselineskip}                           % Position LOT title vertically - match chapter titles
-\renewcommand{\cftafterlottitleskip}{\baselineskip}
+\renewcommand{\cftbeforelottitleskip}{-\singleSpace}                            % Position LOT title vertically - match chapter titles
+\renewcommand{\cftafterlottitleskip}{\singleSpace}
 \renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of tables title
 
 \renewcommand{\cftafterlottitle}{%
-  \hfill\mbox{}\vskip3\baselineskip TABLE\hfill{\normalfont Page}               % Add TABLE Page after LoT Title
+  \hfill\mbox{}\vskip3\singleSpace TABLE\hfill{\normalfont Page}                % Add TABLE Page after LoT Title
 }
 \renewcommand{\cfttabafterpnum}{\vskip\f@size pt}                               % Set vertical skip after page numbers to font size
 \renewcommand{\cftbeforetabskip}{0pt}                                           % Set vertical skip before entries to 0pt
@@ -450,8 +456,8 @@
 \titleformat{\subsection}{\bf\normalsize}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\centering\normalsize\it}{\thesubsubsection}{1em}{}
 
-\titlespacing{\chapter}{0pt}{-18pt}{\baselineskip}
-\titlespacing{\section}{0pt}{0.25\baselineskip}{0.25\baselineskip}
-\titlespacing{\subsection}{0pt}{0.25\baselineskip}{0.25\baselineskip}
+\titlespacing{\chapter}{0pt}{-18pt}{2\singleSpace}
+\titlespacing{\section}{0pt}{0.5\singleSpace}{0.5\singleSpace}
+\titlespacing{\subsection}{0pt}{0.5\singleSpace}{0.5\singleSpace}
 
 \endinput

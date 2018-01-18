@@ -31,7 +31,7 @@
 \ProcessOptions\relax                                                           % Terminate option processing
 \DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
   table = longtabu,                                                             % Set table type to longtabu
-  before = \singlespacing\vskip-\baselineskip\renewcommand\arraystretch{2},     % Set to single space within acronym and double between
+  before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},     % Set to single space within acronym and double between
   table-spec = @{}>{}lX@{},                                                     % Set the table specifications
 }
 \acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'

@@ -1,8 +1,8 @@
-TAMU LaTeX Thesis Template version v0.16.12a
+TAMU LaTeX Thesis Template version 0.16.12b.
 
 Kyle R. Wodzicki
 
-07 Dec. 2016
+14 Dec. 2016
 
 —————
 About
@@ -17,6 +17,9 @@ Using the template.
 ———————
 Changes
 ——————-
+V0.16.12b
+  Removed the use of \baselineskip from the class file and replaced with the \singleSpace command.
+
 V0.16.12a
   Change in how the formatting from the abstract, dedication, etc, ToC section to the main text of the thesis occurs. Changed the custom ‘Chapter’ command to only contain \chapter{\uppercase{}}
 
