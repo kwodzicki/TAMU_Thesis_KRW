@@ -1,5 +1,22 @@
-TAMU LaTeX Thesis Template version 1.0.
+TAMU LaTeX Thesis Template version 1.1.
 
+Kyle R. Wodzicki
+
+04 Nov. 2016
+———————
+Changes
+——————-
+V1.1
+  Updated spacings of chapter headings to better match that of the V3.16.10 release from OGAPS
+  Changed sub/subsub section headings to match the V3.16.10 release
+  Tested to ensure that appendixes work - they do.
+  Fixed some spacing issues on the title page
+  Added the Contributors and Funding section
+  
+
+—————
+About
+—————
 This is the first version of the TAMU LaTeX Thesis template created by Kyle R. Wodzicki to use the tamu_thesis document class. The tamu_thesis class was created from a modified version of the TAMU LaTeX Template version 1.7 available at http://howdy.me.
 
 For questions/issues with this template, please email Kyle Wodzicki: wodzicki@tamu.edu. I hope to get the bugs worked out of this template and eventually submit it to the TAMU LaTeX Users’ group
@@ -19,5 +36,3 @@ Some of the changes that have been made are:
 
 EXTRAS:
   Two bibliography style files for Atmospheric Sciences have been include; the AGU and AMS styles. Many other styles can be used, these are just included as examples
-
-Please note that appendices have NOT been tested.

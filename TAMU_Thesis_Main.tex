@@ -4,68 +4,105 @@
 %  Dissertations starting Fall 2016.
 %
 %  Author:  Kyle R. Wodzicki  
-%  Updated: 20 May 2016
-%  Adapted from: 
-%    TAMUTemplate Version 1.7 of the TAMU LaTeX Users 
-%    group (http://howdy.me).
-%    Authored by: Wendy Lynn Turner 
+%  Updated: 04 Nov. 2016
+%
+%  Adapted loosely from: 
+%    TAMU LaTeX (SZR) Version 3.16.10 from OGAPS 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Set information for title page. Either delete or comment out tags that are NOT needed
-\Title{Type in your default title here: You may need to change the spacing if the title is too long and pushes the copyright off of the titlepage}
-\PaperType{Thesis OR Dissertation}		% Enter the paper type
-\FullName{First Middle Lastname}		% Enter full name
-\Degree{Doctor of Philosophy}			% Enter degree
-\Chair{Chair Name}						% Enter name of committee chair
-\CoChair{Co-Chair Name}					% Enter name of committee co-chair. If NO co-chair do NOT use.
-\MemberOne{Committee Member 1}			% Name of first committee member
-\MemberTwo{Committee Member 2}			% Name of second committee member
-\MemberThree{Committee Member 3}		% Name of third committee member
-\MemberFour{Committee Member 4}			% Name of fourth committee member
-\DeptHead{Head of Department}			% Enter name of department head
-\GradMonth{December}					% Enter graduation month
-\GradYear{2012}							% Enter graduation year
-\Dept{Department Name}					% Enter department name	
-
+%%% Load the nomenclature package. Can set the 'all' 
+%%% option to display all. Default is to display 
+%%% only the nomenclature/acronyms that are used.
+\usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Beginning of the document
+%%%          Load extra packages here            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{multirow}			% Multirow package for tables
+\usepackage{footnote}			% Package for the savenotes command
+\usepackage{amsthm}				% AMS package for theorems
+\usepackage[
+	urlcolor=blue,				% Set color of url links to blue
+	filecolor=black,			% Set color of file links to black
+	citecolor=black,			% Set color of citation links to black
+	linkcolor=black,			% Set color of all other links (section, figure, etc.) to black
+	colorlinks=true]{hyperref}	% Load hyperref package for linking 
+%\usepackage{natbib,url}	% These packages are required for some citation styles
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%       Set information for title page.        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Delete or comment out tags that are NOT needed
+\Title{The Title of Your Thesis or Dissertation Goes In This Space To Let Us Know What Your Document is About}
+\PaperType{Thesis}					% Enter the paper type
+\FullName{Aggie D. Student}			% Enter full name
+\Degree{Master of Science}			% Enter degree
+\Chair{Chair Name}					% Enter name of committee chair
+%\CoChair{Co-Chair Name}			% Enter name of committee co-chair
+\MemberOne{Committee Member 1}		% Name of first committee member
+\MemberTwo{Committee Member 2}		% Name of second committee member
+\MemberThree{Committee Member 3}	% Name of third committee member
+%\MemberFour{Committee Member 4}	% Name of fourth committee member
+\DeptHead{Head of Department}		% Enter name of department head
+\GradMonth{December}				% Enter graduation month
+\GradYear{2016}						% Enter graduation year
+\Dept{Mathematics}					% Enter department name	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Set path to the figures and figure extensions %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\graphicspath{ {./Graphic/} }
+\DeclareGraphicsExtensions{.png,.PNG,.jpg}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define custom  commands for easier typing        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
+\newcommand{\elnino}{El Ni\~{n}o}   % El Nino/La Nina commands
+\newcommand{\lanina}{La Ni\~{n}a}
+
+\newcommand{\citenop}[1]{\citeauthor{#1} \citeyear{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%          Beginning of the document           %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\setlength{\titleSpacing}{0.82\baselineskip}% If title page is NOT on single page, reduce value slightly
+\setlength{\titleSpacing}{\baselineskip}% If title page is NOT on single page, reduce value slightly
 
-% Set the document spacing. Default is double spaced
-%\onehalfspacing
-\doublespacing
+%\onehalfspacing	% Uncomment for one-half spacing
+\doublespacing		% Uncomment for double spacing
 
-\maketitle	% Must have this to generate the title page!!!
+\maketitle			% Must have this to generate the title page!!!
 
 % Be sure to include all TeX files to be used in your document!
-\include{./Data/abstract}
-\include{./Data/dedication}
-\include{./Data/acknowledgements}
-\include{./Data/nomenclature}
+\include{./Data/abstract}			% Include the abstract.tex file
+\include{./Data/dedication}			% Include the dedication file
+\include{./Data/acknowledgements}	% Include the acknowledgements file
+\include{./Data/contributors}		% Include the contributors file
+\makenomenclature					% Generate nomenclature if using the nomenclature package
 
-\include{./Data/Chapter1}
-\include{./Data/Chapter2}
-\include{./Data/Chapter3}
+\include{./Data/Section1}			% Include the Section1.tex file
+\include{./Data/Section2}			% Include the Section2.tex file
+\include{./Data/Section3}			% Include the Section3.tex file
+\include{./Data/Section4}			% Include the Section4.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the Bibliography
-\phantomsection										% Place hyper marker on the page
-\addcontentsline{toc}{chapter}{REFERENCES}			% Add references to ToC
-\renewcommand{\bibname}{{\normalsize\rm REFERENCES}}% Set title of references
-
-\bibliographystyle{./Bib_Styles/agufull08}			% Set the bibliography style
-\bibliography{./references}							% Set path to bibliography .bib file
+% MUST BE IN BIBLIOGRAPHY ENVIRONMENT!!!
+\begin{references}
+	\bibliographystyle{ieeetr}			% Set the bibliography style
+	\bibliography{myReference}			% Set path to bibliography .bib file
+\end{references}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Include appendices
-
-% \include{./Data/appendices}
-
+% Include appendices. 
+% MUST BE IN APPENDICES ENVIRONMENT!!!
+\begin{appendices}
+	\include{./Data/appendix1}			% Include the appendix1.tex file
+	\include{./Data/appendix2}			% Include the appendix2.tex file
+\end{appendices}
 
 \end{document}

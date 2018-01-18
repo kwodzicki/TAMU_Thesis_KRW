@@ -5,6 +5,19 @@
 %   This is a class file for Texas A&M Theses and Dissertations. This file will set up all
 %   margins, spacing, chapters, title, etc. This is adapted from tamuconfig.sty Version 1.7
 %   from Wendy Lynn Turner. This class extends the report class.
+% Dependencies:
+%   etoolbox    - https://www.ctan.org/pkg/etoolbox?lang=en
+%	amsmath     - https://www.ctan.org/pkg/amsmath
+%   setspace    - https://www.ctan.org/pkg/setspace
+%   tocloft     - https://www.ctan.org/pkg/tocloft
+%   titlesec    - https://www.ctan.org/pkg/titlesec
+%   indentfirst - https://www.ctan.org/pkg/indentfirst
+%   tocvsec2    - https://www.ctan.org/pkg/tocvsec2
+%   appendix    - https://www.ctan.org/pkg/appendix
+%   graphicx    - https://www.ctan.org/pkg/graphicx
+%   float       - https://www.ctan.org/pkg/float
+%   caption     - https://www.ctan.org/pkg/caption
+%   times       - https://www.ctan.org/pkg/times
 % Author and History:
 %   Kyle R. Wodzicki     Created 30 Mar. 2016
 %
@@ -12,12 +25,54 @@
 %     Added 'times' package requirement
 %     Changed title page 'Major Dept:' to 'Major Subject:'
 %     Rearranged and optimized formatting of ToC, LoF, and LoT
+%     Fixed spacings to better match that of Sean Zachary Roberson's V3.16.10 release.
 %     To the best of my knowledge, this class file should meet the requirements outlined by the 
 %     2016 Thesis Manual. This class file has NOT been thoroughly tested!!! DOCUMENT ALL CHANGES!!!!
+%
+%   Modified 03 Nov. 2016 by Kyle R. Wodzicki
+%     Changed the spacing in the table on contents section to fix an issue. There is now only a
+%     before chapter skip and the \perto command from the etoolbox package is used to add a space
+%     before the first section of a chapter.
+%
+%	Modified 04 Nov. 2016 by Kyle R. Wodzicki
+%	  Modified the appendices environment to remove extraneous files. 
+%     These files included and `appendices.tex' file that subsequently
+%     referenced `appendix1.tex' and `appendix2.tex'. By redefining the
+%     appendices class to include the default behavior and a changed title,
+%     now the `appendix1.tex' and `appendix2.tex' files can be included
+%     directly from the main .tex file AS LONG AS they are within the
+%     appendices environment.
+%
+%   Modified 07 Nov. 2016 by Kyle R. Wodzicki
+%     Changed the \Chapter command definition by removing the \uppercase{}
+%     command that was contained in it and moving the uppercase option
+%     into the \titleformat{} command. The \titleformat{} command in the 
+%     re-defined appendices environment was also updated to reflect the
+%     change. This change was performed to remove a waring produced by
+%     the hyperref package that was due to the use of the \uppercase{}
+%     command within the \chapter{} command.
 %-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{tamu_thesis}[2016/03/30 TAMU Thesis Class]
 
+
+%%% Prohibited report Class Options
+%
+% Disallow two options of the "report" document class because they are incompatible with TAMU's formatting guidelines.
+%
+\DeclareOption{twocolumn}{\ClassWarning{tamu_thesis}{The tamu_thesis class does not support the twocolumn option.}}
+\DeclareOption{notitlepage}{\ClassWarning{tamu_thesis}{The tamu_thesis class does not support the notitlepage option.}}
+
+%%% Prohibited report Class Page Size Options
+%
+% Disallow all page size options of the "report" document class other than letterpaper
+%
+\DeclareOption{a4paper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
+\DeclareOption{a5paper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
+\DeclareOption{b5paper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
+\DeclareOption{legalpaper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
+\DeclareOption{executivepaper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
+\DeclareOption{landscape}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the portrait page orientation.}}
 
 % Pass any options into the report class.
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
@@ -25,30 +80,33 @@
 
 % --- Class structure: declaration of options part
 \ProcessOptions \relax
-\LoadClass{report}
+\LoadClass[letterpaper,onecolumn,titlepage]{report}
 
 % --- Package requirements
-\RequirePackage[letterpaper,verbose,tmargin=1.25in,bmargin=1.25in,lmargin=1.4in,rmargin=1.15in]{geometry}
-%\RequirePackage{etoolbox}
-%\RequirePackage{pdftexcmds}
+\RequirePackage[
+	letterpaper,
+	verbose,
+	tmargin=1.25in,
+	bmargin=1.25in,
+	lmargin=1.4in,
+	rmargin=1.15in]{geometry}
+\RequirePackage{etoolbox}
+\RequirePackage{amsmath, amsthm}
 \RequirePackage{setspace}
 \RequirePackage{tocloft}
 \RequirePackage[rm, tiny, center, compact]{titlesec}
 \RequirePackage{indentfirst}
-\RequirePackage{tocvsec2}
 \RequirePackage[titletoc]{appendix}
 \RequirePackage{graphicx}
 \RequirePackage{float}
-\RequirePackage{rotating}
-\RequirePackage{natbib}
+\RequirePackage{caption}
 \RequirePackage{times}
 
+
 % --- Fix spacing in captions
-\RequirePackage{caption} 
 \captionsetup[table]{skip=10pt}
 \captionsetup[figure]{skip=14pt}	
 
-\usepackage{lipsum}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fix spacing in front of figures
 \setlength{\textfloatsep}{3\baselineskip plus 8.0pt minus 4.0pt}
@@ -98,8 +156,8 @@
 \newcommand{\GradYear}[1]{\renewcommand{\@GradYear}{#1}}		% Setup GradYear command
 \newcommand{\@GradYear}{2015}									% Set default Grad Year
 % --- Graduation Dept
-\newcommand{\Dept}[1]{\renewcommand{\@Dept}{#1}}			% Setup Dept command
-\newcommand{\@Dept}{Atmospheric Sciences}					% Set default subject
+\newcommand{\Dept}[1]{\renewcommand{\@Dept}{#1}}				% Setup Dept command
+\newcommand{\@Dept}{Atmospheric Sciences}						% Set default subject
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Determine how many committee members there are and if there is a co-chair. 
@@ -207,7 +265,7 @@
 	\thispagestyle{empty}
 	\begin{center}
 		\MakeUppercase{\@Title}
-		\vspace{4\titleSpacing}
+		\vspace{3\titleSpacing}
 
 		A \@PaperType{}
       
@@ -242,47 +300,60 @@
 	\end{center}
 	\pagebreak{} 										% Make any text following title on new page
 	\pagestyle{plain}									% No headers, just page numbers
-	\pagenumbering{roman} 							% Roman numerals
+	\pagenumbering{roman} 								% Roman numerals
 	\setcounter{page}{2}								% Set page counter to 2
 }
+
+%%%%%%%%  Remove the extra vertical space before chapter titles when using report class %%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Set up environments for abstract, dedication, etc. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % -- Set up new chapter command with no number; chapter is overwritten later
+%\titlespacing*{\chapter}{0pt}{-60pt}{40pt}
 \newcommand*{\myChapter}[1]{\chapter*{#1}}
 % -- Abstract environment
 \renewenvironment{abstract}{
-	\myChapter{ABSTRACT}						% Generate chapter title
-	\addcontentsline{toc}{part}{ABSTRACT}	% Add to table of contents
-	\pagestyle{plain}							% Set page style to plain
+	\myChapter{ABSTRACT}							% Generate chapter title
+	\addcontentsline{toc}{chapter}{ABSTRACT}		% Add to table of contents
+	\pagestyle{plain}								% Set page style to plain
 }{
-	\pagebreak{}								% Page break after text
+	\pagebreak{}									% Page break after text
 }
 
 % -- Dedication environment
 \newenvironment{dedication}{
-	\myChapter{DEDICATION}						% Generate chapter title
-	\addcontentsline{toc}{part}{DEDICATION}	% Add to table of contents
-	\pagestyle{plain}							% Set page style to plain
+	\myChapter{DEDICATION}							% Generate chapter title
+	\addcontentsline{toc}{chapter}{DEDICATION}		% Add to table of contents
+	\pagestyle{plain}\begin{center}\vspace*{\fill}	% Set page style to plain
 }{
-	\pagebreak{}								% Page break after text
+	\vspace*{\fill}
+	\end{center}
+	\pagebreak{}									% Page break after text
 }
 
 % -- Acknowledgements environment
 \newenvironment{acknowledgements}{
-	\myChapter{ACKNOWLEDGEMENTS}						% Generate chapter title
-	\addcontentsline{toc}{part}{ACKNOWLEDGEMENTS}	% Add to table of contents
-	\pagestyle{plain}									% Set page style to plain
+	\myChapter{ACKNOWLEDGEMENTS}					% Generate chapter title
+	\addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}% Add to table of contents
+	\pagestyle{plain}								% Set page style to plain
 }{
-	\pagebreak{}										% Page break after text
+	\pagebreak{}									% Page break after text
 }
 
-% -- Nomenclature environment
-\newenvironment{nomenclature}{
+% -- Nomenclature Command	
+\newcommand{\makenomenclature}{
 	\myChapter{NOMENCLATURE}						% Generate chapter title
-	\addcontentsline{toc}{part}{NOMENCLATURE}	% Add to table of contents
-	\pagestyle{plain}								% Set page style to plain
+	\addcontentsline{toc}{chapter}{NOMENCLATURE}	% Add to table of contents
+	\vskip-\baselineskip							% Move start of nomenclature up
+	\printacronyms									% Print the nomenclature/acronyms
+}
+
+% -- Contributors and Funding
+\newenvironment{contributors}{
+	\myChapter{CONTRIBUTORS AND FUNDING SOURCES}
+	\addcontentsline{toc}{chapter}{CONTRIBUTORS AND FUNDING SOURCES} 
+	\pagestyle{plain}
 }{
 	\pagebreak{}									% Page break after text
 }
@@ -290,58 +361,78 @@
 % -- References environment
 \newenvironment{references}{
 	\phantomsection
-	\addcontentsline{toc}{part}{REFERENCES}
+	\addcontentsline{toc}{chapter}{REFERENCES}
 	\renewcommand{\bibname}{{\normalsize\rm REFERENCES}}
 }{}
 
+% -- Appendices environment
+\let\myappendices\appendices				% Store default settings of \begin{appendice}
+\let\endmyappendices\endappendices			% Store default settings of \end{appendices}
+\renewenvironment{appendices}{				% Define new appendices environment
+	\myappendices							% Load default appendices settings
+	\renewcommand{\appendixname}{APPENDIX}	% Set new appendix name
+	\titleformat{\chapter}					% Edit chapter title format for appendices
+		{\centering\normalsize\uppercase}	% Set title to be centered and normal size
+		{\appendixname{} \thechapter}		% Set the new title name to APPENDIX `chap'
+		{0em}								% Set marign before the title
+		{\vskip0.5\baselineskip\centering}	% Set margin after the title
+}{
+	\endmyappendices
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- TABLE OF CONTENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% --- This puts \subsubsection[]{Ã—} in your List of Tables.  The default is 3
+% --- This puts \subsubsection[]{×} in your List of Tables.  The default is 3
 %\setcounter{tocdepth}{4}
 
 %%% Customizations for fonts/leaders in ToC
-\renewcommand{\cftchapfont}{\normalsize\rm}						% Set chapter font
-\renewcommand{\cftchappagefont}{\normalsize\rm}					% Set chapter page font
+\renewcommand{\cftchapfont}{\normalsize\rm}				% Set chapter font
+\renewcommand{\cftchappagefont}{\normalsize\rm}			% Set chapter page font
 \renewcommand{\cftchapleader}{
 	\normalsize\rm\cftdotfill{\cftdotsep}
-}																% Set chapter leader
-\renewcommand{\cftchapaftersnum}{.} 							% Add a period after chapter numbers.
+}														% Set chapter leader
+\renewcommand{\cftchapaftersnum}{.} 					% Add a period after chapter numbers.
 
-\renewcommand\cftsecfont{\normalfont}							% Set section font
-\renewcommand\cftsecpagefont{\normalfont}						% Set section page font
+\renewcommand\cftsecfont{\normalfont}					% Set section font
+\renewcommand\cftsecpagefont{\normalfont}				% Set section page font
 
-\renewcommand\cftpartfont{\normalfont}							% Set part page font
-\renewcommand\cftpartpagefont{\normalfont}						% Set part page font
-\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}} 			% Add leader dots for parts
+\renewcommand\cftpartfont{\normalfont}					% Set part page font
+\renewcommand\cftpartpagefont{\normalfont}				% Set part page font
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}	% Add leader dots for parts
 
 %%% Spacing for the chapters/sections/parts
-\renewcommand{\cftaftertoctitleskip}{0pt}					% Set spacing after TOC Title
-\renewcommand{\cftaftertoctitle}{\hfill{\normalfont{Page}}}	% Adds Page above the page number in TOC
-\renewcommand{\cftbeforepartskip}{\baselineskip}			% Set spacing before parts in TOC
-\renewcommand{\cftbeforechapskip}{\baselineskip}			% Set spacing before chapters in TOC
-\renewcommand{\cftchapafterpnum}{\vskip\baselineskip}		% Set spacing after chapters in TOC
-
-%%% Formatting for List of Figures
-\renewcommand{\cftbeforeloftitleskip}{-12pt} 					% Position LOF title to match chapter titles
-\renewcommand{\cftafterloftitleskip}{0pt}						% Set after title skip
-\renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}% Format list of figures title
-\renewcommand{\cftafterloftitle}{
-	\hfill\mbox{}\vskip4\baselineskip FIGURE\hfill{\normalfont Page}	% Add FIGURE Page after LoF Title
+\renewcommand{\cftaftertoctitleskip}{0pt}				% Set spacing after TOC Title
+\renewcommand{\cftaftertoctitle}{						% Adds Page above the page number in TOC
+	\vskip-\baselineskip\hfill{\normalfont{Page}}		% The negative baselineskip moves `Page' up to match old templates
 }
-\renewcommand{\cftfigafterpnum}{\vskip\baselineskip}
-\renewcommand{\cftbeforefigskip}{0pt}
+\renewcommand{\cftbeforepartskip}{\baselineskip}		% Set spacing before parts in TOC
+\renewcommand{\cftbeforechapskip}{\baselineskip}		% Set spacing before chapters in TOC
+\preto\section{											% Double space between chapter and first section
+	\ifnum\value{section}=0
+		\addtocontents{toc}{\vskip\baselineskip}
+	\fi
+ }
+ 
+%%% Formatting for List of Figures
+\renewcommand{\cftbeforeloftitleskip}{-\baselineskip} 				% Position LOF title to match chapter titles
+\renewcommand{\cftafterloftitleskip}{\baselineskip}					% Set after title skip
+\renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}	% Format list of figures title
+\renewcommand{\cftafterloftitle}{
+	\hfill\mbox{}\vskip3\baselineskip FIGURE\hfill{\normalfont Page}% Add FIGURE Page after LoF Title
+}
+\renewcommand{\cftfigafterpnum}{\vskip\f@size pt}					% Set vertical skip after page numbers to font size
+\renewcommand{\cftbeforefigskip}{0pt}								% Set vertical skip before entries to 0pt
 
 %%% Spacing for List of Tables
-\renewcommand{\cftbeforelottitleskip}{-12pt} %% Position LOT title vertically - match chapter titles
-\renewcommand{\cftafterlottitleskip}{0pt}
-\renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}% Format list of tables title
+\renewcommand{\cftbeforelottitleskip}{-\baselineskip} 				% Position LOT title vertically - match chapter titles
+\renewcommand{\cftafterlottitleskip}{\baselineskip}
+\renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}	% Format list of tables title
 
 \renewcommand{\cftafterlottitle}{%
-	\hfill\mbox{}\vskip4\baselineskip TABLE\hfill{\normalfont Page}		% Add TABLE Page after LoT Title
+	\hfill\mbox{}\vskip3\baselineskip TABLE\hfill{\normalfont Page}	% Add TABLE Page after LoT Title
 }
-\renewcommand{\cfttabafterpnum}{\vskip\baselineskip}
-\renewcommand{\cftbeforetabskip}{0pt}
+\renewcommand{\cfttabafterpnum}{\vskip\f@size pt}					% Set vertical skip after page numbers to font size
+\renewcommand{\cftbeforetabskip}{0pt}								% Set vertical skip before entries to 0pt
 
 %%% Set up the \makeToC command
 \newcommand{\makeToC}{
@@ -357,14 +448,14 @@
     
     %%	LIST OF FIGURES
     \phantomsection											% Phantom section for proper hyperref links
-    \addcontentsline{toc}{part}{LIST OF FIGURES}			% Add list of figures to ToC
+    \addcontentsline{toc}{chapter}{LIST OF FIGURES}			% Add list of figures to ToC
 
     \begin{singlespace}\listoffigures\end{singlespace}		% Generate LoF in single space environment
     \pagebreak{}											% Insert a page break
     
     %%	LIST OF TABLES
 	\phantomsection											% Phantom section for proper hyperref links
-	\addcontentsline{toc}{part}{LIST OF TABLES} 			% Add list of tables to ToC
+	\addcontentsline{toc}{chapter}{LIST OF TABLES} 			% Add list of tables to ToC
 
 	\begin{singlespace}\listoftables\end{singlespace}		%	Generate LoF in single space environment
     \pagebreak{}  											% Insert page break 
@@ -378,28 +469,26 @@
 % Change page numbers to arabic numerals
 % Set the page counter to one (1)
 % Generate the chapter header in all uppercase
-% Generate the chapter header in all uppercase
 \newcommand{\Chapter}[1]{							% Redefine chapter command
-	\lowercase{\ifcase\pdf@strcmp{#1}{introduction}}% Do lowercase string comparison
-		\makeToC
-		\pagestyle{plain}
-		\pagenumbering{arabic}
-		\setcounter{page}{1}
+	\lowercase{\ifcase\pdf@strcmp{#1}{introduction}}% Do lowercase string comparison to check for first chapter
+		\makeToC									% Make the table of contents
+		\pagestyle{plain}							% Set the page style to plain
+		\pagenumbering{arabic}						% Set the page numbering to arabic
+		\setcounter{page}{1}						% Set the page counter to 1
 	\fi
-	\chapter{\uppercase{#1}}
+	\chapter{#1}			            			% Use chapter command 
+	\acresetall										% Reset all acronym usages for the document
 }
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Titlesec Customations 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\renewcommand{\thechapter}{\Roman{chapter}}
-\titleformat{\chapter}{\centering\normalsize}{\thechapter.}{1em}{}
-\titleformat{\section}{\centering\normalsize}{\thesection}{1em}{}
-\titleformat{\subsection}{\centering\normalsize\it}{\thesubsection}{1em}{}
+\titleformat{\chapter}{\centering\normalsize\uppercase}{\thechapter.}{1em}{}
+\titleformat{\section}{\bf\normalsize}{\thesection}{1em}{}
+\titleformat{\subsection}{\bf\normalsize}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\centering\normalsize\it}{\thesubsubsection}{1em}{}
 
-\titlespacing{\chapter}{0pt}{0pt}{\baselineskip}
+\titlespacing{\chapter}{0pt}{-18pt}{\baselineskip}
 \titlespacing{\section}{0pt}{0.25\baselineskip}{0.25\baselineskip}
 \titlespacing{\subsection}{0pt}{0.25\baselineskip}{0.25\baselineskip}
 
@@ -408,14 +497,4 @@
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchapleader}
         {\protect\cftdotfill{\cftsecdotsep}}}  % puts leader dots on chapters.
 
-%%%% Old code, Not sure what it does!
-%\preto\figure{%  Removes the extra space added before new chapters
-%  \ifnum\value{figure}=0\addtocontents{lof}{\vskip-10pt}\fi
-%}
-%\preto\table{%  Removes the extra space added before new chapters
-%  \ifnum\value{table}=0\addtocontents{lot}{\vskip-10pt}\fi
-%}
-%
-% \preto\section{%  Removes the extra space added before new chapters
-%  \ifnum\value{section}=0\addtocontents{toc}{\vskip+10pt}\fi
-% }
+\endinput
