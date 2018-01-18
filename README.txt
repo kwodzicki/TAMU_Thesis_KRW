@@ -1,4 +1,4 @@
-TAMU LaTeX Thesis Template version 1.1.
+TAMU LaTeX Thesis Template version 0.16.10
 
 Kyle R. Wodzicki
 
@@ -6,7 +6,7 @@ Kyle R. Wodzicki
 ———————
 Changes
 ——————-
-V1.1
+V0.16.10
   Updated spacings of chapter headings to better match that of the V3.16.10 release from OGAPS
   Changed sub/subsub section headings to match the V3.16.10 release
   Tested to ensure that appendixes work - they do.
