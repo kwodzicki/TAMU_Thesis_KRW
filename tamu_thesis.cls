@@ -72,6 +72,11 @@
 %
 %   Modified 14 Dec. 2016 by Kyle R. Wodzicki
 %     Replaced \baselineskip commands with the \singleSpace command
+%   Modified 06 May 2017 by Kyle R. Wodzicki
+%
+%     Updated the spacing in the TOCLOTF so that the spacing matched the
+%     TAMU LaTeX (Jan2017) template. Updated section number depth for
+%     TOC
 %-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{tamu_thesis}[2016/03/30 TAMU Thesis Class]
@@ -359,6 +364,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- This puts \subsubsection[]{×} in your List of Tables.  The default is 3
 \setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
 
 %%% Customizations for fonts/leaders in ToC
 \renewcommand{\cftchapfont}{\normalsize}                                        % Set chapter font
@@ -375,7 +381,7 @@
 \renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}                          % Add leader dots for parts
 
 %%% Spacing for the chapters/sections/parts
-\renewcommand{\cftaftertoctitleskip}{0pt}                                       % Set spacing after TOC Title
+\renewcommand{\cftaftertoctitleskip}{\singleSpace}                              % Set spacing after TOC Title
 \renewcommand{\cftaftertoctitle}{                                               % Adds Page above the page number in TOC
   \vskip-\singleSpace\hfill{\normalfont{Page}}}                                 % The negative singleSpace moves `Page' up to match old templates
 \renewcommand{\cftbeforepartskip}{\singleSpace}                                 % Set spacing before parts in TOC
@@ -390,7 +396,7 @@
         
 %%% Formatting for List of Figures
 \renewcommand{\cftbeforeloftitleskip}{-\singleSpace}                            % Position LOF title to match chapter titles
-\renewcommand{\cftafterloftitleskip}{\singleSpace}                              % Set after title skip
+\renewcommand{\cftafterloftitleskip}{2.0\singleSpace}                           % Set after title skip
 \renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of figures title
 \renewcommand{\cftafterloftitle}{
   \hfill\mbox{}\vskip3\singleSpace FIGURE\hfill{\normalfont Page}}              % Add FIGURE Page after LoF Title
@@ -399,7 +405,7 @@
 
 %%% Spacing for List of Tables
 \renewcommand{\cftbeforelottitleskip}{-\singleSpace}                            % Position LOT title vertically - match chapter titles
-\renewcommand{\cftafterlottitleskip}{\singleSpace}
+\renewcommand{\cftafterlottitleskip}{2.0\singleSpace}
 \renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of tables title
 
 \renewcommand{\cftafterlottitle}{%

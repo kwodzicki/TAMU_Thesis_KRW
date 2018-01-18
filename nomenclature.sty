@@ -24,11 +24,13 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{nomenclature}
 	[2016/11/02 v1.0 LaTeX package for acronyms used in TAMU Thesis]
-\RequirePackage{acro}[2016/01/01]                                               % Load acro package
+\RequirePackage{acro}			                                               % Load acro package
 \RequirePackage{longtable,tabu}                                                 % Load table packages
+
 \newif\if@all\@allfalse                                                         % Set up new if variable for all
 \DeclareOption{all}{\@alltrue}                                                  % Declare option for `all', set true if used
 \ProcessOptions\relax                                                           % Terminate option processing
+
 \DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
   table = longtabu,                                                             % Set table type to longtabu
   before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},     % Set to single space within acronym and double between
@@ -37,46 +39,5 @@
 \acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'
 \if@all\acsetup{only-used=false}\fi                                             % Set the acronym `only-used' option to false
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%      Begin Acronym Definitions     Begin Acronym Definitions      %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\DeclareAcronym{EVIL}{
-	short =	EVIL,
-	long  = Every Villain is Lemons
-}
-
-\DeclareAcronym{OGAPS}{
-	short = OGAPS,% Short form of the acronym
-	long  = Office of Graduate and Professional Studies at Texas A\&M University% Long form of the acronym
-}
-
-\DeclareAcronym{B/CS}{
-	short = B/CS,
-	long  = Bryan and College Station
-}
-
-\DeclareAcronym{TAMU}{
-	short = TAMU,
-	long  = Texas A\&M University
-}
-
-\DeclareAcronym{SDCC}{
-	short =	SDCC,
-	long  = San Diego Comic-Con
-}
-
-\DeclareAcronym{EPCC}{
-	short =	EPCC,
-	long  = Educator Preparation and Certification Center at Texas A\&M University - San Antonio
-}
-
-\DeclareAcronym{FFT}{
-	short =	FFT,
-	long  = Fast Fourier Transform
-}
-
-\DeclareAcronym{ARIMA}{
-	short = ARIMA,
-	long  = Autoregressive Integrated Moving Average
-}
+\include{./Data/nomenclature}										% Acronyms are defined in the nomenclature.tex file
 \endinput

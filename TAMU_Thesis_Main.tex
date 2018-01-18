@@ -13,24 +13,13 @@
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Load the nomenclature package. Can set the 'all' 
-%%% option to display all. Default is to display 
-%%% only the nomenclature/acronyms that are used.
-\usepackage[all]{nomenclature}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Load extra packages here            %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[colorlinks=false]{hyperref}	% hyperref with coloring and footnote do NOT get along
 \usepackage{multirow}			% Multirow package for tables
 \usepackage{footnote}			% Package for the savenotes command
 \usepackage{amsthm}				% AMS package for theorems
 %\usepackage{natbib,url}			% Load the natbib and ulr packages
-\usepackage[
-	urlcolor=blue,				% URL links to blue
-	filecolor=black,			% File links to black
-	citecolor=black,			% Citation links black
-	linkcolor=black,			% Section, figure, etc. links black
-	colorlinks=true]{hyperref}	% Load hyperref package for linking 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%       Set information for title page.        %%%
@@ -54,7 +43,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\graphicspath{ {./Graphic/} }
+\graphicspath{ {./graphic/},{./figures/}  }
 \DeclareGraphicsExtensions{.png,.PNG,.jpg}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -62,6 +51,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Load the nomenclature package. Can set the 'all' 
+%%% option to display all. Default is to display 
+%%% only the nomenclature/acronyms that are used.
+\usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Beginning of the document           %%%
@@ -96,6 +91,7 @@
 \begin{appendices}
 	\include{./Data/appendix1}			% Include the appendix1.tex file
 	\include{./Data/appendix2}			% Include the appendix2.tex file
+	\include{./Data/appendix3}			% Include the appendix3.tex file
 \end{appendices}
 
 \end{document}

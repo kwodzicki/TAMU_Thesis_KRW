@@ -14,11 +14,11 @@
 %%                           SECTION I
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Introduction}
+\chapter{Introduction and Literature Review}
 
 \section{Author's Message to the Student Using This Template For Their Thesis or Dissertation}
 
-Howdy! This is the template for theses and dissertations written using \LaTeX{} for submission at Texas A\&M University. \ac{OGAPS} is here to guide you in submitting your thesis or dissertation. This template shows the many features of \LaTeX{}, with many more available to the user.
+Howdy! This is the template for theses and dissertations written using \LaTeX for submission at Texas A\&M University. The Office of Graduate and Professional Studies (OGAPS) is here to guide you in submitting your thesis or dissertation. This template shows the many features of \LaTeX, with many more available to the user.
 
 There are numerous guides, references, and tutorials available on the Internet to help you. If you are stuck, don't be afraid to conduct a Google search for your issue, or you can contact me at szroberson@exchange.tamu.edu or ogaps-latex@tamu.edu.
 
@@ -33,17 +33,17 @@ The advantage of using this template over the Microsoft Word templates are numer
 \subsection*{Software to Install}
 
 \textbf{MikTeX} or \textbf{ProTeXt} is the free software recommended for Windows PC users to
-compile your \LaTeX{} document. To compile this document, the pdfLaTeX compiling engine
-is used. Another software called \textbf{JabRef} is also recommended for bibliography/reference management; its usage is similar with EndNote.
+compile your \LaTeX ~ document. To compile for this document, XeLaTeX compiling engine
+is used. There is currently an issue in which the package xetex-def does not install; see the file README.txt for a solution. Another software called \textbf{JabRef} is also recommended for bibliography/reference management; its usage is similar with EndNote.
 
-\subsection*{Procedure to Compile \LaTeX{} Document}
+\subsection*{Procedure to Compile \LaTeX ~ Document}
 
-This template (and consequently, your document) will be compiled using pdfLaTeX. To compile your document, do the following\footnote{Notice here that I also show off the itemize environment for unordered lists. Ordered lists use the enumerate environment.}:
+This template (and consequently, your document) will be compiled using XeLaTeX. To compile your document, do the following\footnote{Notice here that I also show off the itemize environment for unordered lists. Ordered lists use the enumerate environment.}:
 
 \begin{itemize}
-	\item In TeXstudio, go to the Tools menu, then select Commands, and click pdfLaTeX.
+	\item In TeXstudio, go to the Tools menu, then select Commands, and click XeLaTeX.
 	
-	\item In Texmaker, go to the Tools menu and select pdfLaTeX.
+	\item In Texmaker, go to the Tools menu and select XeLaTeX.
 	
 	\item For other editors, consult the help files included with the editor.
 \end{itemize}
@@ -51,26 +51,24 @@ This template (and consequently, your document) will be compiled using pdfLaTeX.
 To view the output after the program is done compiling, press F7 in TeXstudio and TeXmaker or the appropriate hotkey for other editors. Be sure that the document is not open in another PDF reader, for your editor will not display it.
 
 \subsection{How to Fill This Document}
-The document structure is organized in the main .tex file, TAMU\_Thesis\_Main.tex,
-which has the same name as the output PDF file. Content in each section is in the `Data' folder. You can open the .tex files under the `Data' folder to modify the content in each section. Four sections
-are added initially. To add in more sections into the \LaTeX{} document, create a new .tex file in the `Data' folder and add your new content to it. Then, open the
-TAMU\_Thesis\_Main.tex file and go to \textbf{line 71}. You can then add a \begin{verbatim}\include{./Data/MyNewSection}\end{verbatim} command to include your new section. Note that the order in which the sections are included determines their order in your document.
+The document structure is organized in the main .tex file, TAMUTemplate.tex,
+which has the same name as the output PDF file. Content in each section is in the data folder. You can open the .tex files under the data folder to modify. Four sections
+are added initially. To add in more sections into the \LaTeX document, open the
+TAMUTemplate.tex file and go to \textbf{line 130} you can just delete the content in the data folder and fill your documents and then compile under TAMUTemplate.tex.)
 
 \subsection{Reference Usage and Example}
 
-This subsection tests the usage of references. The book \cite{REALCAR} 
-is referred in this way. Actually, the option is available for you to change the default way references appear. The default and most commonly used option \cite{einstein} is displayed here \cite{Barn-JORVQ}.
+This subsection tests the usage of references. The book\cite{REALCAR} 
+is referred in this way. Actually, the option is available for you to change the default way how reference appears. The default and most commonly used option \cite{einstein} is displayed here \cite{Barn-JORVQ}.
 
-Unrelated citations are referred here for the test of reference section only \cite{TAMU}. If a reference is not defined in your bibliography file, question marks will show up in place of a the reference handle, like these \cite{Over9000}. Also note that only the material referenced appears in your bibliography regardless of how many entries are in your bibliography file.
+Unrelated citations are referred here for the test of reference section only\cite{TAMU}. If you
+find that the reference \cite{GIGEM} has more items than you need \cite{WAGFJ}, question marks will show up in place of a reference handle, like these \cite{Over9000}.
 
-For more information on using \textbf{JabRef}, citing sources, and changing the bibliography style, please see Appendix \ref{appendix:02}.
+\subsection{Equations, Formulas, and Other Really Cool Math Things That \LaTeX ~ Can Do}
 
-\subsection{Equations, Formulas, and Other Really Cool Math Things That \LaTeX{} Can Do}
-
-Equations can be written in \LaTeX{} in one of two ways. First, you can have material displayed inline by enclosing the desired statement in dollar signs. For example, $e^{i\pi}+1=0$ is an inline math expression. Some longer expressions, especially those including sums, integrals, or large operators and objects can be displayed centered on their own line. In this \textbf{math mode}, you enclose the desired material in square brackets. For example,
+Equations can be written in \LaTeX ~ in one of two ways. First, you can have material displayed inline by enclosing the desired statement in dollar signs. For example, $e^{i\pi}+1=0$ is an inline math expression. Some longer expressions, especially those including sums, integrals, or large operators and objects can be displayed centered on their own line. In this \textbf{math mode}, you enclose the desired material in square brackets. For example,
 
 \[ \sum_{j = 1} ^n \int f_j \ dx = \int \sum_{j = 1} ^n f_j \ dx \]
-
 is a math mode expression. We can also have a series of expressions aligned at a symbol. This is particularly useful when you are showing details in solving an equation or evaluating an integral. The next block shows off the \textit{align*} environment. We use it here to show a distributive property of set intersections over unions. Observe how each line is aligned to the biconditional symbol. This makes reading steps easier, since a reader can go line by line and determine why each step is justified.
 
 \begin{align*}
@@ -81,42 +79,53 @@ x \in A \cap \bigcup_{j} B_j &\iff x \in A \ \wedge \ x \in \bigcup_{j} B_j \\
 
 There are many more commands and features available, but this document is too small to contain them.\footnote{Yes, I pulled a Fermat. But really, a Google search will likely help you find what you need to do.} Many guides are available on the Internet for your use.
 
-\subsection{Using Acronyms}
-Provided in this template is a file named 'nomenclature.sty'. This file allows you to define acronyms and other nomenclature that will be used throughout your document. The advantage of using such a system is it remembers if you have defined/used an acronym before. For example, in the first section of this chapter \ac{OGAPS} was defined. On every subsequent use only \ac{OGAPS} will be printed.
-
-If you open the `nomenclature.sty' file, there will be a lot of formatting at the top of the document, but all you need to worry about is what happens starting after the `Begin Acronym Definitions' comment. After this section there are many commands of the form:
-{\footnotesize\begin{verbatim}
-\DeclareAcronym{EVIL}{
-	short =	EVIL,
-	long  = Every Villain is Lemons
-}\end{verbatim}}
-
-The \textit{DeclareAcronym} command is used to set up an acronym, with the first input (EVIL) being the reference for the acronym. Within the actual definition there are two options: short and long. The short option sets the acronym to display, in this case EVIL, while the long options sets the definition of the acronym, in this case Every Villain is Lemons. To use the acronym, you would use the \textit{ac} command and the acronym reference. In most cases the acronym reference can/will be the same as the short option. Some sample code is shown below for the EVIL acronym, with the typeset output following.
-
-{\footnotesize\begin{verbatim}
-The first time that I use \ac{EVIL}, it will define the acronym. 
-Every time I use \ac{EVIL} after that, it will show only the long form
-\end{verbatim}}
-The first time that I use \ac{EVIL}, it will define the acronym. 
-Every time I use \ac{EVIL} after that, it will show only the short form
-
-There are many other \textit{ac} commands and other options in the \textit{DeclareAcronym} command that will help tailor acronyms to your specific needs. I refer you to the \href{http://ctan.math.utah.edu/ctan/tex-archive/macros/latex/contrib/acro/acro_en.pdf}{Acro Package} documentation for that information if it is needed.
+%Have some material about the align environments. Include also the eqn environment.
 
 \subsection{A Test Section}
 
-This is just a test.
+This is just a test. Below is a figure displaying some Haskell code in a compiler.
 
-\section{Specifications in This TAMU \LaTeX{} Template}
+\begin{figure}[!ht]
+\centering
+	\includegraphics[scale=0.26]{Haskell1.jpg}
+	\caption{Some Haskell code in a compiler.}
+\end{figure}
 
-All requirements for theses can be found in the most recent version of the Thesis Manual, available at the \ac{OGAPS} website. The Thesis Office will be happy to assist you if you have questions about formatting. Questions specific to \LaTeX{} should be directed to \texttt{ogaps-latex@tamu.edu}.
+This template has been designed for use in modern systems, but can perhaps be adapted to work on older systems, such as Windows 95. Below is a screenshot of a DOSBox console, an MS-DOS emulator designed to work on several platforms. Windows 95 can be installed into DOSBox, but it is not suggested.
+
+\begin{figure}[ht!]
+\centering
+	\includegraphics[scale=0.85]{DOSBox1.jpg}
+	\caption{The DOSBox console running in Windows 7. The contents of the mounted directory C: are displayed, with the active subdirectory DUKE3D.}
+\end{figure}
+
+\section{Specifications in This TAMU \LaTeX ~ Template}
+
+All requirements for theses can be found in the most recent version of the Thesis Manual, available at the OGAPS website. The Thesis Office will be happy to assist you if you have questions about formatting. Questions specific to \LaTeX\ should be directed to \texttt{ogaps-latex@tamu.edu}.
+
+A common question students ask is the placement of a copyright statement at the beginning of a section with reprinted material from a previously printed source. The screenshot below describes how to achieve this. Check the instruction files for more details.
+
+\begin{figure}[ht!]
+\centering
+	\includegraphics[scale=0.65]{Footnote.png}
+	\caption{The inclusion of a copyright statement as a footnote. The lines in yellow help to change to footnote marking scheme.}
+\end{figure}
 
 \subsection{Another Test Section}
- 
+There should be things here.
+
+%\begin{algorithm}
+%Stuff.
+%\end{algorithm}
+
+\subsubsection{Test}
 Hello, is it me you're looking for?
+
+\subsubsection{Test 2}
+There are more things to do.
 
 \subsection{Yet Another One}
 She called me late last night to say she loved me so.
  
  \subsection{No Surprises Here}
  Insert another song lyric here.
-

@@ -1,8 +1,8 @@
-TAMU LaTeX Thesis Template version 0.16.12b.
+TAMU LaTeX Thesis Template version 0.17.6
 
 Kyle R. Wodzicki
 
-14 Dec. 2016
+20 Jun. 2017
 
 —————
 About
@@ -17,6 +17,9 @@ Using the template.
 ———————
 Changes
 ——————-
+V0.17.6
+  Changed the spacing in the title page and the table of contents to better match that of the Jun2017 OGAPS template
+
 V0.16.12b
   Removed the use of \baselineskip from the class file and replaced with the \singleSpace command.
 
