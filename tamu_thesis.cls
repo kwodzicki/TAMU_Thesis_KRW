@@ -22,6 +22,14 @@
 % Author and History:
 %   Kyle R. Wodzicki     Created 30 Mar. 2016
 %
+%   Modified 18 Jan. 2018 by Kyle R. Wodzicki
+%     Updated some spacing in the ToC and around figures
+%     to better match the  v3.17.09 version
+%     Also added ability to place reference section
+%     at end of each chapter using the bibunits
+%     package. This added the 'chapref' option
+%     to the class
+%
 %   Modified 31 Oct. 2016 by Kyle R. Wodzicki
 %     Added 'times' package requirement
 %     Changed title page 'Major Dept:' to 'Major Subject:'
@@ -79,7 +87,7 @@
 %     TOC
 %-
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{tamu_thesis}[2016/03/30 TAMU Thesis Class]
+\ProvidesClass{tamu_thesis}[2017/09/01 TAMU Thesis Class]
 
 
 %%% Prohibited report Class Options
@@ -110,23 +118,38 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 
 % Declare onehalfspacing option
-\newif\if@onehalfspacing\@onehalfspacingfalse                                    % Set up new if variable for all
-\DeclareOption{onehalfspacing}{\@onehalfspacingtrue}                             % Declare option for `all', set true if used
+\newif\if@onehalfspacing\@onehalfspacingfalse           % Set up new if variable for all
+\DeclareOption{onehalfspacing}{\@onehalfspacingtrue}    % Declare option for `onehalfspacing', set true if used
+
+% Declare binding option to adjust left margin
+\newif\if@binding\@bindingfalse                         % Set up new if variable for binding
+\DeclareOption{binding}{\@bindingtrue}                  % Declare option for `binding', set true if used
+
+% Declare chapref option to place bibliography at end of each chapter
+\newif\ifchapref\chapreffalse                          % Set up new if variable for chapref
+\DeclareOption{chapref}{\chapreftrue}                  % Declare option for `chapref', set true if used
 
 % Class structure: declaration of options part
 \ProcessOptions \relax
 \LoadClass[letterpaper,onecolumn,titlepage]{report}
 
 % Package requirements
-\RequirePackage[letterpaper,
-  verbose,
-  tmargin=1.25in,
-  bmargin=1.25in,
-  lmargin=1.4in,
-  rmargin=1.15in]{geometry}
+% Adjust left margin if binding is set
+\if@binding% If binding is true
+	\RequirePackage[letterpaper,
+		verbose,
+		tmargin=1in,
+		bmargin=1in,
+		lmargin=1.4in,
+		rmargin=1in]{geometry} % set left margin to 1.4 inches and all others to 1 inch
+\else% Binding is false
+	\RequirePackage[letterpaper, verbose,margin=1in]{geometry}% Set all margins to 1 inch
+\fi
+
 \RequirePackage{etoolbox}
 \RequirePackage{amsmath, amsthm}
 \RequirePackage{setspace}
+\RequirePackage{bibunits}
 \RequirePackage{tocloft}
 \RequirePackage[rm, tiny, center, compact]{titlesec}
 \RequirePackage{indentfirst}
@@ -142,19 +165,22 @@
 % http://tex.stackexchange.com/questions/30073/why-is-the-linespread-factor-as-it-is
 \newlength{\singleSpace}                                                        % Define a new length for the single spacing
 \setlength{\singleSpace}{\f@size pt}                                            % Set single line spacing to the size of the font
-\setlength{\singleSpace}{1.208\singleSpace}                                     % Reset single line spacing to 1.2 times the font size.
+\setlength{\singleSpace}{1.20\singleSpace}                                     % Reset single line spacing to 1.2 times the font size.
 \newlength{\titleSpacing}                                                       % Define a new length for spacing at bottom of title page
 \setlength{\titleSpacing}{3\singleSpace}                                        % Set the length to 3 single spaces
 
 % Fix spacing in captions
-\captionsetup[table]{skip=10pt}
-\captionsetup[figure]{skip=14pt}  
+%\captionsetup[table]{skip=10pt}
+%\captionsetup[figure]{skip=14pt}  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fix spacing in front of figures
-\setlength{\textfloatsep}{3\singleSpace plus 8.0pt minus 4.0pt}
-\setlength{\floatsep}{3\singleSpace plus 8.0pt minus 4.0pt}
-\setlength{\intextsep}{3\singleSpace plus 8.0pt minus 4.0pt}
+%\setlength{\textfloatsep}{3\singleSpace plus 4.0pt minus 4.0pt}
+%\setlength{\floatsep}{3\singleSpace plus 4.0pt minus 4.0pt}
+%\setlength{\intextsep}{3\singleSpace plus 4.0pt minus 4.0pt}
+\setlength{\textfloatsep}{40pt plus 8.0pt minus 4.0pt}
+\setlength{\floatsep}{40pt plus 8.0pt minus 4.0pt}
+\setlength{\intextsep}{40pt plus 8.0pt minus 4.0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -174,6 +200,56 @@
 \newtoks{\GradYear}                                                             % Graduation Year
 \newtoks{\Dept}                                                                 % Graduation Dept
 
+\newtoks{\bibfile}
+\newtoks{\bibstyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- Redefine bibliography to exclude empty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\let\origthebibliography\thebibliography          % Store default \begin{thebibliography}
+\let\origendthebibliography\endthebibliography    % Store default \end{thebibliography}
+\newif\ifemptybibliography\emptybibliographyfalse % Create new if
+\renewenvironment{thebibliography}[1]{
+	\def\nBib{#1}                         % Define macro for number of bib entries
+	\ifx\nBib\empty                       % If the macro is empty
+ 		\emptybibliographytrue            % Set the emptybibliography variable to true
+	\else                                 % Else, the macro was NOT empty
+		\renewcommand{\chapter}[2]{}      % Redefine the chapter command to be empty; removes bib heading
+		\section{References}              % Create a References section
+		\origthebibliography{#1}          % Run the old bibliography
+	\fi
+}{
+	\ifemptybibliography\else             % If emptybibliography is true, do nothing, else
+		\origendthebibliography           % End the bibliography
+	\fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- Define makebibliography command
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\makebibliography}{             % Set up the new command; no inputs
+    \begin{references}                      % Start the reference environment
+    	\bibliographystyle{\the\bibstyle}	% Set the bibliography style
+    	\bibliography{\the\bibfile}			% Set path to bibliography .bib file
+    \end{references}                        % End the reference environment
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- New include command to wrap files in bibunit
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\chapInclude}[1]{             % Set up new command and allow one (1) input
+	\ifchapref                            % If chapref is set to true
+%		\clearpage                        % Clear the page
+		\begin{bibunit}[\the\bibstyle]    % Start bibunit environ and se the bibliography style
+			\input{#1}                    % Input the tex file into the document
+			\putbib[\the\bibfile]         % Generate the bibliography
+		\end{bibunit}                     % End bibunit environ
+	\else                                 % If chapref is false
+		\include{#1}                      % Just include the tex file
+	\fi
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Make Title command (formatting from LaTeX User group title template.)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,64 +265,64 @@
 
 \renewcommand{\maketitle}{
   \thispagestyle{empty}
-  \begin{center}                                                                % Begin center
-    \MakeUppercase{\the\Title}                                                  % Print the title in all upper case
-    \vspace{3\singleSpace}\\                                                    % 3 single spaces under title
-    A \the\PaperType{}\\by\\\MakeUppercase{\the\FullName}                       % Paper type and name
-    \vspace{4\singleSpace}                                                      % 4 single spaces
-    \begin{singlespace}                                                         % Print the next section in single space
+  \begin{center}                                           % Begin center
+    \MakeUppercase{\the\Title}                             % Print the title in all upper case
+    \vspace{3\singleSpace}\\                               % 3 single spaces under title
+    A \the\PaperType{}\\by\\\MakeUppercase{\the\FullName}  % Paper type and name
+    \vspace{4\singleSpace}                                 % 4 single spaces
+    \begin{singlespace}                                    % Print the next section in single space
       Submitted to the Office of Graduate and Professional Studies of \\
       Texas A\&M University \\
       in partial fulfillment of the requirements for the degree of \\
-    \end{singlespace}                                                           % End single spacing
-    \MakeUppercase{\the\Degree{}}                                               % Degree in all upper case
-  \end{center}                                                                  % End center
-  \vspace{3\singleSpace}                                                        % 2 single spaces
-  \begin{singlespace}\makeCommittee\end{singlespace}                            % Create the committee using routine and single space
-  \vspace{\titleSpacing}                                                        % Add 'titleSpacing' vertical space
-  \begin{center}                                                                % Begin center
-    \the\GradMonth{} \the\GradYear{}\\                                          % Print graduation month and year
-    \vspace{\titleSpacing}                                                      % Add 'titleSpacing' vertical space
-    Major Subject: \the\Dept{}\\                                                % Print the major subject
-    \vspace{\titleSpacing}                                                      % Add 'titleSpacing' vertical space
-    Copyright \the\GradYear{} \the\FullName{}                                   % Print copyright grad year and name
-  \end{center}                                                                  % End center
-  \pagebreak{}                                                                  % Make any text following title on new page
-  \pagestyle{plain}                                                             % No headers, just page numbers
-  \pagenumbering{roman}                                                         % Roman numerals
-  \setcounter{page}{2}                                                          % Set page counter to 2
+    \end{singlespace}                                 % End single spacing
+    \MakeUppercase{\the\Degree{}}                     % Degree in all upper case
+  \end{center}                                        % End center
+  \vspace{3\singleSpace}                              % 2 single spaces
+  \begin{singlespace}\makeCommittee\end{singlespace}  % Create the committee using routine and single space
+  \vspace{\titleSpacing}                              % Add 'titleSpacing' vertical space
+  \begin{center}                                      % Begin center
+    \the\GradMonth{} \the\GradYear{}\\                % Print graduation month and year
+    \vspace{\titleSpacing}                            % Add 'titleSpacing' vertical space
+    Major Subject: \the\Dept{}\\                      % Print the major subject
+    \vspace{\titleSpacing}                            % Add 'titleSpacing' vertical space
+    Copyright \the\GradYear{} \the\FullName{}         % Print copyright grad year and name
+  \end{center}                                        % End center
+  \pagebreak{}                                        % Make any text following title on new page
+  \pagestyle{plain}                                   % No headers, just page numbers
+  \pagenumbering{roman}                               % Roman numerals
+  \setcounter{page}{2}                                % Set page counter to 2
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Determine how many committee members there are and if there is a co-chair. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define two new lengths used to set the width of minipages in the committee
 % section of the title page
-\newlength{\commitLengthA}\newlength{\commitLengthB}                            % Define the new lengths
-\newcommand{\makeCommittee}{                                                    % Create the \makeCommittee command
-  \if\relax\the\CoChair\relax                                                   % IF CoChair is not set
-    \setlength{\commitLengthA}{0.25\textwidth}                                  % Set width for first minipage
-    \setlength{\commitLengthB}{0.75\textwidth}                                  % Set width for second minipage
-    \begin{minipage}[t][\singleSpace][t]{\commitLengthA}                        % Begin minipage on left side of page
-      Chair of Committee,                                                       % Write in minipage
-    \end{minipage}                                                              % End minipage on left side of page
-    \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                        % Begin minipage on right side of page
-      \the\Chair                                                                % Write in minipage
-    \end{minipage}                                                              % End minipage on right side of page
-  \else                                                                         % ELSE, i.e., CoChair is set
-    \setlength{\commitLengthA}{0.3\textwidth}                                   % Set width for first minipage
-    \setlength{\commitLengthB}{0.7\textwidth}                                   % Set width for second minipage
-    \begin{minipage}[t][2\singleSpace][t]{\commitLengthA}                       % Begin minipage on left side of page
-      Co-Chairs of Committee,                                                   % Write in minipage
-    \end{minipage}                                                              % End minipage on left side of page
-    \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}                       % Begin minipage on right side of page
-      \the\Chair\\\the\CoChair                                                  % Write in minipage
-    \end{minipage}                                                              % End minipage on right side of page
-  \fi                                                                           % END if
+\newlength{\commitLengthA}\newlength{\commitLengthB}        % Define the new lengths
+\newcommand{\makeCommittee}{                                % Create the \makeCommittee command
+  \if\relax\the\CoChair\relax                               % IF CoChair is not set
+    \setlength{\commitLengthA}{0.25\textwidth}              % Set width for first minipage
+    \setlength{\commitLengthB}{0.75\textwidth}              % Set width for second minipage
+    \begin{minipage}[t][\singleSpace][t]{\commitLengthA}    % Begin minipage on left side of page
+      Chair of Committee,                                   % Write in minipage
+    \end{minipage}                                          % End minipage on left side of page
+    \begin{minipage}[t][\singleSpace][t]{\commitLengthB}    % Begin minipage on right side of page
+      \the\Chair                                            % Write in minipage
+    \end{minipage}                                          % End minipage on right side of page
+  \else                                                     % ELSE, i.e., CoChair is set
+    \setlength{\commitLengthA}{0.3\textwidth}               % Set width for first minipage
+    \setlength{\commitLengthB}{0.7\textwidth}               % Set width for second minipage
+    \begin{minipage}[t][2\singleSpace][t]{\commitLengthA}   % Begin minipage on left side of page
+      Co-Chairs of Committee,                               % Write in minipage
+    \end{minipage}                                          % End minipage on left side of page
+    \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}   % Begin minipage on right side of page
+      \the\Chair\\\the\CoChair                              % Write in minipage
+    \end{minipage}                                          % End minipage on right side of page
+  \fi                                                       % END if
   % Set up the committee members
   \if\relax\the\MemberOne\relax
     % Do nothing
   \else
-    \if\relax\the\MemberTwo\relax                                               % If ONE members present
+    \if\relax\the\MemberTwo\relax                           % If ONE members present
       \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
         Committee Members,
       \end{minipage}
@@ -254,7 +330,7 @@
         \the\MemberOne
       \end{minipage}
     \else
-      \if\relax\the\MemberThree\relax                                           % If TWO members present
+      \if\relax\the\MemberThree\relax                       % If TWO members present
         \noindent\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}
           Committee Members,
         \end{minipage}
@@ -262,14 +338,14 @@
           \the\MemberOne\\\the\MemberTwo
         \end{minipage}  
       \else
-        \if\relax\the\MemberFour\relax                                          % If THREE members present
+        \if\relax\the\MemberFour\relax                      % If THREE members present
           \noindent\begin{minipage}[t][3\singleSpace][t]{\commitLengthA}
             Committee Members,
           \end{minipage}
           \begin{minipage}[t][3\singleSpace][t]{\commitLengthB}
             \the\MemberOne\\\the\MemberTwo\\\the\MemberThree
           \end{minipage}
-        \else                                                                   % If FOUR members present
+        \else                                               % If FOUR members present
           \noindent\begin{minipage}[t][4\singleSpace][t]{\commitLengthA}
             Committee Members,
           \end{minipage}
@@ -281,12 +357,12 @@
     \fi
   \fi
   % Print the Department Head
-  \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}                 % Begin minipage on left side of page
-    Head of Department,                                                         % Write in minipage
-  \end{minipage}                                                                % End minipage on left side of page
-  \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                          % Begin minipage on right side of page
-    \the\DeptHead                                                               % Write the department head in the minipage
-  \end{minipage}                                                                % End minipage on left side of page
+  \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA} % Begin minipage on left side of page
+    Head of Department,                                         % Write in minipage
+  \end{minipage}                                                % End minipage on left side of page
+  \begin{minipage}[t][\singleSpace][t]{\commitLengthB}          % Begin minipage on right side of page
+    \the\DeptHead                                               % Write the department head in the minipage
+  \end{minipage}                                                % End minipage on left side of page
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -294,165 +370,170 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % -- Abstract environment
 \renewenvironment{abstract}{
-  \chapter*{ABSTRACT}                                                           % Generate chapter title for Abstract
-  \addcontentsline{toc}{chapter}{ABSTRACT}                                      % Add to table of contents
-  \pagestyle{plain}                                                             % Set page style to plain
+  \chapter*{ABSTRACT}                                 % Generate chapter title for Abstract
+  \addcontentsline{toc}{chapter}{ABSTRACT}            % Add to table of contents
+  \pagestyle{plain}                                   % Set page style to plain
 }{
-  \pagebreak{}                                                                  % Page break after text
+  \pagebreak{}                                        % Page break after text
 }
 
 % -- Dedication environment
 \newenvironment{dedication}{
-  \chapter*{DEDICATION}                                                         % Generate chapter title for Dedication
-  \addcontentsline{toc}{chapter}{DEDICATION}                                    % Add to table of contents
-  \pagestyle{plain}\begin{center}\vspace*{\fill}                                % Set page style to plain, center text, and add vertical fill before text
+  \chapter*{DEDICATION}                               % Generate chapter title for Dedication
+  \addcontentsline{toc}{chapter}{DEDICATION}          % Add to table of contents
+  \pagestyle{plain}\begin{center}\vspace*{\fill}      % Set page style to plain, center text, and add vertical fill before text
 }{
-  \vspace*{\fill}                                                               % Add vertical fill after text.
-  \end{center}                                                                  % End center
-  \pagebreak{}                                                                  % Page break after text
+  \vspace*{\fill}                                     % Add vertical fill after text.
+  \end{center}                                        % End center
+  \pagebreak{}                                        % Page break after text
 }
 
 % -- Acknowledgements environment
 \newenvironment{acknowledgements}{
-  \chapter*{ACKNOWLEDGEMENTS}                                                   % Generate chapter title for Acknowledgements
-  \addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}                              % Add to table of contents
-  \pagestyle{plain}                                                             % Set page style to plain
+  \chapter*{ACKNOWLEDGEMENTS}                         % Generate chapter title for Acknowledgements
+  \addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}    % Add to table of contents
+  \pagestyle{plain}                                   % Set page style to plain
 }{
-  \pagebreak{}                                                                  % Page break after text
+  \pagebreak{}                                        % Page break after text
 }
 
 % -- Nomenclature Command  
 \newcommand{\makeNomenclature}{
-  \chapter*{NOMENCLATURE}                                                       % Generate chapter title for Nomenclature
-  \addcontentsline{toc}{chapter}{NOMENCLATURE}                                  % Add to table of contents
-  \vspace{-\singleSpace}                                                        % Move start of nomenclature up
-  \printacronyms                                                                % Print the nomenclature/acronyms
+  \chapter*{NOMENCLATURE}                             % Generate chapter title for Nomenclature
+  \addcontentsline{toc}{chapter}{NOMENCLATURE}        % Add to table of contents
+  \vspace{-\singleSpace}                              % Move start of nomenclature up
+  \printacronyms                                      % Print the nomenclature/acronyms
 }
 
 % -- Contributors and Funding
 \newenvironment{contributors}{
-  \chapter*{CONTRIBUTORS AND FUNDING SOURCES}                                   % Generate chapter title for Contributors
-  \addcontentsline{toc}{chapter}{CONTRIBUTORS AND FUNDING SOURCES}              % Add to table of contents
-  \pagestyle{plain}                                                             % Set page style to plain
+  \chapter*{CONTRIBUTORS AND FUNDING SOURCES}                      % Generate chapter title for Contributors
+  \addcontentsline{toc}{chapter}{CONTRIBUTORS AND FUNDING SOURCES} % Add to table of contents
+  \pagestyle{plain}                                                % Set page style to plain
 }{
-  \pagebreak{}                                                                  % Page break after text
+  \pagebreak{}                                                     % Page break after text
 }
 
 % -- References environment
 \newenvironment{references}{
-  \phantomsection                                                               % Generate a phantom section
-  \addcontentsline{toc}{chapter}{REFERENCES}                                    % Add References to table of contents
-  \renewcommand{\bibname}{{\normalsize\rm REFERENCES}}                          % Change name of the bibiligraphy
+  \phantomsection                                        % Generate a phantom section
+  \addcontentsline{toc}{chapter}{REFERENCES}             % Add References to table of contents
+  \renewcommand{\bibname}{{\normalsize\rm REFERENCES}}   % Change name of the bibiligraphy
 }{}
 
 % -- Appendices environment
-\let\myappendices\appendices                                                    % Store default settings of \begin{appendice}
-\let\endmyappendices\endappendices                                              % Store default settings of \end{appendices}
-\renewenvironment{appendices}{                                                  % Define new appendices environment
-  \myappendices                                                                 % Load default appendices settings
-  \renewcommand{\appendixname}{APPENDIX}                                        % Set new appendix name
-  \titleformat{\chapter}                                                        % Edit chapter title format for appendices
-    {\centering\normalsize\uppercase}                                           % Set title to be centered and normal size
-    {\appendixname{} \thechapter}                                               % Set the new title name to APPENDIX `chap'
-    {0em}                                                                       % Set marign before the title
-    {\vskip\singleSpace\centering}                                              % Set margin after the title
+\let\myappendices\appendices                             % Store default settings of \begin{appendice}
+\let\endmyappendices\endappendices                       % Store default settings of \end{appendices}
+\renewenvironment{appendices}{                           % Define new appendices environment
+  \myappendices                                          % Load default appendices settings
+  \renewcommand{\appendixname}{APPENDIX}                 % Set new appendix name
+  \titleformat{\chapter}                                 % Edit chapter title format for appendices
+    {\centering\normalsize\uppercase}                    % Set title to be centered and normal size
+    {\appendixname{} \thechapter}                        % Set the new title name to APPENDIX `chap'
+    {0em}                                                % Set marign before the title
+    {\vskip\singleSpace\centering}                       % Set margin after the title
 }{
-  \endmyappendices                                                              % End the appendix
+  \endmyappendices                                       % End the appendix
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- TABLE OF CONTENTS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- This puts \subsubsection[]{×} in your List of Tables.  The default is 3
 \setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
+\setcounter{tocdepth}{4}
+\renewcommand{\cftdotsep}{1.00} % Adjusts the size of the leader dot separation.
 
 %%% Customizations for fonts/leaders in ToC
-\renewcommand{\cftchapfont}{\normalsize}                                        % Set chapter font
-\renewcommand{\cftchappagefont}{\normalsize\rm}                                 % Set chapter page font
+\renewcommand{\cftchapfont}{\normalsize}                 % Set chapter font
+\renewcommand{\cftchappagefont}{\normalsize\rm}          % Set chapter page font
 \renewcommand{\cftchapleader}{
-  \normalsize\rm\cftdotfill{\cftdotsep}}                                        % Set chapter leader
-\renewcommand{\cftchapaftersnum}{.}                                             % Add a period after chapter numbers.
+  \normalsize\rm\cftdotfill{\cftdotsep}
+}                                                        % Set chapter leader
+\renewcommand{\cftchapaftersnum}{.}                      % Add a period after chapter numbers.
 
-\renewcommand\cftsecfont{\normalfont}                                           % Set section font
-\renewcommand\cftsecpagefont{\normalfont}                                       % Set section page font
+\renewcommand\cftsecfont{\normalfont}                    % Set section font
+\renewcommand\cftsecpagefont{\normalfont}                % Set section page font
 
-\renewcommand\cftpartfont{\normalfont}                                          % Set part page font
-\renewcommand\cftpartpagefont{\normalfont}                                      % Set part page font
-\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}                          % Add leader dots for parts
+\renewcommand\cftpartfont{\normalfont}                   % Set part page font
+\renewcommand\cftpartpagefont{\normalfont}               % Set part page font
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}   % Add leader dots for parts
 
 %%% Spacing for the chapters/sections/parts
-\renewcommand{\cftaftertoctitleskip}{\singleSpace}                              % Set spacing after TOC Title
-\renewcommand{\cftaftertoctitle}{                                               % Adds Page above the page number in TOC
-  \vskip-\singleSpace\hfill{\normalfont{Page}}}                                 % The negative singleSpace moves `Page' up to match old templates
-\renewcommand{\cftbeforepartskip}{\singleSpace}                                 % Set spacing before parts in TOC
-\renewcommand{\cftbeforechapskip}{\singleSpace}                                 % Set spacing before chapters in TOC
-\preto\section{                                                                 % Double space between chapter and first section
+%\renewcommand{\cftaftertoctitleskip}{\singleSpace}  % Set spacing after TOC Title
+\renewcommand{\cftaftertoctitleskip}{1em}           % Set spacing after TOC Title
+\renewcommand{\cftaftertoctitle}{                   % Adds Page above the page number in TOC
+  \vskip-\singleSpace\hfill{\normalfont{Page}}}     % The negative singleSpace moves `Page' up to match old templates
+%\renewcommand{\cftbeforepartskip}{\singleSpace}     % Set spacing before parts in TOC
+%\renewcommand{\cftbeforechapskip}{\singleSpace}     % Set spacing before chapters in TOC
+\preto\section{                                     % Double space between chapter and first section
   \ifnum\value{section}=0
-    \addtocontents{toc}{\vskip\singleSpace}
+    \addtocontents{toc}{\vskip10pt}%\singleSpace}
   \fi
 }
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchapleader}
-        {\protect\cftdotfill{\cftsecdotsep}}}                                   % puts leader dots on chapters.
+        {\protect\cftdotfill{\cftsecdotsep}}}                      % puts leader dots on chapters.
         
 %%% Formatting for List of Figures
-\renewcommand{\cftbeforeloftitleskip}{-\singleSpace}                            % Position LOF title to match chapter titles
-\renewcommand{\cftafterloftitleskip}{2.0\singleSpace}                           % Set after title skip
-\renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of figures title
+\renewcommand{\cftbeforeloftitleskip}{-\singleSpace}               % Position LOF title to match chapter titles
+\renewcommand{\cftafterloftitleskip}{2.0\singleSpace}              % Set after title skip
+%\renewcommand{\cftbeforeloftitleskip}{-12pt}                       % Position LOF title to match chapter titles
+%\renewcommand{\cftafterloftitleskip}{12pt}                         % Set after title skip
+\renewcommand{\cftloftitlefont}{\hfill\normalfont\MakeUppercase}   % Format list of figures title
 \renewcommand{\cftafterloftitle}{
-  \hfill\mbox{}\vskip3\singleSpace FIGURE\hfill{\normalfont Page}}              % Add FIGURE Page after LoF Title
-\renewcommand{\cftfigafterpnum}{\vskip\f@size pt}                               % Set vertical skip after page numbers to font size
-\renewcommand{\cftbeforefigskip}{0pt}                                           % Set vertical skip before entries to 0pt
+  \hfill\mbox{}\vskip3\singleSpace FIGURE\hfill{\normalfont Page}} % Add FIGURE Page after LoF Title
+\renewcommand{\cftfigafterpnum}{\vskip\f@size pt}                  % Set vertical skip after page numbers to font size
+\renewcommand{\cftbeforefigskip}{0pt}                              % Set vertical skip before entries to 0pt
 
 %%% Spacing for List of Tables
-\renewcommand{\cftbeforelottitleskip}{-\singleSpace}                            % Position LOT title vertically - match chapter titles
+\renewcommand{\cftbeforelottitleskip}{-\singleSpace}              % Position LOT title vertically - match chapter titles
 \renewcommand{\cftafterlottitleskip}{2.0\singleSpace}
-\renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}                % Format list of tables title
+\renewcommand{\cftlottitlefont}{\hfill\normalfont\MakeUppercase}  % Format list of tables title
 
 \renewcommand{\cftafterlottitle}{%
-  \hfill\mbox{}\vskip3\singleSpace TABLE\hfill{\normalfont Page}                % Add TABLE Page after LoT Title
+  \hfill\mbox{}\vskip3\singleSpace TABLE\hfill{\normalfont Page}  % Add TABLE Page after LoT Title
 }
-\renewcommand{\cfttabafterpnum}{\vskip\f@size pt}                               % Set vertical skip after page numbers to font size
-\renewcommand{\cftbeforetabskip}{0pt}                                           % Set vertical skip before entries to 0pt
+\renewcommand{\cfttabafterpnum}{\vskip\f@size pt}                 % Set vertical skip after page numbers to font size
+\renewcommand{\cftbeforetabskip}{0pt}                             % Set vertical skip before entries to 0pt
 
 %%% Set up the \makeToC command
 \newcommand{\makeToC}{
   %%  TABLE OF CONTENTS
-  \phantomsection                                                               % Phantom section for proper hyperref links
-  \addcontentsline{toc}{chapter}{TABLE OF CONTENTS}                             % Add table of contents to ToC
-  \renewcommand\contentsname{\normalfont}{\centerline{TABLE OF CONTENTS}}       % Format table of contents title
-  \begin{singlespace}\tableofcontents\end{singlespace}\pagebreak{}              % Generate ToC in single space environment and insert a page break  
+  \phantomsection                                                         % Phantom section for proper hyperref links
+  \addcontentsline{toc}{chapter}{TABLE OF CONTENTS}                       % Add table of contents to ToC
+  \renewcommand\contentsname{\normalfont}{\centerline{TABLE OF CONTENTS}} % Format table of contents title
+  \begin{singlespace}\tableofcontents\end{singlespace}\pagebreak{}        % Generate ToC in single space environment and insert a page break  
   %%  LIST OF FIGURES
-  \phantomsection                                                               % Phantom section for proper hyperref links
-  \addcontentsline{toc}{chapter}{LIST OF FIGURES}                               % Add list of figures to ToC
-  \begin{singlespace}\listoffigures\end{singlespace}\pagebreak{}                % Generate LoF in single space environment and insert a page break
+  \phantomsection                                                         % Phantom section for proper hyperref links
+  \addcontentsline{toc}{chapter}{LIST OF FIGURES}                         % Add list of figures to ToC
+  \begin{singlespace}\listoffigures\end{singlespace}\pagebreak{}          % Generate LoF in single space environment and insert a page break
   %%  LIST OF TABLES
-  \phantomsection                                                               % Phantom section for proper hyperref links
-  \addcontentsline{toc}{chapter}{LIST OF TABLES}                                % Add list of tables to ToC
-  \begin{singlespace}\listoftables\end{singlespace}\pagebreak{}                 %  Generate LoT in single space environment and insert page break 
-}                                                                               % END of makeToC command
+  \phantomsection                                                         % Phantom section for proper hyperref links
+  \addcontentsline{toc}{chapter}{LIST OF TABLES}                          % Add list of tables to ToC
+  \begin{singlespace}\listoftables\end{singlespace}\pagebreak{}           %  Generate LoT in single space environment and insert page break 
+}                                                                         % END of makeToC command
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Redefine \makeToC command
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\let\oldmakeToC\makeToC                                                         % Store default settings of \makeToC
-\renewcommand{\makeToC}{                                                        % Redefine the \makeToC command
-  \pagebreak{}                                                                  % Page break
-  \oldmakeToC                                                                   % Make the ToC
-  \pagestyle{plain}                                                             % Set the page style to plain
-  \pagenumbering{arabic}                                                        % Set the page numbering to arabic
-  \setcounter{page}{1}                                                          % Set the page counter to 1
+\let\oldmakeToC\makeToC                              % Store default settings of \makeToC
+\renewcommand{\makeToC}{                             % Redefine the \makeToC command
+  \pagebreak{}                                       % Page break
+  \oldmakeToC                                        % Make the ToC
+  \pagestyle{plain}                                  % Set the page style to plain
+  \pagenumbering{arabic}                             % Set the page numbering to arabic
+  \setcounter{page}{1}                               % Set the page counter to 1
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Redefine \chapter{} command
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makeatletter                                                                   % Changes the catcode of @ to 11
-\let\stdchapter\chapter                                                         % Save old chapter defintion
-\renewcommand*\chapter{                                                         % Make new command for chapter
-  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}                               % Not sure what this does
-\newcommand*\starchapter[1]{\stdchapter*{\uppercase{#1}}}                       % Define new \chapter*{} with uppercase
-\def\nostarchapter[#1]#2{\stdchapter[{\uppercase{#1}}]{#2}}                     % Define new \chapter{} with upper case
-\makeatother                                                                    % Changes the catcode of @ to 12
+\makeatletter                                                    % Changes the catcode of @ to 11
+\let\stdchapter\chapter                                          % Save old chapter defintion
+\renewcommand*\chapter{                                          % Make new command for chapter
+  \@ifstar{\starchapter}{\@dblarg\nostarchapter}}                % Not sure what this does
+\newcommand*\starchapter[1]{\stdchapter*{\uppercase{#1}}}        % Define new \chapter*{} with uppercase
+\def\nostarchapter[#1]#2{\stdchapter[{\uppercase{#1}}]{#2}}      % Define new \chapter{} with upper case
+\makeatother                                                     % Changes the catcode of @ to 12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Titlesec Customations 
@@ -466,4 +547,5 @@
 \titlespacing{\section}{0pt}{0.5\singleSpace}{0.5\singleSpace}
 \titlespacing{\subsection}{0pt}{0.5\singleSpace}{0.5\singleSpace}
 
+ 
 \endinput

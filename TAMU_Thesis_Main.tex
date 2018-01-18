@@ -4,12 +4,21 @@
 %  Dissertations starting Fall 2016.
 %
 %  Author:  Kyle R. Wodzicki  
-%  Updated: 04 Nov. 2016
+%  Version: 0.17.09
+%  Updated: 18 Jan. 2018
 %
 %  Adapted loosely from: 
 %    TAMU LaTeX (SZR) Version 3.16.10 from OGAPS 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To change left margin for binding purposes
+%    [12pt,binding]
+% To change document spacing to 1.5 spacing
+%    [12pt,onehalfspacing]
+% To place a 'Reference' section at the end
+% of each chapter, use the 'chapref' option
+%    [12pt,chapref]
+% Can combine options
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,22 +49,23 @@
 \GradYear{2016}						% Enter graduation year
 \Dept{Mathematics}					% Enter department name	
 
+\bibfile{myReference}               % Set the bibliography file to use
+\bibstyle{ieeetr}                   % Set the bibliography style to use
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\graphicspath{ {./graphic/},{./figures/}  }
-\DeclareGraphicsExtensions{.png,.PNG,.jpg}
+\graphicspath{ {./graphic/},{./figures/}  } % Locations of figures
+\DeclareGraphicsExtensions{.png,.PNG,.jpg}  % Figure extensions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define custom  commands for easier typing        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Load the nomenclature package. Can set the 'all' 
-%%% option to display all. Default is to display 
-%%% only the nomenclature/acronyms that are used.
+%%% Load the nomenclature package. Default is to  
+%%% display all the nomenclature/acronyms. Remove
+%%% the [all] option to display only those used.
 \usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,18 +82,18 @@
 \makeNomenclature					% Generate nomenclature if using the nomenclature package
 
 \makeToC							% Generate the Table of Contents. REQUIRED!!!
-\include{./Data/Section1}			% Include the Section1.tex file
-\include{./Data/Section2}			% Include the Section2.tex file
-\include{./Data/Section3}			% Include the Section3.tex file
-\include{./Data/Section4}			% Include the Section4.tex file
+
+% Include all chapters of the 
+% thesis. Note that you MUST  
+% use the \chapInclude command
+\chapInclude{./Data/Section1}		% Include the Section1.tex file
+\chapInclude{./Data/Section2}		% Include the Section2.tex file
+\chapInclude{./Data/Section3}		% Include the Section3.tex file
+\chapInclude{./Data/Section4}		% Include the Section4.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate the Bibliography
-% MUST BE IN BIBLIOGRAPHY ENVIRONMENT!!!
-\begin{references}
-	\bibliographystyle{ieeetr}			% Set the bibliography style
-	\bibliography{myReference}			% Set path to bibliography .bib file
-\end{references}
+% Generate the Bibliography DO NOT TOUCH THIS!!!
+\ifchapref\else\makebibliography\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Include appendices. 
