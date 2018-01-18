@@ -24,13 +24,13 @@
 \usepackage{multirow}			% Multirow package for tables
 \usepackage{footnote}			% Package for the savenotes command
 \usepackage{amsthm}				% AMS package for theorems
+\usepackage{natbib,url}			% Load the natbib and ulr packages
 \usepackage[
-	urlcolor=blue,				% Set color of url links to blue
-	filecolor=black,			% Set color of file links to black
-	citecolor=black,			% Set color of citation links to black
-	linkcolor=black,			% Set color of all other links (section, figure, etc.) to black
+	urlcolor=blue,				% URL links to blue
+	filecolor=black,			% File links to black
+	citecolor=black,			% Citation links black
+	linkcolor=black,			% Section, figure, etc. links black
 	colorlinks=true]{hyperref}	% Load hyperref package for linking 
-%\usepackage{natbib,url}	% These packages are required for some citation styles
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%       Set information for title page.        %%%
@@ -61,20 +61,12 @@
 % Define custom  commands for easier typing        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
-\newcommand{\elnino}{El Ni\~{n}o}   % El Nino/La Nina commands
-\newcommand{\lanina}{La Ni\~{n}a}
 
-\newcommand{\citenop}[1]{\citeauthor{#1} \citeyear{#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Beginning of the document           %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\setlength{\titleSpacing}{\baselineskip}% If title page is NOT on single page, reduce value slightly
-
-%\onehalfspacing	% Uncomment for one-half spacing
-\doublespacing		% Uncomment for double spacing
-
 \maketitle			% Must have this to generate the title page!!!
 
 % Be sure to include all TeX files to be used in your document!

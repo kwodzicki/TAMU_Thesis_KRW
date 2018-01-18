@@ -51,6 +51,13 @@
 %     change. This change was performed to remove a waring produced by
 %     the hyperref package that was due to the use of the \uppercase{}
 %     command within the \chapter{} command.
+%
+%   Modified 30 Nov. 2016 by Kyle R. Wodzicki
+%     Changed the construction of the committee from a tabular set up to minipages.
+%     Changed user input fields such as \Title and \FullName from commands to
+%     tokens. Not sure exactly how they work, but they make if statements much
+%     easier to work with and allows for changing of spacings much easier. This
+%     makes the code for and auto-spacing of the title page much cleaner.
 %-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{tamu_thesis}[2016/03/30 TAMU Thesis Class]
@@ -74,9 +81,12 @@
 \DeclareOption{executivepaper}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the letterpaper page size.}}
 \DeclareOption{landscape}{\ClassWarning{tamu_thesis}{The tamu_thesis class only supports the portrait page orientation.}}
 
-% Pass any options into the report class.
+% --- Pass any options into the report class.
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 
+% --- Declare onehalfspacing option
+\newif\if@onehalfspacing\@onehalfspacingfalse			% Set up new if variable for all
+\DeclareOption{onehalfspacing}{\@onehalfspacingtrue}	% Declare option for `all', set true if used
 
 % --- Class structure: declaration of options part
 \ProcessOptions \relax
@@ -102,6 +112,15 @@
 \RequirePackage{caption}
 \RequirePackage{times}
 
+\if@onehalfspacing\onehalfspacing\else\doublespacing\fi	% Set document spacing
+
+% Set up single line spacing. Adapted from information at following link
+% http://tex.stackexchange.com/questions/30073/why-is-the-linespread-factor-as-it-is
+\newlength{\singleSpace}					% Define a new length for the single spacing
+\setlength{\singleSpace}{\f@size pt}		% Set single line spacing to the size of the font
+\setlength{\singleSpace}{1.208\singleSpace}	% Reset single line spacing to 1.2 times the font size.
+\newlength{\titleSpacing}					% Define a new length for spacing at bottom of title page
+\setlength{\titleSpacing}{3\singleSpace}	% Set the length to 3 single spaces
 
 % --- Fix spacing in captions
 \captionsetup[table]{skip=10pt}
@@ -109,202 +128,139 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fix spacing in front of figures
-\setlength{\textfloatsep}{3\baselineskip plus 8.0pt minus 4.0pt}
-\setlength{\floatsep}{3\baselineskip plus 8.0pt minus 4.0pt}
-\setlength{\intextsep}{3\baselineskip plus 8.0pt minus 4.0pt}
+\setlength{\textfloatsep}{3\singleSpace plus 8.0pt minus 4.0pt}
+\setlength{\floatsep}{3\singleSpace plus 8.0pt minus 4.0pt}
+\setlength{\intextsep}{3\singleSpace plus 8.0pt minus 4.0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %         DEFINE SOME COMMANDS FOR THE TITLE PAGE         %
-% --- Title
-\newcommand{\Title}[1]{\renewcommand{\@Title}{#1}}				% Setup Title command
-\newcommand{\@Title}{Default Title}								% Set the default title
-% --- Paper Type
-\newcommand{\PaperType}[1]{\renewcommand{\@PaperType}{#1}}		% Setup paper type command
-\newcommand{\@PaperType}{(Thesis or Dissertation)}				% Set default paper type
-% --- Full Name
-\newcommand{\FullName}[1]{\renewcommand{\@FullName}{#1}}		% Setup FullName command
-\newcommand{\@FullName}{Full Name}								% Set default full name
-% --- Degree
-\newcommand{\Degree}[1]{\renewcommand{\@Degree}{#1}}			% Setup Degree command
-\newcommand{\@Degree}{Master of Science}						% Set default degree type
-% --- Committee Chair
-\newcommand{\Chair}[1]{\renewcommand{\@Chair}{#1}}				% Setup Chair command
-\newcommand{\@Chair}{Committee Chair}							% Set default chair
-% --- Committee Co-Chair
-\newcommand{\CoChair}[1]{\renewcommand{\@CoChair}{#1}}			% Setup Chair command
-\newcommand{\@CoChair}{default}									% Set default co-chair
-% --- Committee member one
-\newcommand{\MemberOne}[1]{\renewcommand{\@MemberOne}{#1}}		% Setup MemberOne command
-\newcommand{\@MemberOne}{default}								% Set MemberTwo default
-% --- Committee member one
-\newcommand{\MemberTwo}[1]{\renewcommand{\@MemberTwo}{#1}}		% Setup MemberTwo command
-\newcommand{\@MemberTwo}{default}								% Set MemberTwo default
-% --- Committee member one
-\newcommand{\MemberThree}[1]{\renewcommand{\@MemberThree}{#1}}	% Setup MemberThree command
-\newcommand{\@MemberThree}{default}								% Set MemberThree default
-% --- Committee member one
-\newcommand{\MemberFour}[1]{\renewcommand{\@MemberFour}{#1}}	% Setup MemberFour command
-\newcommand{\@MemberFour}{default}								% Set MemberFour default
-% --- Department Head
-\newcommand{\DeptHead}[1]{\renewcommand{\@DeptHead}{#1}}		% Setup DeptHead command
-\newcommand{\@DeptHead}{Department Head}						% Set default department head
-% --- Graduation Month
-\newcommand{\GradMonth}[1]{\renewcommand{\@GradMonth}{#1}}		% Setup GradMonth command
-\newcommand{\@GradMonth}{May}									% Set default GradMonth
-% --- Graduation Year
-\newcommand{\GradYear}[1]{\renewcommand{\@GradYear}{#1}}		% Setup GradYear command
-\newcommand{\@GradYear}{2015}									% Set default Grad Year
-% --- Graduation Dept
-\newcommand{\Dept}[1]{\renewcommand{\@Dept}{#1}}				% Setup Dept command
-\newcommand{\@Dept}{Atmospheric Sciences}						% Set default subject
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Determine how many committee members there are and if there is a co-chair. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\makeCommittee}{
-	\ifcase\pdf@strcmp{\@CoChair}{default}						% If there is NO co-chair
-    	\ifcase\pdf@strcmp{\@MemberOne}{default}				% If NO members present
-			\begin{tabular}{ll}
-				Chair of Committee, & \@Chair \\
-				Head of Department, & \@DeptHead
-			\end{tabular}
-		\else
-			\ifcase\pdf@strcmp{\@MemberTwo}{default}			% If ONE members present
-				\begin{tabular}{ll}
-					Chair of Committee, & \@Chair \\
-					Committee Members,  & \@MemberOne \\
-					Head of Department, & \@DeptHead
-				\end{tabular}
-			\else
-				\ifcase\pdf@strcmp{\@MemberThree}{default}		% If TWO members present
-					\begin{tabular}{ll}
-						Chair of Committee, & \@Chair \\
-						Committee Members,  & \@MemberOne \\
-       	 									& \@MemberTwo \\
-						Head of Department, & \@DeptHead
-					\end{tabular}		
-				\else
-					\ifcase\pdf@strcmp{\@MemberFour}{default}	% If THREE members present
-						\begin{tabular}{ll}
-							Chair of Committee, & \@Chair \\
-							Committee Members,  & \@MemberOne \\
-       	 										& \@MemberTwo \\
-                             					& \@MemberThree \\
-							Head of Department, & \@DeptHead
-						\end{tabular}
-					\else										% If ALL the members are present
-						\begin{tabular}{ll}
-							Chair of Committee, & \@Chair \\
-							Committee Members,  & \@MemberOne \\
-       	 										& \@MemberTwo \\
-                             					& \@MemberThree \\
-												& \@MemberFour \\
-							Head of Department, & \@DeptHead
-						\end{tabular}
-					\fi
-				\fi
-			\fi
-		\fi
-	\else
-		\ifcase\pdf@strcmp{\@MemberOne}{default}				% If NO members present
-			\begin{tabular}{ll}
-				Chair of Committee, 	& \@Chair \\
-				Co-Chair of Committee,	& \@CoChair \\
-				Head of Department, 	& \@DeptHead
-			\end{tabular}
-		\else
-			\ifcase\pdf@strcmp{\@MemberTwo}{default}			% If ONE members present
-				\begin{tabular}{ll}
-					Chair of Committee, 	& \@Chair \\
-					Co-Chair of Committee,	& \@CoChair \\
-					Committee Members,  	& \@MemberOne \\
-					Head of Department, 	& \@DeptHead
-				\end{tabular}
-			\else
-				\ifcase\pdf@strcmp{\@MemberThree}{default}		% If TWO members present
-					\begin{tabular}{ll}
-						Chair of Committee, 	& \@Chair \\
-						Co-Chair of Committee,	& \@CoChair \\
-						Committee Members,  	& \@MemberOne \\
-       	 										& \@MemberTwo \\
-						Head of Department, 	& \@DeptHead
-					\end{tabular}		
-				\else
-					\ifcase\pdf@strcmp{\@MemberFour}{default}	% If THREE members present
-						\begin{tabular}{ll}
-							Chair of Committee, 	& \@Chair \\
-							Co-Chair of Committee,	& \@CoChair \\
-							Committee Members,  	& \@MemberOne \\
-       	 											& \@MemberTwo \\
-                             						& \@MemberThree \\
-							Head of Department, 	& \@DeptHead
-						\end{tabular}
-					\else										% If ALL the members are present
-						\begin{tabular}{ll}
-							Chair of Committee, 	& \@Chair \\
-							Co-Chair of Committee,	& \@CoChair \\
-							Committee Members,  	& \@MemberOne \\
-       	 											& \@MemberTwo \\
-                             						& \@MemberThree \\
-													& \@MemberFour \\
-							Head of Department, 	& \@DeptHead
-						\end{tabular}
-					\fi
-				\fi
-			\fi
-		\fi
-	\fi
-}	
+\newtoks{\Title}			% --- Title
+\newtoks{\PaperType}		% --- Paper Type
+\newtoks{\FullName}			% --- Full Name
+\newtoks{\Degree}			% --- Degree
+\newtoks{\Chair}			% --- Committee Chair
+\newtoks{\CoChair}			% --- Committee Co-Chair
+\newtoks{\MemberOne}		% --- Committee member one
+\newtoks{\MemberTwo}		% --- Committee member two
+\newtoks{\MemberThree}		% --- Committee member three
+\newtoks{\MemberFour}		% --- Committee member four
+\newtoks{\DeptHead}			% --- Department Head
+\newtoks{\GradMonth}		% --- Graduation Month
+\newtoks{\GradYear}			% --- Graduation Year
+\newtoks{\Dept}				% --- Graduation Dept
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Make Title command (formatting from LaTeX User group title template.)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newlength{\titleSpacing}
+% Adjust spacing of the title page based on how large the committee is.
+% The first command takes off 40 percent of a single space width if
+% the CoChair token is used. The second takes off another 40 percent
+% if the MemberFour token is used.
+\if\relax\the\CoChair\relax\addtolength{\titleSpacing}{-0.4\singleSpace}\fi
+\if\relax\the\MemberFour\relax\addtolength{\titleSpacing}{-0.4\singleSpace}\fi
+
 \renewcommand{\maketitle}{
 	\thispagestyle{empty}
-	\begin{center}
-		\MakeUppercase{\@Title}
-		\vspace{3\titleSpacing}
-
-		A \@PaperType{}
-      
-		by
-      
-		\MakeUppercase{\@FullName}
-		\vspace{4\titleSpacing}  
-		   
-		\begin{singlespace}
+	\begin{center}												% Begin center
+		\MakeUppercase{\the\Title}								% Print the title in all upper case
+		\vspace{3\singleSpace}\\								% 3 single spaces under title
+		A \the\PaperType{}\\by\\\MakeUppercase{\the\FullName}	% Paper type and name
+		\vspace{4\singleSpace}									% 4 single spaces
+		\begin{singlespace}										% Print the next section in single space
 			Submitted to the Office of Graduate and Professional Studies of \\
 			Texas A\&M University \\
 			in partial fulfillment of the requirements for the degree of \\
-		\end{singlespace}
-       
-       
-		\MakeUppercase{\@Degree{}}	
-	\end{center}
-	\vspace{2\titleSpacing}
-	\begin{singlespace}
-	      \makeCommittee 								%Create the committee using routine
-	\end{singlespace}
-	\vspace{3\titleSpacing}
-
-	\begin{center}
-		\@GradMonth{} \@GradYear{}
-
-		\vspace{3\titleSpacing}
-
-		Major Subject: \@Dept{}\\
-		\vspace{3\titleSpacing}
-		Copyright \@GradYear{} \@FullName{}
-	\end{center}
-	\pagebreak{} 										% Make any text following title on new page
-	\pagestyle{plain}									% No headers, just page numbers
-	\pagenumbering{roman} 								% Roman numerals
-	\setcounter{page}{2}								% Set page counter to 2
+		\end{singlespace}										% End single spacing
+		\MakeUppercase{\the\Degree{}}							% Degree in all upper case
+	\end{center}												% End center
+	\vspace{2\singleSpace}										% 2 single spaces
+	\begin{singlespace}\makeCommittee\end{singlespace} 			% Create the committee using routine and single space
+	\vspace{\titleSpacing}										% Add 'titleSpacing' vertical space
+	\begin{center}												% Begin center
+		\the\GradMonth{} \the\GradYear{}\\						% Print graduation month and year
+		\vspace{\titleSpacing}									% Add 'titleSpacing' vertical space
+		Major Subject: \the\Dept{}\\							% Print the major subject
+		\vspace{\titleSpacing}									% Add 'titleSpacing' vertical space
+		Copyright \the\GradYear{} \the\FullName{}				% Print copyright grad year and name
+	\end{center}												% End center
+	\pagebreak{} 												% Make any text following title on new page
+	\pagestyle{plain}											% No headers, just page numbers
+	\pagenumbering{roman} 										% Roman numerals
+	\setcounter{page}{2}										% Set page counter to 2
 }
-
-%%%%%%%%  Remove the extra vertical space before chapter titles when using report class %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Determine how many committee members there are and if there is a co-chair. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define two new lengths used to set the width of minipages in the committee
+% section of the title page
+\newlength{\commitLengthA}\newlength{\commitLengthB}			% Define the new lengths
+\newcommand{\makeCommittee}{									% Create the \makeCommittee command
+	\if\relax\the\CoChair\relax									% IF CoChair is not set
+		\setlength{\commitLengthA}{0.25\textwidth}				% Set width for first minipage
+		\setlength{\commitLengthB}{0.75\textwidth}				% Set width for second minipage
+		\begin{minipage}[t][\singleSpace][t]{\commitLengthA}	% Begin minipage on left side of page
+			Chair of Committee,									% Write in minipage
+		\end{minipage}											% End minipage on left side of page
+		\begin{minipage}[t][\singleSpace][t]{\commitLengthB}	% Begin minipage on right side of page
+			\the\Chair											% Write in minipage
+		\end{minipage}											% End minipage on right side of page
+	\else														% ELSE, i.e., CoChair is set
+		\setlength{\commitLengthA}{0.3\textwidth}				% Set width for first minipage
+		\setlength{\commitLengthB}{0.7\textwidth}				% Set width for second minipage
+		\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}	% Begin minipage on left side of page
+			Co-Chairs of Committee,								% Write in minipage
+		\end{minipage}											% End minipage on right side of page
+		\begin{minipage}[t][2\singleSpace][t]{\commitLengthB}	% Begin minipage on right side of page
+			\the\Chair\\\the\CoChair							% Write in minipage
+		\end{minipage}											% End minipage on right side of page
+	\fi															% END if
+	% Set up the committee members
+	\if\relax\the\MemberOne\relax
+		% Do nothing
+	\else
+		\if\relax\the\MemberTwo\relax											% If ONE members present
+			\noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
+				Committee Members,
+			\end{minipage}
+			\begin{minipage}[t][\singleSpace][t]{\commitLengthB}
+				\the\MemberOne
+			\end{minipage}
+		\else
+			\if\relax\the\MemberThree\relax										% If TWO members present
+				\noindent\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}
+					Committee Members,
+				\end{minipage}
+				\begin{minipage}[t][2\singleSpace][t]{\commitLengthB}
+					\the\MemberOne\\\the\MemberTwo
+				\end{minipage}	
+			\else
+				\if\relax\the\MemberFour\relax									% If THREE members present
+					\noindent\begin{minipage}[t][3\singleSpace][t]{\commitLengthA}
+						Committee Members,
+					\end{minipage}
+					\begin{minipage}[t][3\singleSpace][t]{\commitLengthB}
+						\the\MemberOne\\\the\MemberTwo\\\the\MemberThree
+					\end{minipage}
+				\else															% If FOUR members present
+					\noindent\begin{minipage}[t][4\singleSpace][t]{\commitLengthA}
+						Committee Members,
+					\end{minipage}
+					\begin{minipage}[t][4\singleSpace][t]{\commitLengthB}
+						\the\MemberOne\\\the\MemberTwo\\\the\MemberThree\\\the\MemberFour
+					\end{minipage}
+				\fi
+			\fi
+		\fi
+	\fi
+	% Print the Department Head
+	\noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
+		Head of Department,
+	\end{minipage}
+	\begin{minipage}[t][\singleSpace][t]{\commitLengthB}
+		\the\DeptHead
+	\end{minipage}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- Set up environments for abstract, dedication, etc. 
