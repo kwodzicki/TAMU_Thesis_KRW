@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Main document template code for TAMU Theses and 
+%  Dissertations starting Fall 2016.
+%
+%  Author:  Kyle R. Wodzicki  
+%  Updated: 20 May 2016
+%  Adapted from: 
+%    TAMUTemplate Version 1.7 of the TAMU LaTeX Users 
+%    group (http://howdy.me).
+%    Authored by: Wendy Lynn Turner 
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Set information for title page. Either delete or comment out tags that are NOT needed
+\Title{Type in your default title here: You may need to change the spacing if the title is too long and pushes the copyright off of the titlepage}
+\PaperType{Thesis OR Dissertation}		% Enter the paper type
+\FullName{First Middle Lastname}		% Enter full name
+\Degree{Doctor of Philosophy}			% Enter degree
+\Chair{Chair Name}						% Enter name of committee chair
+\CoChair{Co-Chair Name}					% Enter name of committee co-chair. If NO co-chair do NOT use.
+\MemberOne{Committee Member 1}			% Name of first committee member
+\MemberTwo{Committee Member 2}			% Name of second committee member
+\MemberThree{Committee Member 3}		% Name of third committee member
+\MemberFour{Committee Member 4}			% Name of fourth committee member
+\DeptHead{Head of Department}			% Enter name of department head
+\GradMonth{December}					% Enter graduation month
+\GradYear{2012}							% Enter graduation year
+\Dept{Department Name}					% Enter department name	
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beginning of the document
+\begin{document}
+\setlength{\titleSpacing}{0.82\baselineskip}% If title page is NOT on single page, reduce value slightly
+
+% Set the document spacing. Default is double spaced
+%\onehalfspacing
+\doublespacing
+
+\maketitle	% Must have this to generate the title page!!!
+
+% Be sure to include all TeX files to be used in your document!
+\include{./Data/abstract}
+\include{./Data/dedication}
+\include{./Data/acknowledgements}
+\include{./Data/nomenclature}
+
+\include{./Data/Chapter1}
+\include{./Data/Chapter2}
+\include{./Data/Chapter3}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Generate the Bibliography
+\phantomsection										% Place hyper marker on the page
+\addcontentsline{toc}{chapter}{REFERENCES}			% Add references to ToC
+\renewcommand{\bibname}{{\normalsize\rm REFERENCES}}% Set title of references
+
+\bibliographystyle{./Bib_Styles/agufull08}			% Set the bibliography style
+\bibliography{./references}							% Set path to bibliography .bib file
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Include appendices
+
+% \include{./Data/appendices}
+
+
+\end{document}
