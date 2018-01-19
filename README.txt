@@ -1,8 +1,8 @@
-TAMU LaTeX Thesis Template version 0.17.6
+TAMU LaTeX Thesis Template version 0.17.9
 
 Kyle R. Wodzicki
 
-20 Jun. 2017
+10 Aug. 2018
 
 —————
 About
@@ -12,6 +12,7 @@ This version of the TAMU LaTeX template was designed to reduce the amount of end
 —————
 Using the template.
 —————
+
 
 
 ———————
