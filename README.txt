@@ -2,7 +2,7 @@ TAMU LaTeX Thesis Template version 0.17.9
 
 Kyle R. Wodzicki
 
-10 Aug. 2018
+10 Sep. 2017
 
 —————
 About
