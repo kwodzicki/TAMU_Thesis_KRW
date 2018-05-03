@@ -18,39 +18,21 @@
 % To place a 'Reference' section at the end
 % of each chapter, use the 'chapref' option
 %    [12pt,chapref]
-% Can combine options
+% To change font to Arial (default Times New Roman)
+%    [12pt,arial]% Can combine options
+
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
 
+%\usepackage{showframe}                 % Show frame for margins for debugging
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Load extra packages here            %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[colorlinks=false]{hyperref}	% hyperref with coloring and footnote do NOT get along
-\usepackage{multirow}			% Multirow package for tables
-\usepackage{footnote}			% Package for the savenotes command
-\usepackage{amsthm}				% AMS package for theorems
-%\usepackage{natbib,url}			% Load the natbib and ulr packages
+\usepackage{multirow}			        % Multirow package for tables
+\usepackage{footnote}			        % Package for the savenotes command
+\usepackage{amsthm}				        % AMS package for theorems
+%\usepackage{natbib,url}			    % Load the natbib and ulr packages
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%       Set information for title page.        %%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Delete or comment out tags that are NOT needed
-\Title{The Title of Your Thesis or Dissertation Goes In This Space To Let Us Know What Your Document is About}
-\PaperType{Thesis}					% Enter the paper type
-\FullName{Aggie D. Student}			% Enter full name
-\Degree{Master of Science}			% Enter degree
-\Chair{Chair Name}					% Enter name of committee chair
-%\CoChair{Co-Chair Name}			% Enter name of committee co-chair
-\MemberOne{Committee Member 1}		% Name of first committee member
-\MemberTwo{Committee Member 2}		% Name of second committee member
-\MemberThree{Committee Member 3}	% Name of third committee member
-%\MemberFour{Committee Member 4}	% Name of fourth committee member
-\DeptHead{Head of Department}		% Enter name of department head
-\GradMonth{December}				% Enter graduation month
-\GradYear{2016}						% Enter graduation year
-\Dept{Mathematics}					% Enter department name	
-
-\bibfile{myReference}               % Set the bibliography file to use
-\bibstyle{ieeetr}                   % Set the bibliography style to use
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -69,6 +51,31 @@
 \usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%       Set information for title page.        %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Delete or comment out tags that are NOT needed
+\Title{The Title of Your Thesis or Dissertation Goes In This Space To Let Us Know What Your Document is About}
+\PaperType{Thesis}					% Enter the paper type
+\FullName{Aggie D. Student}			% Enter full name
+\Degree{Master of Science}			% Enter degree
+\Chair{Chair Name}					% Enter name of committee chair
+%\CoChair{Co-Chair Name}			% Enter name of committee co-chair
+\MemberOne{Committee Member 1}		% Name of first committee member
+\MemberTwo{Committee Member 2}		% Name of second committee member
+\MemberThree{Committee Member 3}	% Name of third committee member
+%\MemberFour{Committee Member 4}	% Name of fourth committee member
+\DeptHead{Head of Department}		% Enter name of department head
+\GradMonth{May}				        % Enter graduation month
+\GradYear{2018}						% Enter graduation year
+\Dept{Mathematics}					% Enter department name	
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Set bibliography file and bibliography style  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibfile{myReference}               % Set the bibliography file to use
+\bibstyle{ieeetr}                   % Set the bibliography style to use
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Beginning of the document           %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
@@ -83,13 +90,14 @@
 
 \makeToC							% Generate the Table of Contents. REQUIRED!!!
 
+
 % Include all chapters of the 
 % thesis. Note that you MUST  
-% use the \chapInclude command
-\chapInclude{./Data/Section1}		% Include the Section1.tex file
-\chapInclude{./Data/Section2}		% Include the Section2.tex file
-\chapInclude{./Data/Section3}		% Include the Section3.tex file
-\chapInclude{./Data/Section4}		% Include the Section4.tex file
+% use the \includeChapter command
+\includeChapter{./Data/Section1}		% Include the Section1.tex file
+\includeChapter{./Data/Section2}		% Include the Section2.tex file
+\includeChapter{./Data/Section3}		% Include the Section3.tex file
+\includeChapter{./Data/Section4}		% Include the Section4.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the Bibliography DO NOT TOUCH THIS!!!
