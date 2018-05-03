@@ -1,23 +1,22 @@
-TAMU LaTeX Thesis Template version 0.17.9
+TAMU LaTeX Thesis Template version 0.18.04
 
 Kyle R. Wodzicki
 
-10 Sep. 2017
+02 May 2018
 
 —————
 About
 —————
 This version of the TAMU LaTeX template was designed to reduce the amount of end-user formatting required. The template uses the tamu_thesis class. All of the example code in the template is taken from the OGAPS template.
 
-—————
-Using the template.
-—————
-
 
 
 ———————
 Changes
 ——————-
+V0.18.04
+  Update spacing to match the OGAPS Spring 2018 template. Also add the option to have Reference sections at the end of each chapter. Moves to use the XeLaTeX compiler
+
 V0.17.9
   Update spacing to match the OGAPS Spring 2018 template. Also add the option to have Reference sections at the end of each chapter.
 
