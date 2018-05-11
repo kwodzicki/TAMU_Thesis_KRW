@@ -4,8 +4,9 @@
 %  Dissertations starting Fall 2016.
 %
 %  Author:  Kyle R. Wodzicki  
-%  Version: 0.17.09
-%  Updated: 18 Jan. 2018
+%  Version: 0.18.04
+%  Updated: 11 May. 2018
+%    Better matches the Spring 2018 OGAPS template
 %
 %  Adapted loosely from: 
 %    TAMU LaTeX (SZR) Version 3.16.10 from OGAPS 
@@ -45,9 +46,15 @@
 \newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Load the nomenclature package. Default is to  
-%%% display all the nomenclature/acronyms. Remove
-%%% the [all] option to display only those used.
+%%% Load the nomenclature package. 
+%%% Default is to display only those acronyms that
+%%% have been used in the document. To display all
+%%% acronyms defined in the nomenclature.tex file,
+%%% add the [all] option. If you would like to
+%%% enable full acronym definition pop-ups when
+%%% hovering over an acronym in the text, add
+%%% the [hover] option. To include both options:
+%%% [all, hover]
 \usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,7 +86,7 @@
 %%%          Beginning of the document           %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-\maketitle			% Must have this to generate the title page!!!
+\maketitle% DO NOT TOUCH THIS!!!
 
 % Be sure to include all TeX files to be used in your document!
 \include{./Data/abstract}			% Include the abstract.tex file
@@ -89,15 +96,13 @@
 \makeNomenclature					% Generate nomenclature if using the nomenclature package
 
 \makeToC							% Generate the Table of Contents. REQUIRED!!!
+%\tableofcontents
 
-
-% Include all chapters of the 
-% thesis. Note that you MUST  
-% use the \includeChapter command
-\includeChapter{./Data/Section1}		% Include the Section1.tex file
-\includeChapter{./Data/Section2}		% Include the Section2.tex file
-\includeChapter{./Data/Section3}		% Include the Section3.tex file
-\includeChapter{./Data/Section4}		% Include the Section4.tex file
+% Include all chapters/sections of the thesis.
+\include{./Data/Section1}		% Include the Section1.tex file
+\include{./Data/Section2}		% Include the Section2.tex file
+\include{./Data/Section3}		% Include the Section3.tex file
+\include{./Data/Section4}		% Include the Section4.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate the Bibliography DO NOT TOUCH THIS!!!

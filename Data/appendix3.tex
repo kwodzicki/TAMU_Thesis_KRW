@@ -20,7 +20,7 @@
 As previously mentioned, one program that can be used to organize references is \href{http://www.jabref.org}{\textbf{JabRef}}. While a tutorial of how to use \textbf{JabRef} is beyond the scope of this template, a brief discussion of how to use \textbf{BibTeX} follows.
 
 \section{BibTeX}
-After you have installed \textbf{JabRef}, or any citation manager of your choosing that is compatible with \textbf{BibTeX}, you must save a \textbf{BibTeX} database. This database file will contain all the information \textbf{BibTeX} requires to generate your bibliography. An example .bib file is include in this template that is named `myReference.bib'. The first entry of that file is shown below.
+After you have installed \textbf{JabRef}, or any citation manager of your choosing that is compatible with \textbf{BibTeX}, you must create a \textbf{BibTeX} database. This database file will contain all the information \textbf{BibTeX} requires to generate your bibliography. An example .bib file named `myReference.bib' is included in this template. The first entry of that file is shown below.
 
 {\footnotesize \begin{verbatim}
 @Article{Barn-JORVQ,
@@ -33,7 +33,7 @@ After you have installed \textbf{JabRef}, or any citation manager of your choosi
 }
 \end{verbatim}}
 
-All of the entries in the entry are very self-explanatory, such as author and title, however, arguably the most important part of the entry is the key. The key is the first entry after @Article, which is Barn-JORVQ in this example. This is the key you will use in any cite commands for references, e.g.,
+All of the entries in the entry are very self-explanatory, such as author and title, however, arguably the most important part of the entry is the key. The key is the first value after @Article, which is Barn-JORVQ in this example. This is the key you will use in any cite commands for references, e.g.,
 
 {\footnotesize\begin{verbatim}\cite{Barn-JORVQ}\end{verbatim}}.
 
@@ -41,13 +41,28 @@ All of the entries in the entry are very self-explanatory, such as author and ti
 Depending on the citation style that is used, there may be different cite commands for different types of in-text citations. It is important to know which commands must be used with the citation style you are using.
 
 \section{Compiling with BibTeX}
-When compiling your \LaTeX{} document, it is also important to remember to compile it twice to ensure that all equation, fig, table, etc. cross-references have updated correctly. However, when using citations from a .bib file in your document, the process is a little longer. To ensure that your bibliography generates correctly, one must run pdfLaTeX, then BibTeX, then pdfLaTeX twice. This will ensure that all the citations and cross-references are updated correctly. If you are using a program such as \textbf{MikTeX} or \textbf{ProTeXt}, this may be the default compilation method. However, if you \textbf{TeXShop} on a Mac, you must change the compiler, next to the Typeset button, from LaTeX to BibTeX, and back to compile properly. If compiling from command line, the sequence would be:
+When compiling your \LaTeX{} document, it is also important to remember to compile it twice to ensure that all equation, fig, table, etc. cross-references have updated correctly. However, when using citations from a .bib file in your document, the process is a little longer. To ensure that your bibliography generates correctly, one must run XeLaTeX, then BibTeX, then XeLaTeX twice. This will ensure that all the citations and cross-references are updated correctly. If you are using a program such as \textbf{MikTeX} or \textbf{ProTeXt}, this may be the default compilation method. However, if you use \textbf{TeXShop} on a Mac, you must change the compiler manually. If compiling from command line, the sequence would be:
 
 {\footnotesize \begin{verbatim}
-pdflatex TAMU_Thesis_Main.tex
+xelatex TAMU_Thesis_Main.tex
 bibtex TAMU_Thesis_Main.aux
-pdflatex TAMU_Thesis_Main.tex
-pdflatex TAMU_Thesis_Main.tex
+xelatex TAMU_Thesis_Main.tex
+xelatex TAMU_Thesis_Main.tex
 \end{verbatim}}
+
+Be sure to check the output for any errors. If question marks (?) appear in any location where a reference should be, there was an issue with the compilation. Make certain that the key used in the cite command matches the corresponding references in the .bib file.
+
+\section{References at the end of chapters}
+If you would like references at the end of each chapter, first make sure you are using the `chapref' options in the documentclass command at the top of the Main \LaTeX document. Once that option is set, compilation is similar to the method discussed above.
+
+First, compile the main file use XeLaTeX. When it is done compiling, check the directory your document is saved in. There should be a bunch of files named `bu*.aux', where the asterisk represents any number. You will now want to run bibtex on all of these .aux files as well as the .aux file from the main document. After bibtex is run on all the .aux files, run XeLaTeX two more times and your document should be good to go! If you are on a Mac, open up a Terminal window, cd into the directory your document is in and run the following commands (should work on any Linux machine as well):
+
+{\footnotesize \begin{verbatim}
+xelatex TAMU_Thesis_Main.tex
+find ./ -name '*.aux' -exec bibtex '{}' \;
+xelatex TAMU_Thesis_Main.tex
+xelatex TAMU_Thesis_Main.tex
+\end{verbatim}}
+The second command simply finds all the .aux files in the current working directory and executes (exec) the command bibtex on each of them.
 
 Be sure to check the output for any errors. If question marks (?) appear in any location where a reference should be, there was an issue with the compilation. Make certain that the key used in the cite command matches the corresponding references in the .bib file.

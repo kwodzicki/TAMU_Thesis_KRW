@@ -24,20 +24,27 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{nomenclature}
 	[2016/11/02 v1.0 LaTeX package for acronyms used in TAMU Thesis]
-\RequirePackage{acro}			                                               % Load acro package
+\RequirePackage{acro}			                                                      % Load acro package
 \RequirePackage{longtable,tabu}                                                 % Load table packages
 
 \newif\if@all\@allfalse                                                         % Set up new if variable for all
+\newif\if@hover\@hoverfalse                                                     % Set up new if variable for hover
 \DeclareOption{all}{\@alltrue}                                                  % Declare option for `all', set true if used
+\DeclareOption{hover}{\@hovertrue}                                              % Declare option for `hover', set true if used
 \ProcessOptions\relax                                                           % Terminate option processing
 
 \DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
   table = longtabu,                                                             % Set table type to longtabu
-  before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},     % Set to single space within acronym and double between
-  table-spec = @{}>{}lX@{},                                                     % Set the table specifications
+  before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},      % Set to single space within acronym and double between
+  table-spec = @{}>{\setlength\hsize{0.6\hsize}}X>{\setlength\hsize{1.4\hsize}}X@{}             % Set the table specifications
 }
+% In the table-spec, not sure where that @{} does, but the rest
+% sets up tabularx style columns that will adjust to the text width
+% with the first column being about 1/3 the width and the second about 2/3
+
 \acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'
 \if@all\acsetup{only-used=false}\fi                                             % Set the acronym `only-used' option to false
+\if@hover\acsetup{tooltip=true}\fi                                              % Set the acronym 'tooltip' option to true
 
-\include{./Data/nomenclature}										% Acronyms are defined in the nomenclature.tex file
+\input{./Data/nomenclature}										                                  % Acronyms are defined in the nomenclature.tex file
 \endinput
