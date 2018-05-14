@@ -161,6 +161,7 @@
 \RequirePackage[titletoc]{appendix}
 \RequirePackage{graphicx}
 \RequirePackage{caption}
+\RequirePackage{natbib}
 \RequirePackage{fontspec}
 \RequirePackage[T1]{fontenc}
 
@@ -206,8 +207,11 @@
 \newtoks{\GradYear}                                                             % Graduation Year
 \newtoks{\Dept}                                                                 % Graduation Dept
 
-\newtoks{\bibfile}
-\newtoks{\bibstyle}
+
+\def\biblioStyle{plain}                                                         % Define default bibliography style
+\def\biblioFile{myReferences}                                                   % Define default bibliography file
+\newcommand{\bibStyle}[1]{\def\biblioStyle{#1}}                                 % Command to set the bibliography style
+\newcommand{\bibFile}[1]{\def\biblioFile{#1}}                                   % Command to set the bibliography file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %         DEFINE SOME COMMANDS FOR ENVIRONMENTS           %
@@ -316,8 +320,7 @@
 \let\origendthebibliography\endthebibliography                                  % Store default \end{thebibliography}
 \newif\ifemptybibliography\emptybibliographyfalse                               % Create new if
 \renewenvironment{thebibliography}[1]{
-  \def\nBib{#1}                                                                 % Define macro for number of bib entries
-  \ifx\nBib\empty                                                               % If the macro is empty
+  \ifnum0#1=0                                                                   % If there are zero (0) references
     \emptybibliographytrue                                                      % Set the emptybibliography variable to true
   \else                                                                         % Else, the macro was NOT empty
     \ifchapref                                                                  % If references at the end of each chapter requested
@@ -407,9 +410,9 @@
 \let\oldInclude\include
 \renewcommand{\include}[1]{
   \ifchapref                                                                    % If chapref is set to true
-    \begin{bibunit}[\the\bibstyle]                                              % Start bibunit environ and se the bibliography style
+    \begin{bibunit}[\biblioStyle]                                              % Start bibunit environ and se the bibliography style
      \input{#1}                                                                 % Input the tex file into the document; use input because include does clear page
-      \putbib[\the\bibfile]                                                     % Generate the bibliography
+      \putbib[\biblioFile]                                                     % Generate the bibliography
     \end{bibunit}                                                               % End bibunit environ
     \clearpage                                                                  % Clear the page at end of chapter/section
   \else                                                                         % If chapref is false
@@ -558,8 +561,8 @@
 \newcommand{\makebibliography}{                                                 % Set up the new command; no inputs
   \phantomsection                                                               % Generate a phantom section
   \addcontentsline{toc}{chapter}{REFERENCES}                                    % Add References to table of contents
-  \bibliographystyle{\the\bibstyle}	                                            % Set the bibliography style
-  \bibliography{\the\bibfile}			                                              % Set path to bibliography .bib file
+  \bibliographystyle{\biblioStyle}	                                            % Set the bibliography style
+  \bibliography{\biblioFile}			                                              % Set path to bibliography .bib file
 }
 
 

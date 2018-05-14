@@ -32,7 +32,7 @@
 \usepackage{multirow}			        % Multirow package for tables
 \usepackage{footnote}			        % Package for the savenotes command
 \usepackage{amsthm}				        % AMS package for theorems
-%\usepackage{natbib,url}			    % Load the natbib and ulr packages
+\usepackage{url}			            % Load the ulr packages
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
@@ -79,8 +79,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set bibliography file and bibliography style  %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibfile{myReference}               % Set the bibliography file to use
-\bibstyle{ieeetr}                   % Set the bibliography style to use
+\bibFile{myReference}               % Set the bibliography file to use
+\bibStyle{ieeetr}                   % Set the bibliography style to use
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Beginning of the document           %%%
@@ -96,7 +96,6 @@
 \makeNomenclature					% Generate nomenclature if using the nomenclature package
 
 \makeToC							% Generate the Table of Contents. REQUIRED!!!
-%\tableofcontents
 
 % Include all chapters/sections of the thesis.
 \include{./Data/Section1}		% Include the Section1.tex file
