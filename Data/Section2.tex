@@ -5,46 +5,89 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\chapter{PAGES WITH A FIGURE, A TABLE AND AN EQUATION}
-\section{Figures: Placement, Size, and Captions}
-This is a figure template.
+\chapter{PAGES WITH A FIGURE, A TABLE, AND AN EQUATION}
+\section{Inserting Figures}
+
+Figure (and table) titles should be consistent through the document. All captions should be placed either above or below the object it describes. This is done by placing the \textit{caption} in the correct place, i.e., before the {\it includegraphics} command for caption above or after for caption below).
+
+Below is an example of a figure with the caption under the figure.
 \begin{figure}[ht]
-\centering
-\includegraphics[scale=0.75]{TAMUthesis_CMD_windows.png}
-\caption[The command line compiler in Windows.]{The command line compiler in Windows. It is not suggested that you compile using this method. See compilation instructions in the README.}
-
-\label{fig:CMD_1}
-
+   \centering
+   \includegraphics[width = 0.5\textwidth]{TAMUthesis_CMD_windows.png}
+   \caption[The command line compiler in Windows.]{The command line compiler in Windows. It is not suggested that you compile using this method. See compilation instructions in the README.}
+   \label{fig:CMD_1}
 \end{figure}
 
-Figure (and table) titles should be consistent through the document. All captions should be placed either above or below the object it describes. This is done by placing the \textit{caption} in the correct place. While continued figures are allowed by the Thesis Manual, it is not suggested that any continued figures be included in a \LaTeX\ document. The figure below is from Linux Mint, showing a portion of a desktop.
+\subsection{Figure placement}
+When including a figure (or a table) it is important to specify where it should appear on the page. Note that when the {\it figure} environment is started of the above figure, [ht] appears after the begin statement. This tells \LaTeX\ to place the figure here in the text, or at the top of the page if it does not fit here. While \LaTeX\ will try its best to put the figure here, if the figure is too tall (i.e., it would run off the page if it were placed here), your figure will likely be pushed to the top of the next page. When using the h option, it is recommended that you specify your second preference for if the figure does not fit. If you want the figure exactly here, use the H option.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width = 5.75in]{Desktop.png}
-	\caption{A typical desktop space in Linux Mint.}
+There are three other options that can be used when tell \LaTeX\ where to place figures and tables
+\begin{itemize}
+  \item t - top of the page
+  \item b - bottom of the page
+  \item p - give the figure/table its own page
+\end{itemize}
+
+It will likely take some trial and error to get your figures where you want them, but once you understand how \LaTeX\ thinks when placing figures/tables, it is very easy to get them where you want. If you are having issues with \LaTeX\ following your commands, you can try adding an exclamation mark (!) to the position (i.e., !t). I would recommend waiting until most of your text is written to start placing your figures exactly where you want them, as they will move if text is add/removed.
+
+\subsection{Figure width/height}
+
+If you have generate all your images to be the exact size that you want them and know they will fit within the margins of the page, then you can skip this section. If your figures are smaller/larger than you would like them to appear, continue reading see how to scale your images.
+
+It is recommended that when specifying the width/height of images, the {\it width} or {\it height} option be used in the {\bf includegraphics} command, where {\it width} sets the width of the image and {\it height} sets the height. It is also recommend that the lengths {\it textwidth} and {\it textheight} be used when specifying the width and height of images, respectively. Factional values of these lengths can be used by simply placing a decimal number in front of the length. For example, the width of \figref{fig:CMD_1} is defined as
+\begin{verbatim}width = 0.5\textwidth\end{verbatim}
+which means the figure will have a width half the length of a line of text. If the figure is much taller than it is wide, you may want to specify the height.
+
+If you would prefer to provide a scaling factor for images, you can use the {\it scale} options and specify a decimal number, e.g., scale=0.5 to make the image half its original size. Just be careful when using scaling, as images may go outside of the margins. This is why it's recommended to specify a size and allow \LaTeX\ to determine the scaling.
+
+\subsection{Captions for figures/tables}
+When adding a caption to a figure or table, the {\it caption} command is used. For \figref{fig:CMD_1}, the caption command is
+\begin{verbatim}
+   \caption[The command line compiler in Windows.]{The command line
+   compiler in Windows.It is not suggested that you compile using
+   this method. See compilation instructions in the README.}
+\end{verbatim}
+The text in the square brackets [] is the text that will appear in the list of figures in the table of contents, while the text in the curly brackets \{\} will appear in the caption under the figure. If the square brackets [] are not used, the text in the curly brackets \{\} will be placed in the list of figures. The same rules apply to tables using the {\it caption} command.
+
+\subsection{Labeling figures/tables}
+One of the features of \LaTeX\ is its ability to cross-reference things very easily; e.g. \figref{fig:CMD_1}. When inserting a figure, table, or even an equation, it is highly recommended that you give the object a label using the {\it label} command inside the figure, table, etc. environment. For example, \figref{fig:CMD_1} is given the label `fig:CMD\_1'\footnote{I recommend prefixing figure labels with fig:, tables with tab:, and equations with eq:. You can also label chapters, sections, etc.}. The label can be anything you want, so long as you remember what it is. Use the label whenever referencing the figure in the document and if figures are added before the figure, or the figure is moved around, the in-text reference to the figure will update to the new figure number.
+
+To reference the figure in-text, you can use either the {\it ref} or {\it figref} command. The {\it ref} command will give you just the figure number, while the {\it figref} command will insert the figure label as well. For example, {\it ref} gives: \ref{fig:CMD_1}, while {\it figref} gives: \figref{fig:CMD_1}.
+
+\subsection{Figure Cropping}
+If you have some figures that have large margins and you do not want to remake the figures, you can crop them from the {\it includegraphics} command. Just look at \figref{fig:large_margins}. 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figure_with_margins}
+  \caption{A figure that has large margins.}
+  \label{fig:large_margins}
 \end{figure}
 
-The figure below is taken from R. While there are packages available to import graphics from R, MATLAB, and similar software, it is probably best to export plots generated by these programs as a PNG file, and then import it via the \textit{includegraphics} command.
+Notice that there is a good deal of white space between the bottom of the figure and the figure caption. This can be removed using the {\it trim} option in includgraphics. The option is as follows:
+\begin{verbatim}
+trim=0mm 0mm 0mm 0mm,clip
+\end{verbatim}
+where trim specifies how much of the image is to be cropped, with the four 0mm values specify how much to crop off the left, bottom, right, and top of the image (in milimeters), and clip tells includegraphics to crop the image. Figure \ref{fig:cropped_image} shows the cropped version of Figure \ref{fig:large_margins} with trim set to `0mm 15mm 0mm 15mm'; as I am only worried about the bottom (and top) margins, I did not trim the left (first value) and right (third value) sides of the image. While I used milimeters (mm) as the unit in this case, any \LaTeX\ unit of measure can be used: cm, in, pt, etc.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.55]{UnemDiffACF.png}
-	\singlespace
-	\caption{The autocorrelation function (ACF) of the differenced unemployment series. Seasonal adjustments may be needed.}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[trim=0mm 15mm 0mm 15mm,clip,width=0.6\textwidth]{figure_with_margins}
+  \caption{As in Figure \ref{fig:large_margins}, but with the margins cropped off.}
+  \label{fig:cropped_image}
 \end{figure}
 
-It is highly suggested that you scale the figures so that they fit within the margins. Almost all the figures included in this document for the sake of example have been scaled. It is best to use PNG and JPEG files as figures.
+\figref{fig:cropped_image} is also an example of how the {\it ht} option for placement works, with the image being placed at the top of the page that it appears on.
 
-The last figure here is a screenshot from the Linux terminal.
+\subsection{Continued Figures}
+If you must use a continued figure, \figref{fig:continued_fig} shows and example of how to do this. All that is required is adding the {\it ContinuedFloat} command to the continued portion of the figure and ensuring that the caption command is as follows
+\begin{verbatim}
+\caption[]{Continued.}
+\end{verbatim}
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=4.75in]{Terminal1.png}
-	\caption{The Linux terminal. The commands shown are from a two-dimensional mesh generator that triangulates a domain in the plane. Files containing nodes, elements, the polygon, and the edges are created.}
-\end{figure}
 
-\section{Table Placement, Size and Table Title}
+\newpage% Issued so that the next section begins on a new page
+\section{Inserting Tables}
 
 Here is a table, displaying band and auxiliary scores from the 2011 Arcadia Festival of Bands held in Arcadia, CA \cite{ARCADIA}.
 
@@ -67,23 +110,24 @@ Here is a table, displaying band and auxiliary scores from the 2011 Arcadia Fest
 		Mira Mesa & 89.65 & 91.50 \\ \hline
 	\end{tabular}
 	\caption{Scores from the 2011 Arcadia Festival of Bands.}
+	\label{tab:band_scores}
 \end{table}
 
-The table is sorted by band score. There is more text here to demonstrate how the template handles spacing between tables and body text. Also note how the table caption is in a smaller font size than the body text.
+The table is sorted by band score. There is more text here to demonstrate how the template handles spacing between tables and body text. When referencing tables, you can use the {\it ref} or {\it tabref} commands. {\it tabref} is similar to {\it figref} discussed above, with {\it ref} giving: \ref{tab:band_scores}, and {\it tabref} giving: \tabref{tab:band_scores}, for the above table. Also note how the table caption is in a smaller font size than the body text.
 
-\section{Equations}
+\section{Equations}\label{sec:more_equations}
 
 The following format is recommended to be used to display equations.
 
 %Make other examples.
-\begin{equation} \label{Equ.2.1}
+\begin{equation} \label{eq:2.1}
 y=c_1\cos(t)+c_2\sin(t)
 \end{equation}
-\begin{equation} \label{Equ.2.2}
+\begin{equation} \label{eq:2.2}
 e^{it}=\cos(t)+i\sin(t)
 \end{equation}
 
-Equation \ref{Equ.2.1} is the general solution to the differential equation $y''+y=0$. In the source code, the \textit{ref} command allows you to refer to an equation by a label you created. References must be made after the equation has been created; attempting to refer to an equation before it is defined results in a question mark placeholder. Some more sample equations are below. Notice the first set below is not numbered.
+Equation \ref{eq:2.1} is the general solution to the differential equation $y''+y=0$. In the source code, the {\it ref} and {\it eqref} commands allows you to refer to an equation by a label you created. References must be made after the equation has been created; attempting to refer to an equation before it is defined results in a question mark placeholder. Some more sample equations are below. Notice the first set below is not numbered.
 %%
 \begin{align*}
 \log (x^n) &= \log (x \cdot x \cdot \ldots \cdot x) \\
@@ -105,7 +149,7 @@ u(x, t) = \int_{-\infty}^{\infty} G(x, \tau) \exp\left(-\frac{(t-\tau)^2}{4kt}\r
 
 You can use labels to refer to equations you create. \ref{Equ.2.5} is the \textbf{Laplace transform} used extensively in differential equations. \ref{Equ.2.3} is the matrix representation of the \textbf{normal equations} used in least-squares regression.
 
-To have equations without labels appearing the right margin, simply add an asterisk to the name of the environment (equation, align, etc.) when making the declaration.
+To have equations without labels appearing in the right margin, simply add an asterisk to the name of the environment (equation, align, etc.) when making the declaration.
 
 
 \section{Theorems and Proofs: Examples}
@@ -175,13 +219,3 @@ For the sake of testing the appearance of the list of tables, a second table wil
 \end{savenotes}
 
 Naturally, tables and footnotes do not go together. If you attempted to write a footnote inside a table, there will be nothing at the bottom of the page, yet the footnote marker will still appear. To remedy this, the \textit{footnote} package has been loaded from the \textit{mdwtools} package. Check your TeX distribution to see if \textit{mdwtools} is installed. See the source code for how this is implemented.
-
-Here are some blank floats.
-
-\begin{figure}[!h]
-	\caption{A blank float.}
-\end{figure}
-
-\begin{figure}[!h]
-	\caption{Another blank float.}
-\end{figure}

@@ -1,30 +1,56 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Main document template code for TAMU Theses and 
-%  Dissertations starting Fall 2016.
+%  Dissertations starting Spring 2018.
 %
 %  Author:  Kyle R. Wodzicki  
-%  Version: 0.18.04
-%  Updated: 11 May. 2018
+%  Version: 0.18.04c
+%  Updated: 15 May. 2018
 %    Better matches the Spring 2018 OGAPS template
 %
-%  Adapted loosely from: 
-%    TAMU LaTeX (SZR) Version 3.16.10 from OGAPS 
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% To change left margin for binding purposes
-%    [12pt,binding]
-% To change document spacing to 1.5 spacing
-%    [12pt,onehalfspacing]
-% To place a 'Reference' section at the end
-% of each chapter, use the 'chapref' option
-%    [12pt,chapref]
-% To change font to Arial (default Times New Roman)
-%    [12pt,arial]% Can combine options
-
+% The tamu_thesis class has the following options:
+%   11pt or 12pt - This sets the size of the 
+%      text for the document. Use 12pt unless
+%      you have approval from OGAPS to use
+%      11pt.
+%   onehalfspacing - Changes spacing to 1.5
+%      spacing. The default is to use double
+%      spacing. Do NOT use this option unless
+%      you have approval from OGPAS.
+%   arial - Changes the font of the document to
+%      Arial. The default font is Times New Roman.
+%   binding - Changes the left margin to be 1.4
+%      inches for binding purposes (recommended
+%      in the thesis manual). The default is to
+%      use 1 inch margins on all sides.
+%   chapref - Will generate a references section
+%      for each chapter of the document. The
+%      default is to have  References chapter
+%      after the main chapters of the document.
+%   natbib - Will load the natbib package that is
+%      required for some bibliography styles. If
+%      you don't know what natbib is, you probably
+%      don't need it.
+%   draft - Enables draft mode. This will speed up
+%     compiling of document by disabling hyper-
+%     references and inserting wire frames where
+%     images/figures should be.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
 
-%\usepackage{showframe}                 % Show frame for margins for debugging
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Load the nomenclature package. 
+% Default is to display only those acronyms that
+% have been used in the document. To display all
+% acronyms defined in the nomenclature.tex file,
+% add the [all] option. If you would like to
+% enable full acronym definition pop-ups when
+% hovering over an acronym in the text, add
+% the [hover] option. To include both options:
+% [all, hover]
+\usepackage[all]{nomenclature}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Load extra packages here            %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -32,13 +58,14 @@
 \usepackage{multirow}			        % Multirow package for tables
 \usepackage{footnote}			        % Package for the savenotes command
 \usepackage{amsthm}				        % AMS package for theorems
-\usepackage{url}			            % Load the ulr packages
+\usepackage{url}			            % Load the url package
+%\usepackage{showframe}                 % Show frame for margins for debugging
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \graphicspath{ {./graphic/},{./figures/}  } % Locations of figures
-\DeclareGraphicsExtensions{.png,.PNG,.jpg}  % Figure extensions
+\DeclareGraphicsExtensions{.pdf,.png,.PNG,.jpg}  % Figure extensions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define custom  commands for easier typing        %%%
@@ -46,35 +73,23 @@
 \newcommand{\mmday}{mm day$^{-1}$}  % Command for mm day^-1 units
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Load the nomenclature package. 
-%%% Default is to display only those acronyms that
-%%% have been used in the document. To display all
-%%% acronyms defined in the nomenclature.tex file,
-%%% add the [all] option. If you would like to
-%%% enable full acronym definition pop-ups when
-%%% hovering over an acronym in the text, add
-%%% the [hover] option. To include both options:
-%%% [all, hover]
-\usepackage[all]{nomenclature}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%       Set information for title page.        %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Delete or comment out tags that are NOT needed
 \Title{The Title of Your Thesis or Dissertation Goes In This Space To Let Us Know What Your Document is About}
-\PaperType{Thesis}					% Enter the paper type
-\FullName{Aggie D. Student}			% Enter full name
-\Degree{Master of Science}			% Enter degree
-\Chair{Chair Name}					% Enter name of committee chair
-%\CoChair{Co-Chair Name}			% Enter name of committee co-chair
-\MemberOne{Committee Member 1}		% Name of first committee member
-\MemberTwo{Committee Member 2}		% Name of second committee member
-\MemberThree{Committee Member 3}	% Name of third committee member
-%\MemberFour{Committee Member 4}	% Name of fourth committee member
-\DeptHead{Head of Department}		% Enter name of department head
-\GradMonth{May}				        % Enter graduation month
-\GradYear{2018}						% Enter graduation year
-\Dept{Mathematics}					% Enter department name	
+\PaperType{Thesis}               % Enter the paper type
+\FullName{Aggie D. Student}      % Enter full name
+\Degree{Master of Science}       % Enter degree
+\Chair{Chair Name}               % Enter name of committee chair
+%\CoChair{Co-Chair Name}         % Enter name of committee co-chair
+\MemberOne{Committee Member 1}   % Name of first committee member
+\MemberTwo{Committee Member 2}   % Name of second committee member
+\MemberThree{Committee Member 3} % Name of third committee member
+%\MemberFour{Committee Member 4} % Name of fourth committee member
+\DeptHead{Head of Department}    % Enter name of department head
+\GradMonth{May}                  % Enter graduation month
+\GradYear{2018}                  % Enter graduation year
+\Dept{Mathematics}               % Enter department name	
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set bibliography file and bibliography style  %%%
@@ -89,13 +104,13 @@
 \maketitle% DO NOT TOUCH THIS!!!
 
 % Be sure to include all TeX files to be used in your document!
-\include{./Data/abstract}			% Include the abstract.tex file
-\include{./Data/dedication}			% Include the dedication file
-\include{./Data/acknowledgements}	% Include the acknowledgements file
-\include{./Data/contributors}		% Include the contributors file
-\makeNomenclature					% Generate nomenclature if using the nomenclature package
+\include{./Data/abstract}            % Include the abstract.tex file
+\include{./Data/dedication}          % Include the dedication file
+\include{./Data/acknowledgements}    % Include the acknowledgements file
+\include{./Data/contributors}        % Include the contributors file
+\makeNomenclature                    % Generate nomenclature if using the nomenclature package
 
-\makeToC							% Generate the Table of Contents. REQUIRED!!!
+\makeToC% DO NOT TOUCH THIS!!!
 
 % Include all chapters/sections of the thesis.
 \include{./Data/Section1}		% Include the Section1.tex file
@@ -113,7 +128,6 @@
 \begin{appendices}
 	\include{./Data/appendix1}			% Include the appendix1.tex file
 	\include{./Data/appendix2}			% Include the appendix2.tex file
-	\include{./Data/appendix3}			% Include the appendix3.tex file
 \end{appendices}
 
 \end{document}

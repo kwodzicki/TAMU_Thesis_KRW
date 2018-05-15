@@ -6,14 +6,14 @@
 
 \chapter{VERY, VERY, VERY LONG TITLE THAT FLOWS INTO A SECOND LINE FOR THE SAKE OF EXAMPLE}
 
-Notice that the title of this section is long - much longer than the others. When you have long section titles, this template takes care of double spacing the lines in the title. If the title is long to fit in the table of contents, the template will single space the title.
+Notice that the title of this section is long - much longer than the others. When you have long section titles, this template takes care of double spacing the lines in the title. If the title is too long to fit in the table of contents, the template will single space the title.
 
 \section{Yet Another Table}
 
 Another table is placed here to show the effect of having tables in multiple sections. The list of tables should still double space between table titles, while single spacing long table titles.
 
 %Fix table labeling.
-\begin{table}[h!]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|l|l|}
 		\hline
@@ -44,7 +44,7 @@ The \textit{enumerate} environment was used to generated an ordered list above.
 \section{Section Test Example}
 We insert another figure here, just for kicks.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width = 6.0in]{LowPass_Filter_Design.png}
 	\caption{A low pass filter design.}
@@ -54,7 +54,7 @@ We insert another figure here, just for kicks.
 
 This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document.
 
-\begin{figure}[h!]
+\begin{figure}[t]
 	\centering
 	\includegraphics[width=3.75in]{Workspace1.png}
 	\caption{A typical Texmaker workspace in Windows 7. The right sidebar displays the current file's structure according to the subsections in place.}
@@ -62,7 +62,7 @@ This section has filler text. These words serve no meaning except to fill a few 
 
 This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=3.5in]{Rachl1.png}
 	\caption{Some commands in R.}
@@ -74,13 +74,13 @@ Test subsection for TOC display
 \subsection{Subsection Test Example 2}
 This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document. This section has filler text. These words serve no meaning except to fill a few lines in the document.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.85]{TAM_Logo1.png}
 	\caption{The logo of a familiar university.}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[ht]
 	\caption{Yet another blank float that has no purpose. This is only to test the appearance of the Lists of Figures and the List of Tables.}
 \end{figure}
 
@@ -88,7 +88,7 @@ This section has filler text. These words serve no meaning except to fill a few 
   
 This holds the summary. Well, not really a summary - there was a lot of filler in this section.
 
-\begin{figure}[h!]
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=6.5in]{Filter1.png}
 	\caption{A signal and the result after a basic filter. The FFT was used to create the plot on the right.}
@@ -97,11 +97,11 @@ This holds the summary. Well, not really a summary - there was a lot of filler i
 \section{Section Test Example 3}
 Test section for toc display only.
 
-\begin{figure}[!h]
+\begin{figure}[ht]
 	\caption{There is nothing to see here.}
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[ht]
 	\caption{There is another float here. I wonder what could be here? Guess what? Nothing! There is no material in this float.}
 \end{figure}
 

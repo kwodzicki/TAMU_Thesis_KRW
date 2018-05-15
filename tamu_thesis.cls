@@ -87,9 +87,15 @@
 %     TOC
 %   Modified 11 May 2018 by Kyle R. Wodzicki
 %     Updated to ensure matches the Spring 2018 LaTeX Template
+%   Modified 15 May 2018 by Kyle R. Wodzicki
+%     Changed loading of natbib package to be an option of the class.
+%     If natbib was loaded and not required for the bibliography style,
+%     an error was produced on compile. Thus, if one needs natbib for their
+%     citation style, they just have to add the natbib option in the
+%     \documentclass{} command.
 %-
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{tamu_thesis}[2018/05/11 v0.18.04a Texas A&M Thesis class]
+\ProvidesClass{tamu_thesis}[2018/05/11 v0.18.04c Texas A&M Thesis class]
 
 
 %%% Prohibited report Class Options
@@ -124,6 +130,7 @@
 \newif\if@arial\@arialfalse                                                     % Set up new if variable for arial option; default is Times New Roman
 \newif\if@onehalfspacing\@onehalfspacingfalse                                   % Set up new if variable for one half spacing; default is double spacing
 \newif\if@binding\@bindingfalse                                                 % Set up new if variable for binding (changes left margin); default is no binding
+\newif\if@natbib\@natbibfalse                                                   % Set up new if variable for natbib (loads natbib package); default is to NOT load natbib
 \newif\ifchapref\chapreffalse                                                   % Set up new if variable for chapref (references at end of chapter); default is references at end of document
 % There is no @ in the \chapref because it is used in the main document
 
@@ -132,6 +139,7 @@
 \DeclareOption{arial}{\@arialtrue}                                              % Declare option for `arial', set true if used
 \DeclareOption{onehalfspacing}{\@onehalfspacingtrue}                            % Declare option for `onehalfspacing', set true if used
 \DeclareOption{binding}{\@bindingtrue}                                          % Declare option for `binding', set true if used
+\DeclareOption{natbib}{\@natbibtrue}                                            % Declare option for `natbib', set true if used
 \DeclareOption{chapref}{\chapreftrue}                                           % Declare option for `chapref', set true if used
 
 % Class structure: declaration of options part
@@ -147,9 +155,6 @@
 	\RequirePackage[letterpaper, verbose, margin=1in]{geometry}                   % Set all margins to 1 inch
 \fi
 
-\ifchapref                                                                      % If chap references requested
-  \RequirePackage{bibunits}                                                     % require the bibunits package
-\fi
 
 \RequirePackage{etoolbox}
 \RequirePackage{amsmath}
@@ -160,8 +165,7 @@
 \RequirePackage{indentfirst}
 \RequirePackage[titletoc]{appendix}
 \RequirePackage{graphicx}
-\RequirePackage{caption}
-\RequirePackage{natbib}
+\RequirePackage[font=small]{caption}
 \RequirePackage{fontspec}
 \RequirePackage[T1]{fontenc}
 
@@ -172,11 +176,14 @@
   \setmainfont{Times New Roman}
 \fi
 
+\ifchapref\RequirePackage{bibunits}\fi                                          % If chap references requested, require the bibunits package
+\if@natbib\RequirePackage{natbib}\fi
+
 \newlength{\singleSpace}                                                        % Define a new length for the single spacing
-\setlength{\singleSpace}{\baselineskip}                                            % Set single line spacing to the size of the font
+\setlength{\singleSpace}{\baselineskip}                                         % Set single line spacing to the size of the font
 \doublespacing
 \newlength{\doubleSpace}                                                        % Define a new length for the single spacing
-\setlength{\doubleSpace}{\baselineskip}                                            % Set single line spacing to the size of the font
+\setlength{\doubleSpace}{\baselineskip}                                         % Set single line spacing to the size of the font
 
 \newlength{\titleSpacing}                                                       % Define a new length for spacing at bottom of title page
 \setlength{\titleSpacing}{2\doubleSpace}                                        % Set the length to 3 single spaces
@@ -420,10 +427,15 @@
   \fi
 }
 
+% --- Figure reference command
+\newcommand{\figref}[1]{\figurename\ \ref{#1}}
+% --- Table reference command
+\newcommand{\tabref}[1]{\tablename\ \ref{#1}}
+
 % --- Redefine the maketitle command
 % Adjust spacing of the title page based on how large the committee is.
-% The first command takes off 40 percent of a single space width if
-% the CoChair token is used. The second takes off another 40 percent
+% The first command takes off 20 percent of a single space width if
+% the CoChair token is used. The second takes off another 20 percent
 % if the MemberFour token is used.
 \renewcommand{\maketitle}{
   \if\relax\the\CoChair\relax\else                                              % Check if coChair not set
@@ -463,78 +475,112 @@
 }
 
 % --- Define makeCommittee command
-% Define two new lengths used to set the width of minipages in the committee
-% section of the title page
-\newlength{\commitLengthA}\newlength{\commitLengthB}                            % Define the new lengths
 \newcommand{\makeCommittee}{                                                    % Create the \makeCommittee command
-  \hspace{1em}
-  \begin{minipage}{\textwidth}
-  \if\relax\the\CoChair\relax                                                   % IF CoChair is not set
-    \setlength{\commitLengthA}{0.25\textwidth}                                  % Set width for first minipage
-    \setlength{\commitLengthB}{0.75\textwidth}                                  % Set width for second minipage
-    \begin{minipage}[t][\singleSpace][t]{\commitLengthA}                        % Begin minipage on left side of page
-      Chair of Committee,                                                       % Write in minipage
-    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
-    \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                        % Begin minipage on right side of page
-      \the\Chair                                                                % Write in minipage
-    \end{minipage}                                                              % End minipage on right side of page
-  \else                                                                         % ELSE, i.e., CoChair is set
-    \setlength{\commitLengthA}{0.3\textwidth}                                   % Set width for first minipage
-    \setlength{\commitLengthB}{0.7\textwidth}                                   % Set width for second minipage
-    \begin{minipage}[t][2\singleSpace][t]{\commitLengthA}                       % Begin minipage on left side of page
-      Co-Chairs of Committee,                                                   % Write in minipage
-    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
-    \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}                       % Begin minipage on right side of page
-      \the\Chair\\\the\CoChair                                                  % Write in minipage
-    \end{minipage}                                                              % End minipage on right side of page
-  \fi                                                                           % END if
-  % Set up the committee members
-  \if\relax\the\MemberOne\relax
-    % Do nothing
-  \else
-    \if\relax\the\MemberTwo\relax                                               % If ONE members present
-      \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
-        Committee Members,
-      \end{minipage}\hspace{1em}
-      \begin{minipage}[t][\singleSpace][t]{\commitLengthB}
-        \the\MemberOne
-      \end{minipage}
-    \else
-      \if\relax\the\MemberThree\relax                                           % If TWO members present
-        \noindent\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}
-          Committee Members,
-        \end{minipage}\hspace{1em}
-        \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}
-          \the\MemberOne\\\the\MemberTwo
-        \end{minipage}  
-      \else
-        \if\relax\the\MemberFour\relax                                          % If THREE members present
-          \noindent\begin{minipage}[t][3\singleSpace][t]{\commitLengthA}
-            Committee Members,
-          \end{minipage}\hspace{1em}
-          \begin{minipage}[t][3\singleSpace][t]{\commitLengthB}
-            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree
-          \end{minipage}
-        \else                                                                   % If FOUR members present
-          \noindent\begin{minipage}[t][4\singleSpace][t]{\commitLengthA}
-            Committee Members,
-          \end{minipage}\hspace{1em}
-          \begin{minipage}[t][4\singleSpace][t]{\commitLengthB}
-            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree\\\the\MemberFour
-          \end{minipage}
-        \fi
-      \fi
-    \fi
-  \fi
-  % Print the Department Head
-  \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}                 % Begin minipage on left side of page
-    Head of Department,                                                         % Write in minipage
-  \end{minipage}\hspace{1em}                                                    % End minipage on left side of page
-  \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                          % Begin minipage on right side of page
-    \the\DeptHead                                                               % Write the department head in the minipage
-  \end{minipage}                                                                % End minipage on left side of page
-  \end{minipage}
-}
+  \hspace{1em}                                                                  % Single space to indent table slighlty
+  \begin{tabular}{l l l}                                                        % Start a tabular environment
+    \if\relax\the\CoChair\relax                                                 % IF CoChair is not set
+      Chair of Committee, & \quad & \the\Chair\\                                % Add 'Chair of Committee' to first column and the value of \Chair to third column
+    \else                                                                       % ELSE, i.e., CoChair is set
+      Co-Chairs of Committee, & \quad & \the\Chair\\                            % Add 'Co-Chair of Committee' to first column and the value of \Chair to third column
+      & & \the\CoChair\\                                                        % Add value of \CoChair to second row, third column
+    \fi                                                                         % END if
+    % Set up the committee members
+    \if\relax\the\MemberOne\relax                                               % If \MemberOne is not set, do nothing
+    \else                                                                       % Else, at least MemberOne is set
+      \if\relax\the\MemberTwo\relax                                             % If MemberTwo is NOT set
+        Committee Member, & & \the\MemberOne\\                                  % Add Committee Member in first column and value of MemberOne to third column
+      \else                                                                     % Else, MemberOne and MemberTwo are set
+        \if\relax\the\MemberThree\relax                                         % If MemberThree is NOT set
+          Committee Members, & & \the\MemberOne\\                               % Add Committee Members in first column and value of MemberOne to third column
+          & & \the\MemberTwo\\                                                  % Add value of MemberTwo to third column of next row
+        \else                                                                   % Else MemberThree IS set
+          \if\relax\the\MemberFour\relax                                        % If MemberFour is NOT set
+            Committee Members, & & \the\MemberOne\\                             % Add Committee Members in first column and value of MemberOne to third column
+            & & \the\MemberTwo\\                                                % Add value of MemberTwo to third column of next row
+            & & \the\MemberThree\\                                              % Add value of MemberThree to third column of next row
+          \else                                                                 % Else, MemberFour IS set
+            Committee Members, & & \the\MemberOne\\                             % Add Committee Members in first column and value of MemberOne to third column
+            & & \the\MemberTwo\\                                                % Add value of MemberTwo to third column of next row
+            & & \the\MemberThree\\                                              % Add value of MemberThree to third column of next row
+            & & \the\MemberFour\\                                               % Add value of MemberFour to third column of next row
+          \fi                                                                   % ENDIF MemberFour
+        \fi                                                                     % ENDIF MemberThree
+      \fi                                                                       % ENDIF MemberTwo
+    \fi                                                                         % ENDIF MemberOne
+    Head of Department, & & \the\DeptHead                                       % Write Head of Department in first column and value of DeptHead in third column
+  \end{tabular}                                                                 % Exit the tabular environment
+}                                                                               % End the command
+% Old way of creating the committee
+%\newlength{\commitLengthA}\newlength{\commitLengthB}                            % Define the new lengths
+%\newcommand{\makeCommitteeOld}{                                                    % Create the \makeCommittee command
+%  \hspace{1em}
+%  \begin{minipage}{\textwidth}
+%  \if\relax\the\CoChair\relax                                                   % IF CoChair is not set
+%    \setlength{\commitLengthA}{0.25\textwidth}                                  % Set width for first minipage
+%    \setlength{\commitLengthB}{0.75\textwidth}                                  % Set width for second minipage
+%    \begin{minipage}[t][\singleSpace][t]{\commitLengthA}                        % Begin minipage on left side of page
+%      Chair of Committee,                                                       % Write in minipage
+%    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
+%    \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                        % Begin minipage on right side of page
+%      \the\Chair                                                                % Write in minipage
+%    \end{minipage}                                                              % End minipage on right side of page
+%  \else                                                                         % ELSE, i.e., CoChair is set
+%    \setlength{\commitLengthA}{0.3\textwidth}                                   % Set width for first minipage
+%    \setlength{\commitLengthB}{0.7\textwidth}                                   % Set width for second minipage
+%    \begin{minipage}[t][2\singleSpace][t]{\commitLengthA}                       % Begin minipage on left side of page
+%      Co-Chairs of Committee,                                                   % Write in minipage
+%    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
+%    \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}                       % Begin minipage on right side of page
+%      \the\Chair\\\the\CoChair                                                  % Write in minipage
+%    \end{minipage}                                                              % End minipage on right side of page
+%  \fi                                                                           % END if
+%  % Set up the committee members
+%  \if\relax\the\MemberOne\relax
+%    % Do nothing
+%  \else
+%    \if\relax\the\MemberTwo\relax                                               % If ONE members present
+%      \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
+%        Committee Members,
+%      \end{minipage}\hspace{1em}
+%      \begin{minipage}[t][\singleSpace][t]{\commitLengthB}
+%        \the\MemberOne
+%      \end{minipage}
+%    \else
+%      \if\relax\the\MemberThree\relax                                           % If TWO members present
+%        \noindent\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}
+%          Committee Members,
+%        \end{minipage}\hspace{1em}
+%        \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}
+%          \the\MemberOne\\\the\MemberTwo
+%        \end{minipage}  
+%      \else
+%        \if\relax\the\MemberFour\relax                                          % If THREE members present
+%          \noindent\begin{minipage}[t][3\singleSpace][t]{\commitLengthA}
+%            Committee Members,
+%          \end{minipage}\hspace{1em}
+%          \begin{minipage}[t][3\singleSpace][t]{\commitLengthB}
+%            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree
+%          \end{minipage}
+%        \else                                                                   % If FOUR members present
+%          \noindent\begin{minipage}[t][4\singleSpace][t]{\commitLengthA}
+%            Committee Members,
+%          \end{minipage}\hspace{1em}
+%          \begin{minipage}[t][4\singleSpace][t]{\commitLengthB}
+%            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree\\\the\MemberFour
+%          \end{minipage}
+%        \fi
+%      \fi
+%    \fi
+%  \fi
+%  % Print the Department Head
+%  \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}                 % Begin minipage on left side of page
+%    Head of Department,                                                         % Write in minipage
+%  \end{minipage}\hspace{1em}                                                    % End minipage on left side of page
+%  \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                          % Begin minipage on right side of page
+%    \the\DeptHead                                                               % Write the department head in the minipage
+%  \end{minipage}                                                                % End minipage on left side of page
+%  \end{minipage}
+%}
 
 % --- Set up the \makeToC command
 \newcommand{\makeToC}{
