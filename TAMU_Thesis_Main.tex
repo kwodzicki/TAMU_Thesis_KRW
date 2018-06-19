@@ -36,20 +36,17 @@
 %     compiling of document by disabling hyper-
 %     references and inserting wire frames where
 %     images/figures should be.
+%   acroall - Enables display of all nomenclature
+%     (acronyms) defined in the nomenclature.tex 
+%      file. Default is to display only those 
+%      acronyms that have been used in an \ac{}
+%      command.
+%   acrohover - Enable full acronym definition 
+%      pop-ups when hovering over an acronym in the 
+%      text. Default is to NOT show full definition
+%      when hovering. May not work in Preview on Mac.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt]{tamu_thesis}   	% Load the tamu_thesis document class
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Load the nomenclature package. 
-% Default is to display only those acronyms that
-% have been used in the document. To display all
-% acronyms defined in the nomenclature.tex file,
-% add the [all] option. If you would like to
-% enable full acronym definition pop-ups when
-% hovering over an acronym in the text, add
-% the [hover] option. To include both options:
-% [all, hover]
-\usepackage[all]{nomenclature}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Load extra packages here            %%%
@@ -108,7 +105,7 @@
 \include{./Data/dedication}          % Include the dedication file
 \include{./Data/acknowledgements}    % Include the acknowledgements file
 \include{./Data/contributors}        % Include the contributors file
-\makeNomenclature                    % Generate nomenclature if using the nomenclature package
+\makeNomenclature                    % Generate nomenclature. NOT REQUIRED
 
 \makeToC% DO NOT TOUCH THIS!!!
 

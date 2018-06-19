@@ -132,6 +132,9 @@
 \newif\if@binding\@bindingfalse                                                 % Set up new if variable for binding (changes left margin); default is no binding
 \newif\if@natbib\@natbibfalse                                                   % Set up new if variable for natbib (loads natbib package); default is to NOT load natbib
 \newif\ifchapref\chapreffalse                                                   % Set up new if variable for chapref (references at end of chapter); default is references at end of document
+\newif\if@acroall\@acroallfalse                                                 % Set up new if variable for all
+\newif\if@acrohover\@acrohoverfalse                                             % Set up new if variable for hover
+
 % There is no @ in the \chapref because it is used in the main document
 
 % Declare the class options
@@ -141,6 +144,8 @@
 \DeclareOption{binding}{\@bindingtrue}                                          % Declare option for `binding', set true if used
 \DeclareOption{natbib}{\@natbibtrue}                                            % Declare option for `natbib', set true if used
 \DeclareOption{chapref}{\chapreftrue}                                           % Declare option for `chapref', set true if used
+\DeclareOption{acroall}{\@acroalltrue}                                          % Declare option for `all', set true if used
+\DeclareOption{acrohover}{\@acrohovertrue}                                      % Declare option for `hover', set true if used
 
 % Class structure: declaration of options part
 \ProcessOptions \relax
@@ -168,6 +173,8 @@
 \RequirePackage[font=small]{caption}
 \RequirePackage{fontspec}
 \RequirePackage[T1]{fontenc}
+\RequirePackage{acro}			                                                      % Load acro package
+\RequirePackage{longtable,tabu}                                                 % Load table packages
 
 %%% Set the document font based on the arial option; default to Times New Roman
 \if@arial
@@ -253,6 +260,21 @@
 \titlespacing{\section}{0pt}{0.5\singleSpace}{0.5\singleSpace}
 \titlespacing{\subsection}{0pt}{0.5\singleSpace}{0.5\singleSpace}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   NOMENCLATURE SETUP        NOMENCLATURE SETUP       NOMENCLATURE SETUP    %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
+  table = longtabu,                                                             % Set table type to longtabu
+  before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},      % Set to single space within acronym and double between
+  table-spec = @{}>{\setlength\hsize{0.6\hsize}}X>{\setlength\hsize{1.4\hsize}}X@{}             % Set the table specifications
+}
+% In the table-spec, not sure where that @{} does, but the rest
+% sets up tabularx style columns that will adjust to the text width
+% with the first column being about 1/3 the width and the second about 2/3
+\acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'
+\if@acroall\acsetup{only-used=false}\fi                                         % Set the acronym `only-used' option to false
+\if@acrohover\acsetup{tooltip=true}\fi                                          % Set the acronym 'tooltip' option to true
+\input{./Data/nomenclature}										                                  % Acronyms are defined in the nomenclature.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     ENVIRONMENTS              ENVIRONMENTS                 ENVIRONMENTS    %%%

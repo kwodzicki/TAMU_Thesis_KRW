@@ -25,7 +25,7 @@ documents in the Data/ directory, one at a time to compare the LaTeX code to the
 This will help you to understand some of the LaTeX commands and what they do.
 
 ## Updates
-Check back periodically to make sure that you have the latest version of the template. Unless otherwise stated, you should only need to download the updated tamu_thesis.cls file.
+Check back periodically to make sure that you have the latest version of the template. In most cases you will only need to download the updated tamu_thesis.cls file. However, it is a good idea to check the changes.log to see what files are required for update. If this confused you, just redownload the whole template.
 
 ## Issues
 If anyone runs into issues when using this template, please submit an issue to this page with your log file and the LaTeX code
