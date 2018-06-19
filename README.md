@@ -24,6 +24,9 @@ the document, I suggest going through the TAMU_Thesis_Main.tex document, and all
 documents in the Data/ directory, one at a time to compare the LaTeX code to the PDF output.
 This will help you to understand some of the LaTeX commands and what they do.
 
+## Updates
+Check back periodically to make sure that you have the latest version of the template. Unless otherwise stated, you should only need to download the updated tamu_thesis.cls file.
+
 ## Issues
 If anyone runs into issues when using this template, please submit an issue to this page with your log file and the LaTeX code
 that created the error. 
