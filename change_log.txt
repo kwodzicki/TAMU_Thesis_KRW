@@ -1,0 +1,8 @@
+v0.18.4d
+-----------
+Removes the nomenclature.sty file. Data was moved into the 
+tamu_thesis.cls file for easyier updating in future.
+
+To update, download:
+  tamu_thesis.cls
+  TAMU_Thesis_Main.tex
