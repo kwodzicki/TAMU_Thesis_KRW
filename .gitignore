@@ -1,0 +1,13 @@
+.DS_Store
+Bib_Styles
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
+*.gz
+*.toc
+*.db
+*.upa

@@ -93,9 +93,11 @@
 %     an error was produced on compile. Thus, if one needs natbib for their
 %     citation style, they just have to add the natbib option in the
 %     \documentclass{} command.
+%   Modified Aug. 2018 by Kyle R. Wodzicki
+%     Must update to meet requirements of fall 2018 manual
 %-
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{tamu_thesis}[2018/05/11 v0.18.04c Texas A&M Thesis class]
+\ProvidesClass{tamu_thesis}[2018/08/01 v0.18.08 Texas A&M Thesis class]
 
 
 %%% Prohibited report Class Options

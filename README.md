@@ -1,4 +1,4 @@
-# TAMU_Thesis_KRW
+# TAMU_Thesis
 LaTeX Thesis template for Texas A&amp;M. This template is NOT offically supported through OGAPS.
 While comparison between this and the offical template show no major differences, I cannot guarantee
 that documents prepared with this template will pass OGAPS quality assurance.

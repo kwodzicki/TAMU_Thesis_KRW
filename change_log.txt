@@ -1,7 +1,11 @@
+v0.18.08
+-----------
+Must update to meet the requirements of Fall 2018 Manual
+
 v0.18.4d
 -----------
 Removes the nomenclature.sty file. Data was moved into the 
-tamu_thesis.cls file for easyier updating in future.
+tamu_thesis.cls file for easier updating in future.
 
 To update, download:
   tamu_thesis.cls
