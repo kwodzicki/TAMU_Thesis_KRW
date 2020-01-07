@@ -7,18 +7,21 @@
 %   tamuconfig.sty Version 1.7 from Wendy Lynn Turner. This class extends the 
 %   report class.
 % Dependencies:
-%   etoolbox    - https://www.ctan.org/pkg/etoolbox?lang=en
-%    amsmath     - https://www.ctan.org/pkg/amsmath
+%   etoolbox    - https://www.ctan.org/pkg/etoolbox
+%   amsmath     - https://www.ctan.org/pkg/amsmath
 %   setspace    - https://www.ctan.org/pkg/setspace
-%   tocloft     - https://www.ctan.org/pkg/tocloft
+%   float       - https://www.ctan.org/pkg/float
 %   titlesec    - https://www.ctan.org/pkg/titlesec
+%   tocloft     - https://www.ctan.org/pkg/tocloft
 %   indentfirst - https://www.ctan.org/pkg/indentfirst
-%   tocvsec2    - https://www.ctan.org/pkg/tocvsec2
 %   appendix    - https://www.ctan.org/pkg/appendix
 %   graphicx    - https://www.ctan.org/pkg/graphicx
-%   float       - https://www.ctan.org/pkg/float
-%   caption     - https://www.ctan.org/pkg/caption
-%   times       - https://www.ctan.org/pkg/times
+%   caption     - https://www.ctan.org/pkg/caption 
+%   mathspec    - https://www.ctan.org/pkg/mathspec
+%   fontenc     - https://www.ctan.org/pkg/fontenc
+%   acro        - https://www.ctan.org/pkg/acro
+%   longtable   - https://www.ctan.org/pkg/longtable
+%   tabu        - https://www.ctan.org/pkg/tabu
 % Author and History:
 %   Kyle R. Wodzicki     Created 30 Mar. 2016
 %
@@ -96,8 +99,8 @@
 %   Modified Aug. 2018 by Kyle R. Wodzicki
 %     Must update to meet requirements of fall 2018 manual
 %-
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{tamu_thesis}[2018/08/01 v0.18.08 Texas A&M Thesis class]
+\NeedsTeXFormat{LaTeX2e}[2018/01/01]
+\ProvidesClass{tamu_thesis}[2020/01/07 v0.20.01 Texas A&M Thesis class]
 
 
 %%% Prohibited report Class Options
@@ -173,7 +176,7 @@
 \RequirePackage[titletoc]{appendix}
 \RequirePackage{graphicx}
 \RequirePackage[font=small]{caption}
-\RequirePackage{fontspec}
+\RequirePackage{mathspec}% Also loads the fontspec package
 \RequirePackage[T1]{fontenc}
 \RequirePackage{acro}			                                                      % Load acro package
 \RequirePackage{longtable,tabu}                                                 % Load table packages
@@ -181,8 +184,12 @@
 %%% Set the document font based on the arial option; default to Times New Roman
 \if@arial
   \setmainfont{Arial}
+  \setmathrm{Arial}
+  \setmathfont(Digits,Latin){Arial}
 \else
   \setmainfont{Times New Roman}
+  \setmathrm{Times New Roman}
+  \setmathfont(Digits,Latin){Times New Roman}
 \fi
 
 \ifchapref\RequirePackage{bibunits}\fi                                          % If chap references requested, require the bibunits package
@@ -359,6 +366,7 @@
       \section{References}                                                      % Create a References section
     \fi                                                  
     \origthebibliography{#1}                                                    % Run the old bibliography
+    \setlength{\itemsep}{0pt}							% Fix spacing between entries
   \fi                                                
 }{                                                
   \ifemptybibliography\else                                                     % If emptybibliography is true, do nothing, else

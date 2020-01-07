@@ -10,7 +10,7 @@
 
 Howdy! This is the template for theses and dissertations written using \LaTeX for submission at Texas A\&M University. While the \ac{OGAPS} is here to guide you in submitting your thesis or dissertation. This template shows the many features of \LaTeX, with many more available to the user.
 
-Please note that this is NOT the official template supported by \ac{OGAPS}. If you have issues, please submit an issues on the github page or email me at wodzicki [at] tamu [dot] edu.
+Please note that this is NOT the official template supported by \ac{OGAPS}. If you have issues, please submit an issues on the github page.
 
 
 \subsection{Brief Usage of the Template}
@@ -101,10 +101,16 @@ Be sure to check the output for any errors. If question marks (?) appear in any 
 
 \section{Acronyms, Equations, Formulas, and Other Really Cool Math Things That \LaTeX\ Can Do}
 \subsection{Acronyms}
-Using acronyms (or nomenclature) in \LaTeX\ is great because it keeps track of which acronyms have been used throughout the document. In the case of the template, that is done through the nomenclature package\footnote{The nomenclature package in this distribution uses the acro package to handle the acronyms and the longtable and tabu packages for formatting the nomenclature section of the document.}. By default, the nomenclature package is loaded in the {\it TAMU\_Thesis\_Main.tex} file just after the documentclass command with the {\it all} option enabled. With the {\it all} option set, all acronyms/nomenclature defined in the {\it nomenclature.tex} file will appear in the Nomenclature section of the document. If you want only those acronyms used in the document to appear in the Nomenclature section, remove the {\it all} option from the package loading. If you would like the long form of acronyms/nomenclature to appear when hovering over the short version in text, add the {\it hover} option when loading the nomenclature package.
+Using acronyms (or nomenclature) in \LaTeX\ is great because it keeps track of which acronyms have been used throughout the document.
+In the case of the template, that is done through the nomenclature package\footnote{The nomenclature package in this distribution uses the acro package to handle the acronyms and the longtable and tabu packages for formatting the nomenclature section of the document.}.
+By default, only acronyms used in the document will be displayed in the nomenclature section.
+This means that if you define 10,000 aconyms in the {\it nomenclature.tex} and only use 1 of them, only that one will appear in the nomenclature section.
+To display all the defined acronyms in the nomenclature section add the {\it acroall} option to the {\it \textbackslash{}documentclass} command near the beginning of the main document.
+With the {\it all} option set, all acronyms/nomenclature defined in the {\it nomenclature.tex} file will appear in the Nomenclature section of the document.
+If you want only those acronyms used in the document to appear in the Nomenclature section, remove the {\it all} option from the package loading.
+If you would like the long form of acronyms/nomenclature to appear when hovering over the short version in text, add the {\it acrohover} option to {\it \textbackslash{}documentclass} command.
 
 To edit the acronyms and nomenclature for the document, open up the {\it nomenclature.tex} file in the the Data directory. Below is the entry for the OGAPS acronym
-\newpage % Force new page
 
 {\small \begin{verbatim}
 \DeclareAcronym{OGAPS}{
@@ -115,9 +121,29 @@ To edit the acronyms and nomenclature for the document, open up the {\it nomencl
 }
 \end{verbatim}}
 
-The {\it DeclareAcronym} command sets up a new acronym, with the first argument (in this case OGAPS) being the key used to access the acronym. After this, we define some attributes of the acronym. The {\it short} key defines the short version of the acronym. In this case, it is the same as the acronym key, OGAPS. The {\it long} key defines the full definition of the acronym that will appear in text, in this case Office of Graduate and Professional Studies. The {\it list} key defines how the acronym will be defined on the Nomenclature page. As you can see, this is different from the long version that will appear in the text. The last key is {\it tooltip}. This sets the definition that will appear when hovering over the short version of the acronym in the text if the hover option is set when loading the nomenclature package. Let's show some examples.
+The {\it DeclareAcronym} command sets up a new acronym, with the first argument (in this case OGAPS) being the key used to access the acronym.
+After this, we define some attributes of the acronym.
+The {\it short} key defines the short version of the acronym.
+In this case, it is the same as the acronym key, OGAPS.
+The {\it long} key defines the full definition of the acronym that will appear in text, in this case Office of Graduate and Professional Studies.
+The {\it list} key defines how the acronym will be defined on the Nomenclature page.
+As you can see, this is different from the long version that will appear in the text.
+The last key is {\it tooltip}.
+This sets the definition that will appear when hovering over the short version of the acronym in the text if the hover option is set in documentclass.
+Let's show some examples.
 
-To use an acronym, is the {\it ac} command, or the {\it acp} command for a plural form (adds `s' to end). For example: {\it ac}: \ac{OGAPS}, {\it acp}: \acp{OGAPS}. Notice that \ac{OGAPS} was not defined in the text. That is because it was already defined at the beginning of the document. This means, you do not have to remember which acronyms you have already defined, just use the {\it ac} command whenever calling an acronym. You can also explicit access the long and short forms of the acronym: {\it acs}: \acl{TAMU}, {\it acl}: \acs{TAMU}. Note that these commands change the `used' state of the acronym, so future calls of {\it ac} produce only the short form: \ac{TAMU}. If you would like to reprint the definition, you can use {\it acf}: \acf{TAMU}. A final useful command is {\it acresetall}. This resets the `used' state for all acronyms to unused. This might be useful to use at the beginning of a new chapter so that all acronyms will be redefined in the new chapter. For more acronym definition and use options see the documentation for the acro package\footnote{\url{http://mirror.hmc.edu/ctan/macros/latex/contrib/acro/acro_en.pdf}}.
+To use an acronym, use the {\it ac} command, or the {\it acp} command for a plural form (adds `s' to end).
+For example: {\it ac}: \ac{OGAPS}, {\it acp}: \acp{OGAPS}.
+Notice that \ac{OGAPS} was not defined in the text.
+That is because it was already defined at the beginning of the document.
+This means, you do not have to remember which acronyms you have already defined, just use the {\it ac} command whenever calling an acronym.
+You can also explicit access the long and short forms of the acronym: {\it acl}: \acl{TAMU}, {\it acs}: \acs{TAMU}.
+Note that these commands change the `used' state of the acronym, so future calls of {\it ac} produce only the short form: \ac{TAMU}.
+If you would like to reprint the definition, you can use {\it acf}: \acf{TAMU}.
+A final useful command is {\it acresetall}.
+This resets the `used' state for all acronyms to unused.
+This might be useful to use at the beginning of a new chapter so that all acronyms will be redefined in the new chapter.
+For more acronym definition and use options see the documentation for the acro package\footnote{\url{http://mirror.hmc.edu/ctan/macros/latex/contrib/acro/acro_en.pdf}}.
 
 \subsection{Equations}
 Equations can be written in \LaTeX ~ in one of two ways. First, you can have material displayed inline by enclosing the desired statement in dollar signs. For example, $e^{i\pi}+1=0$ is an inline math expression. Some longer expressions, especially those including sums, integrals, or large operators and objects can be displayed centered on their own line. In this \textbf{math mode}, you enclose the desired material in square brackets. For example,
