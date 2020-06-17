@@ -13,7 +13,7 @@ that documents prepared with this template will pass OGAPS quality assurance.
 * [natbib][natbib] support for bibliography styles that require it
 
 ## Thesis Style
-This template is designed to meet the requirments outlined by the [Summer 2018 Thesis Manual][thesis manual].
+This template is designed to meet the requirments outlined by the [Spring 2020 Thesis Manual][thesis manual].
 While the thesis manual allows text to be divided into either chapters or major sections, this template currently
 only supports the section method. Support for chapter layout may be added in the future
 
@@ -58,6 +58,6 @@ That way I can update the template to meet their demands.
 
 v0.20.06
 
-[thesis manual]: http://ogaps.tamu.edu/getattachment/New-Current-Students/Thesis-and-Dissertation-Services/Thesis_Manual_Summer-2018.pdf.aspx?lang=en-US
+[thesis manual]: http://ogaps.tamu.edu/OGAPS/media/media-library/New%20Forms%20and%20Information/Thesis-Dissertation-Manual.pdf
 [acro]: https://ctan.org/pkg/acro?lang=en
 [natbib]: https://ctan.org/pkg/natbib?lang=en
