@@ -1,3 +1,17 @@
+v0.20.06
+----------
+ - Updates to use texlive 2020.
+ - Fixes issue with bibliography per section that occured due to
+   acro v2 and bibunits. Now require acro v3 for this to work 
+   correctly
+ - Updates acronym printing to work with acro v3
+ - Adds the thesis and phd options, which set the PaperType and
+   Degree, respectively. The \PaperType{} and \Degree{} options
+   still exist, but better to use the thesis or phd options when
+   loading the tamu_thesis class to eliminate spelling errors on
+   the title page.
+ - Cleans up the class file to remove old code
+
 v0.20.01
 -----------
  - Fixes issue with equations not matching text font; fixed using

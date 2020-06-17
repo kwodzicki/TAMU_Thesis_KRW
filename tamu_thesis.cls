@@ -21,7 +21,6 @@
 %   fontenc     - https://www.ctan.org/pkg/fontenc
 %   acro        - https://www.ctan.org/pkg/acro
 %   longtable   - https://www.ctan.org/pkg/longtable
-%   tabu        - https://www.ctan.org/pkg/tabu
 % Author and History:
 %   Kyle R. Wodzicki     Created 30 Mar. 2016
 %
@@ -99,8 +98,8 @@
 %   Modified Aug. 2018 by Kyle R. Wodzicki
 %     Must update to meet requirements of fall 2018 manual
 %-
-\NeedsTeXFormat{LaTeX2e}[2018/01/01]
-\ProvidesClass{tamu_thesis}[2020/01/07 v0.20.01 Texas A&M Thesis class]
+\NeedsTeXFormat{LaTeX2e}[2020/02/02]
+\ProvidesClass{tamu_thesis}[2020/06/16 v0.20.06 Texas A&M Thesis class]
 
 
 %%% Prohibited report Class Options
@@ -139,6 +138,8 @@
 \newif\ifchapref\chapreffalse                                                   % Set up new if variable for chapref (references at end of chapter); default is references at end of document
 \newif\if@acroall\@acroallfalse                                                 % Set up new if variable for all
 \newif\if@acrohover\@acrohoverfalse                                             % Set up new if variable for hover
+\newif\if@phd\@phdfalse                                                         % Set up new if variable for phd
+\newif\if@thesis\@thesisfalse                                                   % Set up new if variable for phd
 
 % There is no @ in the \chapref because it is used in the main document
 
@@ -151,6 +152,8 @@
 \DeclareOption{chapref}{\chapreftrue}                                           % Declare option for `chapref', set true if used
 \DeclareOption{acroall}{\@acroalltrue}                                          % Declare option for `all', set true if used
 \DeclareOption{acrohover}{\@acrohovertrue}                                      % Declare option for `hover', set true if used
+\DeclareOption{phd}{\@phdtrue}                                                  % Declare option for `hover', set true if used
+\DeclareOption{thesis}{\@thesistrue}                                            % Declare option for `hover', set true if used
 
 % Class structure: declaration of options part
 \ProcessOptions \relax
@@ -159,10 +162,10 @@
 % Package requirements
 % Adjust left margin if binding is set
 \if@binding                                                                     % If binding is true
-	\RequirePackage[letterpaper, verbose,
-		tmargin=1in, bmargin=1in, lmargin=1.4in, rmargin=1in]{geometry}             % set left margin to 1.4 inches and all others to 1 inch
+  \RequirePackage[letterpaper, verbose,
+    tmargin=1in, bmargin=1in, lmargin=1.4in, rmargin=1in]{geometry}             % set left margin to 1.4 inches and all others to 1 inch
 \else                                                                           % Binding is false
-	\RequirePackage[letterpaper, verbose, margin=1in]{geometry}                   % Set all margins to 1 inch
+  \RequirePackage[letterpaper, verbose, margin=1in]{geometry}                   % Set all margins to 1 inch
 \fi
 
 
@@ -178,8 +181,8 @@
 \RequirePackage[font=small]{caption}
 \RequirePackage{mathspec}% Also loads the fontspec package
 \RequirePackage[T1]{fontenc}
-\RequirePackage{acro}			                                                      % Load acro package
-\RequirePackage{longtable,tabu}                                                 % Load table packages
+\RequirePackage[version=3]{acro}                                                           % Load acro package
+\RequirePackage{longtable}                                                 % Load table packages
 
 %%% Set the document font based on the arial option; default to Times New Roman
 \if@arial
@@ -230,11 +233,18 @@
 \newtoks{\GradYear}                                                             % Graduation Year
 \newtoks{\Dept}                                                                 % Graduation Dept
 
+\if@phd\Degree{DOCTOR OF PHILOSOPHY}\else\Degree{MASTER OF SCIENCE}\fi          % Set the Degree type based on options
+\if@thesis\PaperType{Thesis}\else\PaperType{Dissertation}\fi                    % Set the paper type based on options
 
 \def\biblioStyle{plain}                                                         % Define default bibliography style
 \def\biblioFile{myReferences}                                                   % Define default bibliography file
 \newcommand{\bibStyle}[1]{\def\biblioStyle{#1}}                                 % Command to set the bibliography style
 \newcommand{\bibFile}[1]{\def\biblioFile{#1}}                                   % Command to set the bibliography file
+
+\ifchapref
+  \defaultbibliographystyle{\biblioStyle}
+  \defaultbibliography{\biblioFile}
+\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %         DEFINE SOME COMMANDS FOR ENVIRONMENTS           %
@@ -255,10 +265,10 @@
 %%%%    TITLE CUSTOMATIONS      TITLE CUSTOMATIONS      TITLE CUSTOMATIONS   %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \if@chapter                                                                     % If chapter method is requested
-	\renewcommand{\thechapter}{\Roman{chapter}}
-	\titleformat{\chapter}{\centering\normalsize\uppercase}{CHAPTER \thechapter}{1em}{}
+  \renewcommand{\thechapter}{\Roman{chapter}}
+  \titleformat{\chapter}{\centering\normalsize\uppercase}{CHAPTER \thechapter}{1em}{}
 \else
-	\titleformat{\chapter}{\centering\normalsize\uppercase}{\thechapter.}{1em}{}
+  \titleformat{\chapter}{\centering\normalsize\uppercase}{\thechapter.}{1em}{}
 \fi
 
 \titleformat{\section}{\bf\normalsize}{\thesection}{1em}{}
@@ -272,18 +282,47 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   NOMENCLATURE SETUP        NOMENCLATURE SETUP       NOMENCLATURE SETUP    %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\DeclareAcroListStyle{acros}{table}{                                            % Set up the style of the table
-  table = longtabu,                                                             % Set table type to longtabu
-  before = \singlespacing\vskip-\singleSpace\renewcommand\arraystretch{2},      % Set to single space within acronym and double between
-  table-spec = @{}>{\setlength\hsize{0.6\hsize}}X>{\setlength\hsize{1.4\hsize}}X@{}             % Set the table specifications
+% See http://ctan.math.washington.edu/tex-archive/macros/latex/contrib/acro/acro-manual.pdf
+% Pages 35-42
+\NewAcroTemplate[list]{acro-longtable}{
+  \AcroNeedPackage{longtable}
+  \acronymsmapF{
+    \AcroAddRow{% Add new row to acronym
+      \acrowrite{short}% Write the short version of the acronym
+      \acroifT{alt}{/\acrowrite{alt}}% IF the alt version is defined, then add that as short/alt
+      &% Signify a new column in table
+      \acrowrite{list}% Write the list version of the acronym; will fall back to long
+      \acroifanyT{foreign,extra}{ (}% If there is a foreign or extra tag, write ' ('
+      \acroifT{foreign}{\acrowrite{foreign}\acroifT{extra}{, }}% If the foreign tag exists, write foreign, then check if extra exits and write ', ' if it does
+      \acroifT{extra}{\acrowrite{extra}}% If extra exits, write extra
+      \acroifanyT{foreign,extra}{)}% If either foreign or extra, then write ')'
+      %\acropagefill
+      %\acropages% Print page numbes?
+      %{\acrotranslate{page}\nobreakspace}% Don't know what this does
+      %{\acrotranslate{pages}\nobreakspace}% Don't know what this does
+      \tabularnewline% Write a new line for table
+     }
+  }
+  {\AcroRerun}% Call rerun?
+  \par\noindent% Paragraph on indent
+
+  \begin{singlespace}
+    \vspace{-3.0\baselineskip}% Adjust the distance between title and table
+    \if@onehalfspacing% If one-half spacing
+      \renewcommand{\arraystretch}{1.5}% Set stretch to 1.5
+    \else% Else, we need double spacing
+      \renewcommand{\arraystretch}{2.0}% Set stretch to 2.0
+    \fi
+    \begin{longtable}{p{0.25\textwidth}p{0.74\textwidth}}% Set longtable
+      \AcronymTable% Create list
+    \end{longtable}
+  \end{singlespace}
 }
-% In the table-spec, not sure where that @{} does, but the rest
-% sets up tabularx style columns that will adjust to the text width
-% with the first column being about 1/3 the width and the second about 2/3
-\acsetup{list-style=acros,list-heading=none}                                    % Set the acronym `list-style', and `list-heading'
-\if@acroall\acsetup{only-used=false}\fi                                         % Set the acronym `only-used' option to false
-\if@acrohover\acsetup{tooltip=true}\fi                                          % Set the acronym 'tooltip' option to true
-\input{./Data/nomenclature}										                                  % Acronyms are defined in the nomenclature.tex file
+\acsetup{list/template=acro-longtable}                                          % Set list style
+\if@acroall\acsetup{list/display=all}\fi                                        % Set the acronym `only-used' option to false
+\if@acrohover\acsetup{pdfcomments/use=true}\fi                                  % Set the acronym 'tooltip' option to true
+
+\input{./Data/nomenclature}                                                     % Acronyms are defined in the nomenclature.tex file
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     ENVIRONMENTS              ENVIRONMENTS                 ENVIRONMENTS    %%%
@@ -366,11 +405,11 @@
       \section{References}                                                      % Create a References section
     \fi                                                  
     \origthebibliography{#1}                                                    % Run the old bibliography
-    \setlength{\itemsep}{0pt}							% Fix spacing between entries
+    \setlength{\itemsep}{0pt}             % Fix spacing between entries
   \fi                                                
 }{                                                
   \ifemptybibliography\else                                                     % If emptybibliography is true, do nothing, else
-	  \origendthebibliography                                                     % End the bibliography
+    \origendthebibliography                                                     % End the bibliography
   \fi
 }
 
@@ -449,9 +488,9 @@
 \let\oldInclude\include
 \renewcommand{\include}[1]{
   \ifchapref                                                                    % If chapref is set to true
-    \begin{bibunit}[\biblioStyle]                                              % Start bibunit environ and se the bibliography style
-     \input{#1}                                                                 % Input the tex file into the document; use input because include does clear page
-      \putbib[\biblioFile]                                                     % Generate the bibliography
+    \begin{bibunit}                                                             % Start bibunit environ and se the bibliography style
+      \input{#1}                                                                % Input the tex file into the document; use input because include does clear page
+      \putbib                                                                   % Generate the bibliography
     \end{bibunit}                                                               % End bibunit environ
     \clearpage                                                                  % Clear the page at end of chapter/section
   \else                                                                         % If chapref is false
@@ -542,81 +581,10 @@
     Head of Department, & & \the\DeptHead                                       % Write Head of Department in first column and value of DeptHead in third column
   \end{tabular}                                                                 % Exit the tabular environment
 }                                                                               % End the command
-% Old way of creating the committee
-%\newlength{\commitLengthA}\newlength{\commitLengthB}                            % Define the new lengths
-%\newcommand{\makeCommitteeOld}{                                                    % Create the \makeCommittee command
-%  \hspace{1em}
-%  \begin{minipage}{\textwidth}
-%  \if\relax\the\CoChair\relax                                                   % IF CoChair is not set
-%    \setlength{\commitLengthA}{0.25\textwidth}                                  % Set width for first minipage
-%    \setlength{\commitLengthB}{0.75\textwidth}                                  % Set width for second minipage
-%    \begin{minipage}[t][\singleSpace][t]{\commitLengthA}                        % Begin minipage on left side of page
-%      Chair of Committee,                                                       % Write in minipage
-%    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
-%    \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                        % Begin minipage on right side of page
-%      \the\Chair                                                                % Write in minipage
-%    \end{minipage}                                                              % End minipage on right side of page
-%  \else                                                                         % ELSE, i.e., CoChair is set
-%    \setlength{\commitLengthA}{0.3\textwidth}                                   % Set width for first minipage
-%    \setlength{\commitLengthB}{0.7\textwidth}                                   % Set width for second minipage
-%    \begin{minipage}[t][2\singleSpace][t]{\commitLengthA}                       % Begin minipage on left side of page
-%      Co-Chairs of Committee,                                                   % Write in minipage
-%    \end{minipage}\hspace{1em}                                                  % End minipage on left side of page
-%    \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}                       % Begin minipage on right side of page
-%      \the\Chair\\\the\CoChair                                                  % Write in minipage
-%    \end{minipage}                                                              % End minipage on right side of page
-%  \fi                                                                           % END if
-%  % Set up the committee members
-%  \if\relax\the\MemberOne\relax
-%    % Do nothing
-%  \else
-%    \if\relax\the\MemberTwo\relax                                               % If ONE members present
-%      \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}
-%        Committee Members,
-%      \end{minipage}\hspace{1em}
-%      \begin{minipage}[t][\singleSpace][t]{\commitLengthB}
-%        \the\MemberOne
-%      \end{minipage}
-%    \else
-%      \if\relax\the\MemberThree\relax                                           % If TWO members present
-%        \noindent\begin{minipage}[t][2\singleSpace][t]{\commitLengthA}
-%          Committee Members,
-%        \end{minipage}\hspace{1em}
-%        \begin{minipage}[t][2\singleSpace][t]{\commitLengthB}
-%          \the\MemberOne\\\the\MemberTwo
-%        \end{minipage}  
-%      \else
-%        \if\relax\the\MemberFour\relax                                          % If THREE members present
-%          \noindent\begin{minipage}[t][3\singleSpace][t]{\commitLengthA}
-%            Committee Members,
-%          \end{minipage}\hspace{1em}
-%          \begin{minipage}[t][3\singleSpace][t]{\commitLengthB}
-%            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree
-%          \end{minipage}
-%        \else                                                                   % If FOUR members present
-%          \noindent\begin{minipage}[t][4\singleSpace][t]{\commitLengthA}
-%            Committee Members,
-%          \end{minipage}\hspace{1em}
-%          \begin{minipage}[t][4\singleSpace][t]{\commitLengthB}
-%            \the\MemberOne\\\the\MemberTwo\\\the\MemberThree\\\the\MemberFour
-%          \end{minipage}
-%        \fi
-%      \fi
-%    \fi
-%  \fi
-%  % Print the Department Head
-%  \noindent\begin{minipage}[t][\singleSpace][t]{\commitLengthA}                 % Begin minipage on left side of page
-%    Head of Department,                                                         % Write in minipage
-%  \end{minipage}\hspace{1em}                                                    % End minipage on left side of page
-%  \begin{minipage}[t][\singleSpace][t]{\commitLengthB}                          % Begin minipage on right side of page
-%    \the\DeptHead                                                               % Write the department head in the minipage
-%  \end{minipage}                                                                % End minipage on left side of page
-%  \end{minipage}
-%}
 
 % --- Set up the \makeToC command
 \newcommand{\makeToC}{
-  \newpage
+  \clearpage
   %%  TABLE OF CONTENTS
   \phantomsection                                                               % Phantom section for proper hyperref links
   \addcontentsline{toc}{chapter}{\contentsname}                                 % Add table of contents to ToC
@@ -639,8 +607,8 @@
 \newcommand{\makebibliography}{                                                 % Set up the new command; no inputs
   \phantomsection                                                               % Generate a phantom section
   \addcontentsline{toc}{chapter}{REFERENCES}                                    % Add References to table of contents
-  \bibliographystyle{\biblioStyle}	                                            % Set the bibliography style
-  \bibliography{\biblioFile}			                                              % Set path to bibliography .bib file
+  \bibliographystyle{\biblioStyle}                                              % Set the bibliography style
+  \bibliography{\biblioFile}                                                    % Set path to bibliography .bib file
 }
 
 

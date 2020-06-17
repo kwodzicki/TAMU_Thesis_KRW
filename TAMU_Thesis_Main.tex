@@ -1,11 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Main document template code for TAMU Theses and 
-%  Dissertations starting Spring 2018.
+%  Dissertations starting Spring 2020.
 %
 %  Author:  Kyle R. Wodzicki  
 %  Version: 0.20.01
-%  Updated: 07 Jan. 2020
+%  Updated: 16 Jun. 2020
 %    Better matches the Spring 2020 OGAPS template
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,6 +14,10 @@
 %      text for the document. Use 12pt unless
 %      you have approval from OGAPS to use
 %      11pt.
+%   thesis - Add this option to set document type to Thesis.
+%             Default is Dissertation
+%   phd    - Add this option to set degree to DOCTOR OF PHILOSOPHY.
+%             Defuault is MASTER OF SCIENCE
 %   onehalfspacing - Changes spacing to 1.5
 %      spacing. The default is to use double
 %      spacing. Do NOT use this option unless
@@ -46,23 +50,25 @@
 %      text. Default is to NOT show full definition
 %      when hovering. May not work in Preview on Mac.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[12pt,acroall]{tamu_thesis}   			% Load the tamu_thesis document class
+\documentclass[12pt,thesis,acroall]{tamu_thesis}   			% Load the tamu_thesis document class
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%          Load extra packages here            %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[hidelinks]{hyperref}			% hyperref with linkes hidden 
 \usepackage{multirow}			        	% Multirow package for tables
 \usepackage{footnote}			        	% Package for the savenotes command
 \usepackage{amsthm}				        % AMS package for theorems
 \usepackage{url}			            	% Load the url package
 %\usepackage{showframe}                 		% Show frame for margins for debugging
 
+
+\usepackage[hidelinks]{hyperref}% DO NOT TOUCH THIS!!! hyperref with links hidden 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Set path to the figures and figure extensions %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \graphicspath{ {./graphic/},{./figures/}  } % Locations of figures
-\DeclareGraphicsExtensions{.pdf,.png,.PNG,.jpg}  % Figure extensions
+\DeclareGraphicsExtensions{.eps,.pdf,.png,.PNG,.jpg}  % Figure extensions
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define custom  commands for easier typing        %%%
@@ -74,9 +80,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Delete or comment out tags that are NOT needed
 \Title{The Title of Your Thesis or Dissertation Goes In This Space To Let Us Know What Your Document is About}
-\PaperType{Thesis}               % Enter the paper type
 \FullName{Aggie D. Student}      % Enter full name
-\Degree{Master of Science}       % Enter degree
 \Chair{Chair Name}               % Enter name of committee chair
 %\CoChair{Co-Chair Name}         % Enter name of committee co-chair
 \MemberOne{Committee Member 1}   % Name of first committee member
@@ -85,7 +89,7 @@
 %\MemberFour{Committee Member 4} % Name of fourth committee member
 \DeptHead{Head of Department}    % Enter name of department head
 \GradMonth{May}                  % Enter graduation month
-\GradYear{2018}                  % Enter graduation year
+\GradYear{2020}                  % Enter graduation year
 \Dept{Mathematics}               % Enter department name	
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
