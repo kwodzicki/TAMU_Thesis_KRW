@@ -1,11 +1,13 @@
 %+
 % Name:
 %   tamu_thesis
+%
 % Purpose:
 %   This is a class file for Texas A&M Theses and Dissertations. This file will 
 %   set up all margins, spacing, chapters, title, etc. This is adapted from 
 %   tamuconfig.sty Version 1.7 from Wendy Lynn Turner. This class extends the 
 %   report class.
+%
 % Dependencies:
 %   etoolbox    - https://www.ctan.org/pkg/etoolbox
 %   amsmath     - https://www.ctan.org/pkg/amsmath
@@ -17,86 +19,14 @@
 %   appendix    - https://www.ctan.org/pkg/appendix
 %   graphicx    - https://www.ctan.org/pkg/graphicx
 %   caption     - https://www.ctan.org/pkg/caption 
+%   totalcount  - https://mirror.las.iastate.edu/tex-archive/macros/latex/contrib/caption/totalcount.pdf
 %   mathspec    - https://www.ctan.org/pkg/mathspec
 %   fontenc     - https://www.ctan.org/pkg/fontenc
 %   acro        - https://www.ctan.org/pkg/acro
 %   longtable   - https://www.ctan.org/pkg/longtable
-% Author and History:
-%   Kyle R. Wodzicki     Created 30 Mar. 2016
 %
-%   Modified 18 Jan. 2018 by Kyle R. Wodzicki
-%     Updated some spacing in the ToC and around figures
-%     to better match the  v3.17.09 version
-%     Also added ability to place reference section
-%     at end of each chapter using the bibunits
-%     package. This added the 'chapref' option
-%     to the class
-%
-%   Modified 31 Oct. 2016 by Kyle R. Wodzicki
-%     Added 'times' package requirement
-%     Changed title page 'Major Dept:' to 'Major Subject:'
-%     Rearranged and optimized formatting of ToC, LoF, and LoT
-%     Fixed spacings to better match that of Sean Zachary Roberson's V3.16.10 
-%     release. To the best of my knowledge, this class file should meet the
-%     requirements outlined by the 2016 Thesis Manual. This class file has NOT
-%     been thoroughly tested!!! DOCUMENT ALL CHANGES!!!!
-%
-%   Modified 03 Nov. 2016 by Kyle R. Wodzicki
-%     Changed the spacing in the table on contents section to fix an issue.
-%     There is now only a before chapter skip and the \perto command from the
-%     etoolbox package is used to add a space before the first section of a
-%     chapter.
-%
-%  Modified 04 Nov. 2016 by Kyle R. Wodzicki
-%    Modified the appendices environment to remove extraneous files. 
-%     These files included and `appendices.tex' file that subsequently
-%     referenced `appendix1.tex' and `appendix2.tex'. By redefining the
-%     appendices class to include the default behavior and a changed title,
-%     now the `appendix1.tex' and `appendix2.tex' files can be included
-%     directly from the main .tex file AS LONG AS they are within the
-%     appendices environment.
-%
-%   Modified 07 Nov. 2016 by Kyle R. Wodzicki
-%     Changed the \Chapter command definition by removing the \uppercase{}
-%     command that was contained in it and moving the uppercase option
-%     into the \titleformat{} command. The \titleformat{} command in the 
-%     re-defined appendices environment was also updated to reflect the
-%     change. This change was performed to remove a waring produced by
-%     the hyperref package that was due to the use of the \uppercase{}
-%     command within the \chapter{} command.
-%
-%   Modified 30 Nov. 2016 by Kyle R. Wodzicki
-%     Changed the construction of the committee from a tabular set up to
-%     minipages. Changed user input fields such as \Title and \FullName from
-%     commands to tokens. Not sure exactly how they work, but they make if
-%     statements much easier to work with and allows for changing of spacings
-%     much easier. This makes the code for and auto-spacing of the title page
-%     much cleaner.
-%
-%   Modified 30 Nov. 2016 by Kyle R. Wodzicki
-%     Redefine \chapter command to make chapters all upper case.
-%     Redefine \makeToC command to contain the options in the deprecated 
-%     'Chapter' command responsible for setting up page numbering in main
-%     text of thesis.
-%     Changed \makenomencalture command to \makeNomenclature
-%
-%   Modified 14 Dec. 2016 by Kyle R. Wodzicki
-%     Replaced \baselineskip commands with the \singleSpace command
-%   Modified 06 May 2017 by Kyle R. Wodzicki
-%
-%     Updated the spacing in the TOCLOTF so that the spacing matched the
-%     TAMU LaTeX (Jan2017) template. Updated section number depth for
-%     TOC
-%   Modified 11 May 2018 by Kyle R. Wodzicki
-%     Updated to ensure matches the Spring 2018 LaTeX Template
-%   Modified 15 May 2018 by Kyle R. Wodzicki
-%     Changed loading of natbib package to be an option of the class.
-%     If natbib was loaded and not required for the bibliography style,
-%     an error was produced on compile. Thus, if one needs natbib for their
-%     citation style, they just have to add the natbib option in the
-%     \documentclass{} command.
-%   Modified Aug. 2018 by Kyle R. Wodzicki
-%     Must update to meet requirements of fall 2018 manual
+% Author:
+%   Kyle R. Wodzicki
 %-
 \NeedsTeXFormat{LaTeX2e}[2020/02/02]
 \ProvidesClass{tamu_thesis}[2020/06/16 v0.20.06 Texas A&M Thesis class]
@@ -179,6 +109,7 @@
 \RequirePackage[titletoc]{appendix}
 \RequirePackage{graphicx}
 \RequirePackage[font=small]{caption}
+\RequirePackage[figure,table]{totalcount}
 \RequirePackage{mathspec}% Also loads the fontspec package
 \RequirePackage[T1]{fontenc}
 \RequirePackage[version=3]{acro}                                                           % Load acro package
@@ -364,6 +295,7 @@
   \addcontentsline{toc}{chapter}{\nomenclatureName}                             % Add to table of contents
   \vspace{\singleSpace}                                                         % Move start of nomenclature up
   \printacronyms                                                                % Print the nomenclature/acronyms
+  \addtocounter{table}{-1}							% Decrement the table counter so that the nomenclature table is NOT included in the table count
 }
 
 % -- Contributors and Funding
@@ -590,15 +522,19 @@
   \addcontentsline{toc}{chapter}{\contentsname}                                 % Add table of contents to ToC
   \begin{singlespace}\tableofcontents\end{singlespace}\clearpage                % Generate ToC in single space environment and insert a page break  
   %%  LIST OF FIGURES
-  \phantomsection                                                               % Phantom section for proper hyperref links
-  \addcontentsline{toc}{chapter}{\listfigurename}                               % Add list of figures to ToC
-  \begin{singlespace}\listoffigures\end{singlespace}\clearpage                  % Generate LoF in single space environment and insert a page break
+  \iftotalfigures
+    \phantomsection                                                               % Phantom section for proper hyperref links
+    \addcontentsline{toc}{chapter}{\listfigurename}                               % Add list of figures to ToC
+    \begin{singlespace}\listoffigures\end{singlespace}\clearpage                  % Generate LoF in single space environment and insert a page break
+  \fi
   %%  LIST OF TABLES
-  \phantomsection                                                               % Phantom section for proper hyperref links
-  \addcontentsline{toc}{chapter}{\listtablename}                                % Add list of tables to ToC
-  \begin{singlespace}\listoftables\end{singlespace}\clearpage                   %  Generate LoT in single space environment and insert page break 
-  \pagestyle{plain}                                                             % Set the page style to plain
-  \pagenumbering{arabic}                                                        % Set the page numbering to arabic
+  \iftotaltables
+    \phantomsection                                                               % Phantom section for proper hyperref links
+    \addcontentsline{toc}{chapter}{\listtablename}                                % Add list of tables to ToC
+    \begin{singlespace}\listoftables\end{singlespace}\clearpage                   %  Generate LoT in single space environment and insert page break 
+    \pagestyle{plain}                                                             % Set the page style to plain
+    \pagenumbering{arabic}                                                        % Set the page numbering to arabic
+  \fi
   \setcounter{page}{1}                                                          % Set the page counter to 1
 }                                                                               % END of makeToC command
 

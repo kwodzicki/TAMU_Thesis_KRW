@@ -1,4 +1,5 @@
 .DS_Store
+*.acr
 *.aux
 *.bbl
 *.blg
@@ -10,3 +11,4 @@
 *.out
 *.toc
 *.upa
+*.swp

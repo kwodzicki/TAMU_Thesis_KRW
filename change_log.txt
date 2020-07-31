@@ -1,3 +1,9 @@
+v0.20.08
+----------
+ - Updates to have conditional list of figures and list of tables
+   using the totalcount package from caption
+
+
 v0.20.06
 ----------
  - Updates to use texlive 2020.
@@ -12,6 +18,7 @@ v0.20.06
    the title page.
  - Cleans up the class file to remove old code
 
+
 v0.20.01
 -----------
  - Fixes issue with equations not matching text font; fixed using
@@ -20,9 +27,11 @@ v0.20.01
  - Attempts to fix spacing issue in bibliography
  - Highlighting of hyperlinks in document disabled by default
 
+
 v0.18.08
 -----------
 Must update to meet the requirements of Fall 2018 Manual
+
 
 v0.18.4d
 -----------
@@ -32,3 +41,95 @@ tamu_thesis.cls file for easier updating in future.
 To update, download:
   tamu_thesis.cls
   TAMU_Thesis_Main.tex
+
+
+Modified 15 May 2018 by Kyle R. Wodzicki
+----------------------------------------
+  Changed loading of natbib package to be an option of the class.
+  If natbib was loaded and not required for the bibliography style,
+  an error was produced on compile. Thus, if one needs natbib for their
+  citation style, they just have to add the natbib option in the
+  \documentclass{} command.
+
+
+Modified 11 May 2018 by Kyle R. Wodzicki
+----------------------------------------
+  Updated to ensure matches the Spring 2018 LaTeX Template
+
+
+Modified 18 Jan. 2018 by Kyle R. Wodzicki
+----------------------------------------
+  Updated some spacing in the ToC and around figures
+  to better match the  v3.17.09 version
+  Also added ability to place reference section
+  at end of each chapter using the bibunits
+  package. This added the 'chapref' option
+  to the class
+
+
+Modified 06 May 2017 by Kyle R. Wodzicki
+----------------------------------------
+  Updated the spacing in the TOCLOTF so that the spacing matched the
+  TAMU LaTeX (Jan2017) template. Updated section number depth for
+  TOC
+
+
+Modified 14 Dec. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Replaced \baselineskip commands with the \singleSpace command
+
+
+Modified 30 Nov. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Changed the construction of the committee from a tabular set up to
+  minipages. Changed user input fields such as \Title and \FullName from
+  commands to tokens. Not sure exactly how they work, but they make if
+  statements much easier to work with and allows for changing of spacings
+  much easier. This makes the code for and auto-spacing of the title page
+  much cleaner.
+  Redefine \chapter command to make chapters all upper case.
+  Redefine \makeToC command to contain the options in the deprecated 
+  'Chapter' command responsible for setting up page numbering in main
+  text of thesis.
+  Changed \makenomencalture command to \makeNomenclature
+
+
+Modified 07 Nov. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Changed the \Chapter command definition by removing the \uppercase{}
+  command that was contained in it and moving the uppercase option
+  into the \titleformat{} command. The \titleformat{} command in the 
+  re-defined appendices environment was also updated to reflect the
+  change. This change was performed to remove a waring produced by
+  the hyperref package that was due to the use of the \uppercase{}
+  command within the \chapter{} command.
+
+
+Modified 04 Nov. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Modified the appendices environment to remove extraneous files. 
+  These files included and `appendices.tex' file that subsequently
+  referenced `appendix1.tex' and `appendix2.tex'. By redefining the
+  appendices class to include the default behavior and a changed title,
+  now the `appendix1.tex' and `appendix2.tex' files can be included
+  directly from the main .tex file AS LONG AS they are within the
+  appendices environment.
+
+
+Modified 03 Nov. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Changed the spacing in the table on contents section to fix an issue.
+  There is now only a before chapter skip and the \perto command from the
+  etoolbox package is used to add a space before the first section of a
+  chapter.
+
+
+Modified 31 Oct. 2016 by Kyle R. Wodzicki
+----------------------------------------
+  Added 'times' package requirement
+  Changed title page 'Major Dept:' to 'Major Subject:'
+  Rearranged and optimized formatting of ToC, LoF, and LoT
+  Fixed spacings to better match that of Sean Zachary Roberson's V3.16.10 
+  release. To the best of my knowledge, this class file should meet the
+  requirements outlined by the 2016 Thesis Manual. This class file has NOT
+  been thoroughly tested!!! DOCUMENT ALL CHANGES!!!!
