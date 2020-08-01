@@ -19,6 +19,8 @@
 %   appendix    - https://www.ctan.org/pkg/appendix
 %   graphicx    - https://www.ctan.org/pkg/graphicx
 %   caption     - https://www.ctan.org/pkg/caption 
+%   bibunits    - https://ctan.org/pkg/bibunits
+%   bibentry    - https://ctan.org/pkg/bibentry
 %   totalcount  - https://mirror.las.iastate.edu/tex-archive/macros/latex/contrib/caption/totalcount.pdf
 %   mathspec    - https://www.ctan.org/pkg/mathspec
 %   fontenc     - https://www.ctan.org/pkg/fontenc
@@ -126,7 +128,7 @@
   \setmathfont(Digits,Latin){Times New Roman}
 \fi
 
-\ifchapref\RequirePackage{bibunits}\fi                                          % If chap references requested, require the bibunits package
+\ifchapref\RequirePackage{bibunits,bibentry}\fi                                 % If chap references requested, require the bibunits and bibentry packages
 \if@natbib\RequirePackage{natbib}\fi
 
 \newlength{\singleSpace}                                                        % Define a new length for the single spacing
@@ -522,29 +524,33 @@
   \addcontentsline{toc}{chapter}{\contentsname}                                 % Add table of contents to ToC
   \begin{singlespace}\tableofcontents\end{singlespace}\clearpage                % Generate ToC in single space environment and insert a page break  
   %%  LIST OF FIGURES
-  \iftotalfigures
-    \phantomsection                                                               % Phantom section for proper hyperref links
-    \addcontentsline{toc}{chapter}{\listfigurename}                               % Add list of figures to ToC
-    \begin{singlespace}\listoffigures\end{singlespace}\clearpage                  % Generate LoF in single space environment and insert a page break
+  \iftotalfigures								% If there are figures in the document
+    \phantomsection                                                             % Phantom section for proper hyperref links
+    \addcontentsline{toc}{chapter}{\listfigurename}                             % Add list of figures to ToC
+    \begin{singlespace}\listoffigures\end{singlespace}\clearpage                % Generate LoF in single space environment and insert a page break
   \fi
   %%  LIST OF TABLES
-  \iftotaltables
-    \phantomsection                                                               % Phantom section for proper hyperref links
-    \addcontentsline{toc}{chapter}{\listtablename}                                % Add list of tables to ToC
-    \begin{singlespace}\listoftables\end{singlespace}\clearpage                   %  Generate LoT in single space environment and insert page break 
-    \pagestyle{plain}                                                             % Set the page style to plain
-    \pagenumbering{arabic}                                                        % Set the page numbering to arabic
+  \iftotaltables								% If there are tables in the document
+    \phantomsection                                                             % Phantom section for proper hyperref links
+    \addcontentsline{toc}{chapter}{\listtablename}                              % Add list of tables to ToC
+    \begin{singlespace}\listoftables\end{singlespace}\clearpage                 % Generate LoT in single space environment and insert page break 
   \fi
+  \pagestyle{plain}                                                             % Set the page style to plain
+  \pagenumbering{arabic}                                                        % Set the page numbering to arabic
   \setcounter{page}{1}                                                          % Set the page counter to 1
 }                                                                               % END of makeToC command
 
 
 % --- Define makebibliography command
 \newcommand{\makebibliography}{                                                 % Set up the new command; no inputs
-  \phantomsection                                                               % Generate a phantom section
-  \addcontentsline{toc}{chapter}{REFERENCES}                                    % Add References to table of contents
   \bibliographystyle{\biblioStyle}                                              % Set the bibliography style
-  \bibliography{\biblioFile}                                                    % Set path to bibliography .bib file
+  \ifchapref									% If chapref set, then
+    \nobibliography{\biblioFile}                                                % Use the nobibliography command to fix captions in list of figures; does NOT print a References section
+  \else										% Else
+    \phantomsection                                                             % Generate a phantom section
+    \addcontentsline{toc}{chapter}{REFERENCES}                                  % Add References to table of contents
+    \bibliography{\biblioFile}                                                  % Set path to bibliography .bib file
+  \fi
 }
 
 

@@ -1,3 +1,13 @@
+v0.20.08a
+----------
+ - MUST USE NEW MAIN TEX DOCUMENT
+     The line in the main TeX document responsible for making
+     the bibliography has changed. Please use the new main
+     TeX file.
+ - Fixes citations in figures/tables not appearing in the
+   List of Figures/Tables.
+ - Fixes page numbering issue introduced in last update
+
 v0.20.08
 ----------
  - Updates to have conditional list of figures and list of tables
