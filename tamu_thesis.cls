@@ -434,8 +434,10 @@
 
 % --- Figure reference command
 \newcommand{\figref}[1]{\figurename\ \ref{#1}}
+\newcommand{\figrefp}[1]{(\figurename\ \ref{#1})}
 % --- Table reference command
 \newcommand{\tabref}[1]{\tablename\ \ref{#1}}
+\newcommand{\tabrefp}[1]{(\tablename\ \ref{#1})}
 
 % --- Redefine the maketitle command
 % Adjust spacing of the title page based on how large the committee is.

@@ -1,3 +1,7 @@
+v0.20.08b
+----------
+ - Adds \figrefp{} and \tabrefp{} commands
+
 v0.20.08a
 ----------
  - MUST USE NEW MAIN TEX DOCUMENT
