@@ -3,6 +3,8 @@ LaTeX Thesis template for Texas A&amp;M. This template is NOT offically supporte
 While comparison between this and the offical template show no major differences, I cannot guarantee
 that documents prepared with this template will pass OGAPS quality assurance.
 
+## THIS VERSION WORKS WITH TeX 2019 FOR OVERLEAF COMPATABILITY BUT IS NO LONGER MAINTAINED
+ 
 ## Major features
 * Places all formating in the `tamu_thesis` class for better end-user experience
   * Options for changing font, margins for binding, etc.
