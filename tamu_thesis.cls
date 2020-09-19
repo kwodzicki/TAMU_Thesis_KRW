@@ -105,6 +105,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{setspace}
 \RequirePackage{float}
+\RequirePackage{footmisc}
 \RequirePackage[rm, tiny, center, compact]{titlesec}
 \RequirePackage{tocloft}
 \RequirePackage{indentfirst}
@@ -561,25 +562,41 @@
 % in the ToC
 \newcommand{\chapterUpCase}[1]{\texorpdfstring{\MakeUppercase{#1}}{#1}}         % Command for handling titles with mathmode/uppercase with hyperref
 \def\@chapter[#1]#2{
- \ifnum \c@secnumdepth >\m@ne
-   \refstepcounter{chapter}%
-   \typeout{\@chapapp\space\thechapter.}%
-   \addcontentsline{toc}{chapter}%
-   {\protect\numberline{\thechapter}\chapterUpCase{#1}}%
- \else
-   \addcontentsline{toc}{chapter}{\chapterUpCase{#1}}%
- \fi
- \chaptermark{#1}%
+  \ifnum \c@secnumdepth >\m@ne
+    \refstepcounter{chapter}%
+    \typeout{\@chapapp\space\thechapter.}%
+    \addcontentsline{toc}{chapter}%
+    {\protect\numberline{\thechapter}\chapterUpCase{#2}}% Always use the required input in ToC
+  \else
+    \addcontentsline{toc}{chapter}{\chapterUpCase{#2}}% Always use the required input in ToC
+  \fi
+  %\chaptermark{#1}%
   % In the report class, there are two lines here that add a little extra space
   % the last figure/table of Chapter N and the first figure/table of 
   % Chapter N+1. They have been removed here so that the spacing between
   % all entries in the LoF/LoT is the same
- \if@twocolumn
-   \@topnewpage[\@makechapterhead{\#2}]%
- \else
-   \@makechapterhead{#2}%
-   \@afterheading
- \fi
+  %\if\relax\detokenize{#1}\relax
+  %\ifstrempty{#1}{
+  \ifstrequal{#1}{#2}{%
+    \if@twocolumn%
+      \@topnewpage[\@makechapterhead{\#2}]%
+    \else%
+      \@makechapterhead{#2}%
+      \@afterheading%
+    \fi%
+  }{%
+    \renewcommand{\thefootnote}{\fnsymbol{footnote}}% Set footnote symbol to be symbols instead of numbers
+    \setcounter{footnote}{0}% Set footnote counter to be zero so that we get asterisk
+    \if@twocolumn%
+      \@topnewpage[\@makechapterhead{\#2\footnotemark}]% Chapter title with footnote in it
+    \else%
+      \@makechapterhead{#2\footnotemark}% Chapter title with footnote in it
+      \@afterheading%
+    \fi%
+    \footnotetext[1]{#1}% Write the footnote text
+    \renewcommand{\thefootnote}{\arabic{footnote}}% Set footnote symbol back to arabic numbers
+  }%
+  \setcounter{footnote}{0}% Reset footnote counter for each chapter
 }
 
 %%%  Remove the extra vertical space before chapter titles when using report class

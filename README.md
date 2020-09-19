@@ -3,6 +3,13 @@ LaTeX Thesis template for Texas A&amp;M. This template is NOT offically supporte
 While comparison between this and the offical template show no major differences, I cannot guarantee
 that documents prepared with this template will pass OGAPS quality assurance.
 
+## Success Rate
+The table below indicates the number of times this template has cleared the thesis office with, and without, formatting issues.
+
+| No Issue | Issue |
+|----------|-------|
+|   4      |   0   |
+
 ## Major features
 * Places all formating in the `tamu_thesis` class for better end-user experience
   * Options for changing font, margins for binding, etc.
@@ -56,7 +63,7 @@ If anyone runs into issues when using this template, please submit an issue to t
 If OGAPS has issue with the formatting in this template, please submit an issue to let me know.
 That way I can update the template to meet their demands.
 
-v0.20.08b
+v0.20.09
 
 [thesis manual]: http://ogaps.tamu.edu/OGAPS/media/media-library/New%20Forms%20and%20Information/Thesis-Dissertation-Manual.pdf
 [acro]: https://ctan.org/pkg/acro?lang=en
