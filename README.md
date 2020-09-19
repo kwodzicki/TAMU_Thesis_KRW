@@ -58,7 +58,7 @@ If anyone runs into issues when using this template, please submit an issue to t
 If OGAPS has issue with the formatting in this template, please submit an issue to let me know.
 That way I can update the template to meet their demands.
 
-v0.20.08b
+v0.20.09\_tex2019
 
 [thesis manual]: http://ogaps.tamu.edu/OGAPS/media/media-library/New%20Forms%20and%20Information/Thesis-Dissertation-Manual.pdf
 [acro]: https://ctan.org/pkg/acro?lang=en
