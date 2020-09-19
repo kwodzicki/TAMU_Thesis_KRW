@@ -25,24 +25,11 @@ After you have read through the document, I suggest going through the `TAMU_Thes
 This will help you to understand some of the LaTeX commands and what they do.
 
 ## Footnotes in chapter/section titles
-If you must add footnote(s) to a chapter or section title, please do the following:
+If you must add footnote(s) to a chapter title, enter the text for the footnote into the optional input argument as below:
 
 * Type the title in both the optional and required inputs of the command
 
-      \chapter[Intro]{Intro}
-
-* In the required part of the command, add `\footnotemark`
-
-      \chapter[Intro]{Intro\footnotemark}
-
-* If labeling the chapter/section, label it here
-
-      \chapter[Intro]{Intro\footnotemark}\label{sec:intro}
-
-* Add `\footnotetext{}` command with text for footnote
-
-      \chapter[Intro]{Intro\footnotemark}\footnotetext{This is a test}
-      \chapter[Intro]{Intro\footnotemark}\label{sec:intro}\footnotetext{This is a test}
+      \chapter[This text will appear in the footnote]{Introduction}
 
 This will ensure the footnote appears on the page but not in the table of contents.
 
