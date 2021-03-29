@@ -315,12 +315,8 @@
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{4}
 
+\cftsetrmarg{8em}
 \renewcommand{\cftdotsep}{1.00}                                                 % Adjusts the size of the leader dot separation.
-\addtocontents{toc}{                                                            % Puts leader dots on chapters.
-  \protect\renewcommand{\protect\cftchapleader}{
-    \protect\cftdotfill{\cftsecdotsep}
-  }
-}
 
 %%% ToC Font specifications
 \renewcommand{\cfttoctitlefont}{\hfill\normalsize}                              % Font for ToC Title
@@ -336,9 +332,9 @@
 \renewcommand{\cftpartpagefont}{\normalfont}                                    % Set part page font
 
 %%% ToC Leaders to page numbers
-\renewcommand{\cftchapleader}{\normalsize\rm\cftdotfill{\cftdotsep}}            % Set chapter leader
-\renewcommand{\cftchapaftersnum}{.}                                             % Add a period after chapter numbers.
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}            % Set chapter leader
 \renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}}                          % Add leader dots for parts
+\renewcommand{\cftchapaftersnum}{.}                                             % Add a period after chapter numbers.
 
 %%% ToC Spacing before titles
 \setlength{\cftbeforetoctitleskip}{-\singleSpace}                               % Set spacing before the ToC Title
