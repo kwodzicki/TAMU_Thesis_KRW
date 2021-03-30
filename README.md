@@ -29,15 +29,6 @@ Unless you are familiary with the LaTeX document preparation system, I highly re
 After you have read through the document, I suggest going through the `TAMU_Thesis_Main.tex` document, and all the other `.tex` documents in the Data/ directory, one at a time to compare the LaTeX code to the PDF output.
 This will help you to understand some of the LaTeX commands and what they do.
 
-## Footnotes in chapter/section titles
-If you must add footnote(s) to a chapter title, enter the text for the footnote into the optional input argument as below:
-
-* Type the title in both the optional and required inputs of the command
-
-      \chapter[This text will appear in the footnote]{Introduction}
-
-This will ensure the footnote appears on the page but not in the table of contents.
-
 ## Updates
 Check back periodically to make sure that you have the latest version of the template.
 In most cases you will only need to download the updated `tamu_thesis.cls` file.
@@ -50,7 +41,7 @@ If anyone runs into issues when using this template, please submit an issue to t
 If OGAPS has issue with the formatting in this template, please submit an issue to let me know.
 That way I can update the template to meet their demands.
 
-v0.20.09
+v0.21.03
 
 [thesis manual]: http://ogaps.tamu.edu/OGAPS/media/media-library/New%20Forms%20and%20Information/Thesis-Dissertation-Manual.pdf
 [acro]: https://ctan.org/pkg/acro?lang=en
