@@ -111,7 +111,8 @@
 \RequirePackage{mathspec}% Also loads the fontspec package
 \RequirePackage[T1]{fontenc}
 \RequirePackage{acro}			                                                      % Load acro package
-
+\RequirePackage{keyval
+}
 %%% Set the document font based on the arial option; default to Times New Roman
 \if@arial
   \setmainfont{Arial}
@@ -315,7 +316,6 @@
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{4}
 
-\cftsetrmarg{8em}
 \renewcommand{\cftdotsep}{1.00}                                                 % Adjusts the size of the leader dot separation.
 
 %%% ToC Font specifications
@@ -516,41 +516,43 @@
 %--- Redefine the chapter commands so that the titles will be capitalized in ToC
 % Same as in the report class, but adds capitalization of chapter titles
 % in the ToC
+\define@key{myChap}{toc}{\def\myChap@toc{#1}}                                   % Define toc keyword for the myChap family. This will enable finer control of chapter titles in the table of contents
+\define@key{myChap}{footnote}{\def\myChap@footnote{#1}}                         % Define footnote keyword for the myChap family. This will allow users to add a footnote to the chapter title
+
 \newcommand{\chapterUpCase}[1]{\texorpdfstring{\MakeUppercase{#1}}{#1}}         % Command for handling titles with mathmode/uppercase with hyperref
 \def\@chapter[#1]#2{
+  \let\myChap@toc\undefined% Undefine the myChap@toc macro to be safe; it may still be defined from previous chapter
+  \let\myChap@footnote\undefined% Undefine the myChap@footnote macro
+  \ifstrequal{#1}{#2}{}{% If the first and second inputs match, do nothing, else 
+    \setkeys{myChap}{#1}% Parse options from input 1 for keyword family myChap
+  }
+  \ifdefined\myChap@toc\else\def\myChap@toc{#2}\fi% If the myChap@toc macro is undefined, then the keyword was not set, so just use the main/requried input (#2)
   \ifnum \c@secnumdepth >\m@ne
     \refstepcounter{chapter}%
     \typeout{\@chapapp\space\thechapter.}%
     \addcontentsline{toc}{chapter}%
-    {\protect\numberline{\thechapter}\chapterUpCase{#2}}% Always use the required input in ToC
+    {\protect\numberline{\thechapter}\chapterUpCase{\myChap@toc}}% Always use the required input in ToC
   \else
-    \addcontentsline{toc}{chapter}{\chapterUpCase{#2}}% Always use the required input in ToC
+    \addcontentsline{toc}{chapter}{\chapterUpCase{\myChap@toc}}% Always use the required input in ToC
   \fi
   %\chaptermark{#1}%
   % In the report class, there are two lines here that add a little extra space
   % the last figure/table of Chapter N and the first figure/table of 
   % Chapter N+1. They have been removed here so that the spacing between
   % all entries in the LoF/LoT is the same
-  \ifstrequal{#1}{#2}{%
-    \if@twocolumn%
-      \@topnewpage[\@makechapterhead{\#2}]%
-    \else%
-      \@makechapterhead{#2}%
-      \@afterheading%
-    \fi%
-  }{%
-    \renewcommand{\thefootnote}{\fnsymbol{footnote}}% Set footnote symbol to be symbols instead of numbers
+  \ifdefined\myChap@footnote% If the myChap@footnote macro is defined, then the keyword MUST have been used, so add footnote
+  \renewcommand{\thefootnote}{\fnsymbol{footnote}}% Set footnote symbol to be symbols in
     \setcounter{footnote}{0}% Set footnote counter to be zero so that we get asterisk
-    \if@twocolumn%
-      \@topnewpage[\@makechapterhead{\#2\footnotemark}]% Chapter title with footnote in it
-    \else%
-      \@makechapterhead{#2\footnotemark}% Chapter title with footnote in it
-      \@afterheading%
-    \fi%
-    \footnotetext[1]{#1}% Write the footnote text
-    \renewcommand{\thefootnote}{\arabic{footnote}}% Set footnote symbol back to arabic numbers
-  }%
+    \@makechapterhead{#2\footnotemark}% Chapter title with footnote in it
+    \@afterheading%
+    \footnotetext[1]{\myChap@footnote}% Write the footnote text
+    \renewcommand{\thefootnote}{\arabic{footnote}}% Set footnote symbol back to arabic num
+  \else% Else, no footnote required
+    \@makechapterhead{#2}%
+    \@afterheading%
+  \fi
   \setcounter{footnote}{0}% Reset footnote counter for each chapter
+
 }
 
 

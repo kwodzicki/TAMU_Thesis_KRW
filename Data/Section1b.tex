@@ -1,0 +1,66 @@
+% !TEX root = ../TAMU_Thesis_Main.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           SECTION I
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Title that is just long enough for no leaders to page num in TOC}
+
+% This is an example of how to use the toc keyword to adjust how the
+% chapter title appears in the table of contents
+%
+%\chapter[toc={Title that is just long enough for no leaders to page num in\\TOC}]
+%{Title that is just long enough for no leaders to page num in TOC}
+
+%% This is an example of how to use the footnote keyword to add a footnote
+% to the chapter title for previously published works 
+%
+%\chapter[footnote={Put citation here if part of this work is already published}]
+%{Title that is just long enough for no leaders to page num in TOC}
+
+\section{Adjusting How Titles Appear in the Table of Contents}
+The title of this chapter looks fine on this page, but if you look at the table of contents, there will be no leader dots between the end of the chapter name and the page number.
+This also happens for some section titles in the table of contents, so I will explain how to fix this.
+
+\subsection{Adjusting Chapters}
+Chapters are a special case as you may need to add a footnote to reference previously published material that the chapter comes from, but that is for the next section.
+Typically, as shown above, a chapter is defined using the following command:
+\begin{verbatim}
+\chapter{This is the chapter title}
+\end{verbatim}
+where the title is in the curly brackets.
+By default, this is the text that is used in the table of contents.
+
+In the case of our title, you may want to add a return in the middle of the title, but just for the table of contents.
+To do this, the toc keyword is used:
+\begin{verbatim}
+\chapter[toc={This is the\\chapter title}]{This is the chapter title}
+\end{verbatim}
+Here, we put the the keyword in square brackets and the value of the keyword (to the right of the equals sign) in curly brackets.
+The curly brackets are used to ensure that the title stays together; just to be safe, always use them around the keywords in the chapter command.
+Notice that two backslashes wore added to the chapter title for the table of contents.
+This will force a new line between the words ``the'' and ``chapter''.
+
+To try this out, you can uncomment the chapter command at the beginning of this chapter that has the toc keyword.
+
+\subsection{Adjusting all other sections}
+For all other sections, subsection, etc., you can simply put the title for the table of contents in square backets as below:
+\begin{verbatim}
+\section[Subsection title that is too long\\to be on one line]
+{Subsection title that is too long to be on one line}
+\end{verbatim}
+
+\section{Footnotes for previously published works}
+To add a footnote to the chapter title to indicate that it is from previously published work, use the footnote keyword in the chapter command:
+\begin{verbatim}
+\chapter[footnote={This is a reference to previoulsy published work}]
+{This is my chapter title}
+\end{verbatim}
+Notice that the value for the footnote (everything to the right of the equals sign) is wrapped in curly brackets to ensure the keyword works properly.
+Using this keyword will add a footnote symbol to the chapter title and place the text for the footnote as a footnote.
+To try this out, you can uncomment the example command at the top of this chapter.
+
+Please refer to the thesis manual on how the citation should be formatted.
+
+\vspace{4ex}
+\noindent{\Large Note that both the toc and footnote commands can be used at the same time}
