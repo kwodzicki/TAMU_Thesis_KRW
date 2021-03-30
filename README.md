@@ -24,15 +24,6 @@ Unless you are familiary with the LaTeX document preparation system, I highly re
 After you have read through the document, I suggest going through the `TAMU_Thesis_Main.tex` document, and all the other `.tex` documents in the Data/ directory, one at a time to compare the LaTeX code to the PDF output.
 This will help you to understand some of the LaTeX commands and what they do.
 
-## Footnotes in chapter/section titles
-If you must add footnote(s) to a chapter title, enter the text for the footnote into the optional input argument as below:
-
-* Type the title in both the optional and required inputs of the command
-
-      \chapter[This text will appear in the footnote]{Introduction}
-
-This will ensure the footnote appears on the page but not in the table of contents.
-
 ## Updates
 Check back periodically to make sure that you have the latest version of the template.
 In most cases you will only need to download the updated `tamu_thesis.cls` file.
