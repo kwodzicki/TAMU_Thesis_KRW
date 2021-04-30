@@ -4,6 +4,13 @@ While comparison between this and the offical template show no major differences
 that documents prepared with this template will pass OGAPS quality assurance.
 
 ## THIS VERSION WORKS WITH TeX 2019 FOR OVERLEAF COMPATABILITY BUT IS NO LONGER MAINTAINED
+
+## Success Rate
+The table below indicates the number of times this template has cleared the thesis office with, and without, formatting issues.
+
+| No Issue | Issue |
+|----------|-------|
+|   6      |   0   |
  
 ## Major features
 * Places all formating in the `tamu_thesis` class for better end-user experience
