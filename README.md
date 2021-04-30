@@ -8,7 +8,7 @@ The table below indicates the number of times this template has cleared the thes
 
 | No Issue | Issue |
 |----------|-------|
-|   4      |   0   |
+|   6      |   0   |
 
 ## Major features
 * Places all formating in the `tamu_thesis` class for better end-user experience
